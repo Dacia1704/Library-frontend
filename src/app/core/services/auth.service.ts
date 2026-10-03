@@ -1,0 +1,81 @@
+import { HttpClient } from "@angular/common/http";
+import { Injectable, inject } from "@angular/core";
+import { Router } from "@angular/router";
+import { environment } from "../../../environments/environment";
+import { map, Observable, tap } from "rxjs";
+import { ApiResponse } from "../models/api-response";
+
+export interface LoginData {
+  id: number;
+  email: string;
+  username: string;
+  avatar?: string;
+  authorities: string[];
+  accessToken: string;
+  refreshToken: string;
+}
+
+const KEY = 'library_auth'
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+  private http = inject(HttpClient);
+  private router = inject(Router);
+  private api = `${environment.apiUrl}/auth`;
+
+  private get session(): LoginData | null {
+    const raw = localStorage.getItem(KEY);
+    return raw ? JSON.parse(raw) : null;
+  }
+  get accessToken() { return this.session?.accessToken ?? null; }
+  get refreshToken() { return this.session?.refreshToken ?? null; }
+  get user() { return this.session; }
+
+  isLoggedIn() { return !!this.accessToken; }
+  hasPermission(code: string) { return !!this.session?.authorities.includes(code); }
+
+  /** ADMIN | LIBRARIAN | MEMBER ... (bỏ tiền tố ROLE_) */
+  role(): string | null {
+    const r = this.session?.authorities.find(a => a.startsWith('ROLE_'));
+    return r ? r.replace('ROLE_', '') : null;
+  }
+  hasAnyRole(roles: string[]) { const r = this.role(); return !!r && roles.includes(r); }
+
+  homeUrl(): string {
+    switch (this.role()) {
+      case 'ADMIN': return '/admin';
+      case 'LIBRARIAN': return '/librarian';
+      default: return '/reader';
+    }
+  }
+
+  login(email: string, password: string): Observable<LoginData> {
+    return this.http.post<ApiResponse<LoginData>>(`${this.api}/login`, { email, password }).pipe(
+      map(res => res.data),
+      tap(data => localStorage.setItem(KEY, JSON.stringify(data)))
+    )
+  }
+
+  refresh(): Observable<void> {
+    return this.http.post<ApiResponse<{ accessToken: string; refreshToken: string }>>(
+      `${this.api}/refresh`, { refreshToken: this.refreshToken }
+    ).pipe(
+      tap(res => localStorage.setItem(KEY, JSON.stringify({ ...this.session, ...res.data }))),
+      map(() => void 0)
+    );
+  }
+ 
+  logout() {
+    const refreshToken = this.refreshToken;
+    this.http.post(`${this.api}/logout`, { refreshToken }).subscribe({ complete: () => this.clearSession(), error: () => this.clearSession() });
+  }
+ 
+  clearSession() {
+    localStorage.removeItem(KEY);
+    this.router.navigateByUrl('/login');
+  }
+  
+
+}
