@@ -1,0 +1,43 @@
+<div class="header-info">
+  <mat-chip-set>
+    <mat-chip *ngFor="let cat of book.categories" color="primary" highlighted>{{ cat.name }}</mat-chip>
+  </mat-chip-set>
+  
+  <h1 class="book-title">{{ book.title }}</h1>
+  <p class="book-subtitle" *ngIf="book.publishers?.length">
+    Tái bản đặc biệt • {{ book.publishers[0].name }}
+  </p>
+</div>
+
+<mat-card class="status-box" appearance="outlined">
+  <div class="status-header">
+    <div class="stock-title">
+      Còn <span class="highlight">{{ book.available }}</span> / {{ book.quantity }} cuốn
+    </div>
+    <div class="badge" [ngClass]="isAvailable ? 'badge-success' : 'badge-error'">
+      <div class="dot"></div> {{ isAvailable ? 'Sẵn sàng phục vụ' : 'Đang hết sách' }}
+    </div>
+  </div>
+
+  <div class="metrics-grid">
+    <div class="metric">
+      <span class="lbl">Tổng nhập kho</span><span class="val">{{ book.quantity }} bản</span>
+    </div>
+    <div class="metric">
+      <span class="lbl">Trên giá mượn</span><span class="val text-secondary">{{ book.available }} cuốn</span>
+    </div>
+    <div class="metric">
+      <span class="lbl">Đang lưu thông</span><span class="val text-primary">{{ book.quantity - book.available }} cuốn</span>
+    </div>
+    <div class="metric">
+      <span class="lbl">Hạn trả gần nhất</span><span class="val">{{ book.expectedReturnDate || '---' }}</span>
+    </div>
+  </div>
+
+  <div class="instruction-box">
+    <mat-icon color="primary">info</mat-icon>
+    <div class="text">
+      <strong>Hướng dẫn mượn đọc:</strong> Thư viện phục vụ quy trình mượn sách trực tiếp. Vui lòng ghi nhớ mã kệ <strong>{{ book.shelf?.code }}</strong> và mang thẻ tới quầy.
+    </div>
+  </div>
+</mat-card>

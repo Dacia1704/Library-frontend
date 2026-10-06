@@ -1,0 +1,64 @@
+<article class="book-card" [class.unavailable]="!isAvailable" (click)="onCardClick()">
+  <div class="card-top">
+
+    <!-- Cover image -->
+    <div class="cover-wrap">
+      <img
+        class="cover-img"
+        [class.grayscale]="!isAvailable"
+        [src]="book.cover"
+        [alt]="book.title"
+        loading="lazy"
+      />
+      <span class="category-badge">{{ book.categories?.[0]?.name }}</span>
+
+      @if (!isAvailable) {
+        <div class="oos-overlay">
+          <span class="oos-label">Đang hết sách</span>
+        </div>
+      }
+    </div>
+
+    <!-- Title & Author -->
+    <div class="book-info">
+      <h2 class="book-title">{{ book.title }}</h2>
+      <p class="book-meta">{{ book.authors?.[0]?.name }} • {{ book.publishers?.[0]?.name }} ({{ book.publishYear }})</p>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="card-footer">
+    <div class="footer-row-1">
+      @if (isAvailable) {
+        <span class="avail-badge avail">
+          <span class="avail-dot"></span>
+          Còn {{ book.available }}/{{ book.quantity }} cuốn
+        </span>
+        <span class="shelf-tag primary">{{ book.shelf.code }}</span>
+      } @else {
+        <span class="avail-badge oos">
+          <span class="avail-dot"></span>
+          Còn 0/{{ book.quantity }} cuốn
+        </span>
+        <span class="shelf-tag muted">{{ book.shelf.code }}</span>
+      }
+    </div>
+
+    <div class="footer-row-2">
+      @if (isAvailable) {
+        <span class="loc-text">
+          <span class="material-symbols-outlined loc-icon">pin_drop</span>
+          {{ book.shelf.location }}
+        </span>
+        <span class="action-link">Chi tiết vị trí →</span>
+      } @else {
+        <span class="loc-text">
+          <span class="material-symbols-outlined loc-icon">schedule</span>
+          Dự kiến trả: {{ book.expectedReturnDate }}
+        </span>
+        <span class="action-link muted">Đặt hẹn trước</span>
+      }
+    </div>
+  </div>
+</article>

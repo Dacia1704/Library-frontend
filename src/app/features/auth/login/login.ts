@@ -6,7 +6,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { AuthService } from "../../../core/services/auth.service";
+import { AuthService } from "@services/auth.service";
 import { Router } from "@angular/router";
 
 
@@ -49,13 +49,13 @@ export class Login {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
-    }
+    } 
 
     this.loading.set(true);
     this.errorMessage.set('');
     const { email, password } = this.form.getRawValue();
 
-    this.auth.login(email, password).subscribe({
+    this.auth.login({ email, password }).subscribe({
       next: () => this.router.navigateByUrl(this.auth.homeUrl()),
       error: (err) => {
         this.loading.set(false);

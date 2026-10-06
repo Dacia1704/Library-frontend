@@ -1,9 +1,12 @@
 import { Routes } from '@angular/router';
 import { roleGuard } from './core/guards/role.guard';
-import { inject } from '@angular/core';
-import { AuthService } from './core/services/auth.service';
 
 export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full',
+  },
   {
     path: 'login',
     loadComponent: () => import('./features/auth/login/login').then(m => m.Login)

@@ -1,0 +1,109 @@
+<div class="books-wrapper">
+  
+  <!-- Info Banner -->
+  <section class="info-banner mb-lg">
+    <div class="banner-content">
+      <div class="icon-wrap bg-primary-container text-on-primary">
+        <span class="material-symbols-outlined">info</span>
+      </div>
+      <div class="text-wrap">
+        <h3 class="banner-title">Chế độ tra cứu tài liệu & ấn phẩm</h3>
+        <p class="banner-desc">Để mượn sách, quý bạn đọc vui lòng đến <strong>quầy thủ thư</strong> để làm thủ tục.</p>
+      </div>
+    </div>
+    <div class="banner-status">
+      <span class="status-badge bg-secondary-fixed">
+        <span class="status-dot bg-secondary"></span>
+        Thư viện đang mở cửa
+      </span>
+    </div>
+  </section>
+
+  <!-- Filter Component -->
+  <app-book-filter (filterChange)="onFilterChange($event)" class="mb-xl"></app-book-filter>
+
+  <!-- Results Header -->
+  <div class="results-header mb-md">
+    <div class="results-title-group">
+      <h2 class="title">Danh sách sách & tài liệu</h2>
+      <span class="count-badge bg-primary-fixed text-primary">{{ totalBooks() }} tài liệu</span>
+    </div>
+    <div class="results-sort">
+      <span class="sort-label">Sắp xếp theo:</span>
+      <select class="sort-select">
+        <option>Độ liên quan cao nhất</option>
+        <option>Mới nhập về gần đây</option>
+        <option>Năm xuất bản (mới nhất)</option>
+        <option>Số lượng khả dụng</option>
+      </select>
+    </div>
+  </div>
+
+
+  <!-- Book Cards Grid -->
+  <section class="books-grid mb-xl">
+    @for (book of filteredBooks(); track book.id) {
+      <app-book-card [book]="book"></app-book-card>
+    }
+  </section>
+
+  <!-- Floor Map Help -->
+  <section class="floor-map-callout mb-xl">
+    <div class="callout-info">
+      <div class="icon-wrap bg-secondary-container text-on-secondary-container">
+        <span class="material-symbols-outlined">map</span>
+      </div>
+      <div class="text-wrap">
+        <h3 class="callout-title">Chưa tìm thấy vị trí sách mong muốn?</h3>
+        <p class="callout-desc">Bạn có thể xem sơ đồ mặt bằng các tầng thư viện để định vị chính xác dãy kệ sách theo mã ký hiệu (V: Văn học, K: Kinh tế, T: Tâm lý - Kỹ năng, C: Công nghệ).</p>
+      </div>
+    </div>
+    <div class="callout-actions">
+      <button class="btn btn-outline" type="button">
+        <span class="material-symbols-outlined">explore</span>
+        <span>Xem sơ đồ tầng</span>
+      </button>
+      <button class="btn btn-primary" type="button">
+        <span class="material-symbols-outlined">contact_support</span>
+        <span>Gặp thủ thư hỗ trợ</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Pagination -->
+  <section class="pagination-container">
+    <div class="pagination-info">
+      <span>Hiển thị</span>
+      <span class="bold">{{ (page - 1) * size + 1 }} - {{ page * size }}</span>
+      <span>của</span>
+      <span class="bold">{{ totalBooks() }}</span>
+      <span>cuốn sách</span>
+      <span class="dot">•</span>
+      <span>Trang {{ page }} / {{ Math.ceil(totalBooks() / size) }}</span>
+    </div>
+
+    <div class="pagination-actions">
+      <button class="page-btn text-btn" [class.disabled]="page === 1" [disabled]="page === 1"
+        type="button" (click)="onPageChange(page - 1)">
+        <span class="material-symbols-outlined">chevron_left</span> Trước
+      </button>
+
+      @for (p of getPageNumbers(); track p) {
+        @if (p === -1) {
+          <span class="page-ellipsis">...</span>
+        } @else {
+          <button class="page-btn num-btn" [class.active]="p === page"
+            type="button" (click)="onPageChange(p)">{{ p }}</button>
+        }
+      }
+
+      <button class="page-btn text-btn"
+        [class.disabled]="page === Math.ceil(totalBooks() / size)"
+        [disabled]="page === Math.ceil(totalBooks() / size)"
+        type="button" (click)="onPageChange(page + 1)">
+        Sau <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </section>
+  
+</div> 

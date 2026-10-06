@@ -1,0 +1,131 @@
+<section class="filter-panel">
+
+  <!-- Search Row -->
+  <div class="search-row">
+    <div class="search-input-wrap">
+      <span class="material-symbols-outlined search-icon">search</span>
+      <input
+        id="book-search-input"
+        class="search-input"
+        type="text"
+        placeholder="Tìm theo tên sách, tác giả, chuyên đề hoặc từ khóa..."
+        [(ngModel)]="filter.search"
+        (keyup.enter)="search()"
+      />
+      @if (filter.search) {
+        <button class="clear-btn" type="button" (click)="filter.search = ''; search()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      }
+    </div>
+
+    <div class="search-actions">
+      <button class="btn-search" type="button" (click)="search()">
+        <span class="material-symbols-outlined">search</span>
+        <span>Tìm kiếm</span>
+      </button>
+      <button class="btn-reset" type="button" (click)="reset()">
+        <span class="material-symbols-outlined">restart_alt</span>
+        <span>Đặt lại</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Filter Row -->
+  <div class="filter-row">
+
+    <!-- Category -->
+    <div class="filter-field">
+      <label class="filter-label" for="filter-category">
+        <span class="material-symbols-outlined lbl-icon">category</span>
+        Danh mục lĩnh vực
+      </label>
+      <div class="select-wrap">
+        <select id="filter-category" class="filter-select" [(ngModel)]="filter.category">
+          @for (cat of categories; track cat) {
+            <option [value]="cat">{{ cat }}</option>
+          }
+        </select>
+        <span class="material-symbols-outlined select-arrow">expand_more</span>
+      </div>
+    </div>
+
+    <!-- Author -->
+    <div class="filter-field">
+      <label class="filter-label" for="filter-author">
+        <span class="material-symbols-outlined lbl-icon">person</span>
+        Tác giả
+      </label>
+      <div class="select-wrap">
+        <select id="filter-author" class="filter-select" [(ngModel)]="filter.author">
+          @for (a of authors; track a) {
+            <option [value]="a">{{ a }}</option>
+          }
+        </select>
+        <span class="material-symbols-outlined select-arrow">expand_more</span>
+      </div>
+    </div>
+
+    <!-- Publisher -->
+    <div class="filter-field">
+      <label class="filter-label" for="filter-publisher">
+        <span class="material-symbols-outlined lbl-icon">domain</span>
+        Nhà xuất bản
+      </label>
+      <div class="select-wrap">
+        <select id="filter-publisher" class="filter-select" [(ngModel)]="filter.publisher">
+          @for (p of publishers; track p) {
+            <option [value]="p">{{ p }}</option>
+          }
+        </select>
+        <span class="material-symbols-outlined select-arrow">expand_more</span>
+      </div>
+    </div>
+
+    <!-- Year Range -->
+    <div class="filter-field">
+      <label class="filter-label">
+        <span class="material-symbols-outlined lbl-icon">calendar_today</span>
+        Năm xuất bản
+      </label>
+      <div class="year-range">
+        <input
+          class="year-input"
+          type="number"
+          placeholder="Từ: 2010"
+          min="1950" max="2030"
+          [(ngModel)]="filter.yearFrom"
+        />
+        <input
+          class="year-input"
+          type="number"
+          placeholder="Đến: 2024"
+          min="1950" max="2030"
+          [(ngModel)]="filter.yearTo"
+        />
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Active Filters Row -->
+  <div class="active-row">
+    <label class="avail-check-label">
+      <input type="checkbox" class="avail-check" [(ngModel)]="filter.onlyAvailable" (change)="search()" />
+      Chỉ hiện sách còn trong kho
+    </label>
+
+    @if (activeChips().length > 0) {
+      <div class="chips">
+        <span class="chips-label">Đang lọc:</span>
+        @for (chip of activeChips(); track chip.key) {
+          <span class="chip">
+            {{ chip.label }}
+            <span class="material-symbols-outlined chip-close" (click)="clearChip(chip.key)">close</span>
+          </span>
+        }
+      </div>
+    }
+  </div>
+
+</section>

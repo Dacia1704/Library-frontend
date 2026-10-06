@@ -1,0 +1,50 @@
+.book-detail-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.book-detail-canvas {
+  background: var(--surface-container-lowest, #ffffff);
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  padding: 24px;
+
+  @media (min-width: 768px) { padding: 40px; }
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 5fr 7fr; /* Tỷ lệ 40% - 60% */
+  }
+}
+
+.left-col, .right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.detail-footer {
+  margin-top: 16px;
+  padding-top: 24px;
+  border-top: 1px solid var(--outline-variant, #c4c5d5);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  .footer-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--on-surface-variant, #444653);
+    mat-icon { font-size: 18px; width: 18px; height: 18px; }
+  }
+}

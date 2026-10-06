@@ -1,0 +1,76 @@
+@if (book(); as currentBook) {
+
+  <div class="book-detail-wrapper">
+
+    <app-book-detail-toolbar
+      [title]="currentBook.title">
+    </app-book-detail-toolbar>
+
+    <div class="book-detail-canvas">
+      <!-- Grid Layout -->
+      <div class="detail-grid">
+
+        <!-- Cột Trái -->
+        <div class="left-col">
+
+          <app-book-cover-visual
+            [book]="currentBook">
+          </app-book-cover-visual>
+
+          <app-book-location-tag
+            [shelf]="currentBook.shelf"
+            [bookCode]="currentBook.bookCode">
+          </app-book-location-tag>
+
+        </div>
+
+        <!-- Cột Phải -->
+        <div class="right-col">
+
+          <app-book-availability-status
+            [book]="currentBook">
+          </app-book-availability-status>
+
+          <app-book-metadata
+            [book]="currentBook">
+          </app-book-metadata>
+
+          <app-book-synopsis
+            [synopsis]="currentBook.synopsis">
+          </app-book-synopsis>
+
+          <app-book-borrow-rules></app-book-borrow-rules>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footer Strip -->
+    <div class="detail-footer">
+
+      <div class="footer-note">
+        <mat-icon color="primary">verified</mat-icon>
+
+        <span>
+          Dữ liệu mục lục thư viện được đồng bộ theo thời gian thực
+          (Cập nhật lúc 09:15 hôm nay)
+        </span>
+      </div>
+
+      <div class="footer-actions">
+        <button
+          mat-stroked-button
+          (click)="scrollToTop()">
+
+          <mat-icon>vertical_align_top</mat-icon>
+
+          Lên đầu trang
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+}

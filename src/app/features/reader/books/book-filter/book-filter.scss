@@ -1,0 +1,270 @@
+:host { display: block; }
+
+.filter-panel {
+  background: var(--surface-container-lowest);
+  border: 1px solid rgba(196, 197, 213, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+// ─── Search Row ──────────────────────────────────────────────────────
+.search-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+
+  @media (max-width: 991px) { flex-direction: column; align-items: stretch; }
+}
+
+.search-input-wrap {
+  position: relative;
+  flex: 1;
+
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 22px;
+    color: var(--outline);
+    pointer-events: none;
+  }
+}
+
+.search-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 40px 0 48px;
+  background: var(--surface-container-lowest);
+  border: 1px solid rgba(196, 197, 213, 0.6);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: var(--text-primary);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &::placeholder { color: var(--outline); }
+
+  &:focus {
+    border-color: var(--primary-fixed-dim);
+    box-shadow: 0 0 0 3px rgba(184, 196, 255, 0.35);
+  }
+}
+
+.clear-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--outline);
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 50%;
+  transition: color 0.15s;
+
+  &:hover { color: var(--text-primary); }
+
+  .material-symbols-outlined { font-size: 18px; }
+}
+
+.search-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn-search {
+  height: 48px;
+  padding: 0 24px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.15s;
+  box-shadow: var(--shadow-card);
+
+  &:hover { background: var(--primary-hover); }
+  &:active { background: var(--primary-active); transform: scale(0.98); }
+
+  .material-symbols-outlined { font-size: 20px; }
+}
+
+.btn-reset {
+  height: 48px;
+  padding: 0 16px;
+  background: var(--surface);
+  color: var(--on-surface-variant);
+  border: 1px solid rgba(196, 197, 213, 0.4);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.15s, color 0.15s;
+
+  &:hover { background: var(--surface-container-high); color: var(--text-primary); }
+
+  .material-symbols-outlined { font-size: 18px; }
+}
+
+// ─── Filter Row ──────────────────────────────────────────────────────
+.filter-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(196, 197, 213, 0.2);
+
+  @media (max-width: 1199px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 639px)  { grid-template-columns: 1fr; }
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+
+  .lbl-icon { font-size: 16px; }
+}
+
+.select-wrap {
+  position: relative;
+}
+
+.filter-select {
+  width: 100%;
+  height: 40px;
+  padding: 0 32px 0 12px;
+  background: var(--surface);
+  border: 1px solid rgba(196, 197, 213, 0.5);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  color: var(--text-primary);
+  appearance: none;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s;
+
+  &:focus { border-color: var(--primary-fixed-dim); }
+}
+
+.select-arrow {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: var(--outline);
+  pointer-events: none;
+}
+
+.year-range {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.year-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 10px;
+  background: var(--surface);
+  border: 1px solid rgba(196, 197, 213, 0.5);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  color: var(--text-primary);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+
+  &::placeholder { color: var(--text-placeholder); }
+  &:focus { border-color: var(--primary-fixed-dim); }
+}
+
+// ─── Active Row ──────────────────────────────────────────────────────
+.active-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+
+.avail-check-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+
+  .avail-check {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+    cursor: pointer;
+  }
+}
+
+.chips {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  .chips-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--on-surface-variant);
+  }
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: var(--surface-container-high);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--primary);
+
+  .chip-close {
+    font-size: 14px;
+    cursor: pointer;
+    color: var(--outline);
+    transition: color 0.1s;
+    &:hover { color: var(--text-primary); }
+  }
+}

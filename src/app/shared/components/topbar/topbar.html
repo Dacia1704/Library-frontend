@@ -1,0 +1,59 @@
+<header class="topbar">
+
+  <!-- Left: Search hint -->
+  <div class="topbar-left">
+    <div class="search-hint">
+      <span class="material-symbols-outlined search-hint-icon">manage_search</span>
+      <span class="search-hint-text">Nhấn Ctrl + K để tìm kiếm nhanh...</span>
+    </div>
+  </div>
+
+  <!-- Right: Actions + User -->
+  <div class="topbar-right">
+
+    <!-- Notifications -->
+    <button class="icon-btn notif-btn" title="Thông báo" type="button">
+      <span class="material-symbols-outlined">notifications</span>
+      <span class="notif-dot"></span>
+    </button>
+
+    <!-- Help -->
+    <button class="icon-btn" title="Trợ giúp" type="button">
+      <span class="material-symbols-outlined">help_outline</span>
+    </button>
+
+    <div class="vr"></div>
+
+    <!-- User -->
+    <div class="user-trigger" [matMenuTriggerFor]="userMenu">
+      <img
+        class="user-avatar"
+        [src]="userAvatar || 'https://ui-avatars.com/api/?name=' + (userName || 'U') + '&background=1e40af&color=fff&size=64'"
+        [alt]="userName"
+      />
+      <div class="user-meta">
+        <span class="user-name">{{ userName || 'Bạn đọc' }}</span>
+        <span class="user-role-label">{{ userRole || 'Thành viên' }}</span>
+      </div>
+      <span class="material-symbols-outlined chevron">expand_more</span>
+    </div>
+
+    <!-- User dropdown -->
+    <mat-menu #userMenu="matMenu" class="user-menu">
+      <button mat-menu-item (click)="goToProfile.emit()">
+        <span class="material-symbols-outlined mi">person</span>
+        Hồ sơ cá nhân
+      </button>
+      <button mat-menu-item>
+        <span class="material-symbols-outlined mi">settings</span>
+        Cài đặt tài khoản
+      </button>
+      <mat-divider />
+      <button mat-menu-item class="logout-item" (click)="logoutClick.emit()">
+        <span class="material-symbols-outlined mi">logout</span>
+        Đăng xuất
+      </button>
+    </mat-menu>
+
+  </div>
+</header>

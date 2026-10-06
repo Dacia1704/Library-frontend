@@ -1,0 +1,24 @@
+<div class="reader-layout">
+
+  <!-- Sidebar -->
+  <aside class="reader-sidebar">
+    <app-sidebar [menu]="menu" />
+  </aside>
+
+  <!-- Main -->
+  <div class="reader-main">
+
+    <!-- Topbar -->
+    <app-topbar
+      (logoutClick)="logout()"
+      (goToProfile)="goToProfile()"
+    />
+
+    <!-- Page content -->
+    <main class="reader-content">
+      <router-outlet />
+    </main>
+
+  </div>
+
+</div>
