@@ -74,7 +74,7 @@
           },
           "defaultConfiguration": "development",
           "options": {
-            "buildTarget": "library-fe:build",
+            "buildTarget": "library-frontend:build",
             "proxyConfig": "proxy.conf.json"
           }
         },

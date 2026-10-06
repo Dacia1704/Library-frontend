@@ -47,7 +47,7 @@ export class AuthService {
     switch (this.role()) {
       case 'ADMIN': return '/admin';
       case 'LIBRARIAN': return '/librarian';
-      default: return '/reader';
+      default: return '/';
     }
   }
 

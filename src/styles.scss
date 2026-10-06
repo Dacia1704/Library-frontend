@@ -88,6 +88,12 @@ html {
 }
 
 //global
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 
 html,
 body {
