@@ -1,0 +1,34 @@
+<div class="member-card-wrapper" *ngIf="member() as memberData">
+  <!-- Top Breadcrumb & Actions -->
+  <app-member-card-header></app-member-card-header>
+
+  <!-- Hero Content Grid -->
+  <div class="hero-grid">
+    
+    <!-- Cột Trái: Thẻ ảo & Cảnh báo -->
+    <div class="left-col">
+      <app-digital-card-visual [member]="memberData"></app-digital-card-visual>
+      
+      <!-- Chỉ hiện cảnh báo khi thẻ còn dưới 15 ngày -->
+      <app-card-renewal-alert 
+        *ngIf="daysRemaining() <= 15 && daysRemaining() >= 0">
+      </app-card-renewal-alert>
+    </div>
+
+    <!-- Cột Phải: Quyền lợi & Trạng thái -->
+    <div class="right-col">
+      <app-card-privileges-status 
+        [member]="memberData" 
+        [daysRemaining]="daysRemaining()">
+      </app-card-privileges-status>
+    </div>
+
+  </div>
+
+  <!-- Bảng Lịch sử Giao dịch -->
+  <app-transaction-history-table [transactions]="transactions()"></app-transaction-history-table>
+
+  <!-- Câu hỏi thường gặp -->
+  <app-card-faq-guidelines></app-card-faq-guidelines>
+
+</div>

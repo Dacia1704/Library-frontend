@@ -1,0 +1,12 @@
+.faq-card { background: #ffffff; border-radius: 16px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .title-group { display: flex; align-items: center; gap: 8px; h3 { margin: 0; font-size: 16px; font-weight: 700; color: #0b1c30; } }
+    .sub { font-size: 11px; color: #444653; }
+    .text-primary { color: #00288e; } .text-secondary { color: #006a61; } .text-outline { color: #757684; } .text-normal { color: #0b1c30; }
+    
+    .faq-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 768px) { .faq-grid { grid-template-columns: repeat(3, 1fr); } }
+    
+    .faq-item { background: #eff4ff; padding: 16px; border-radius: 12px; display: flex; flex-direction: column; gap: 6px; }
+    .item-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; mat-icon { font-size: 18px; width: 18px; height: 18px; } }
+    .faq-item p { margin: 0; font-size: 12px; color: #444653; line-height: 1.5; }

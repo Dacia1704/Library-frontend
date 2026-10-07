@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-header',
@@ -10,7 +11,16 @@ import { MatButtonModule } from '@angular/material/button';
     <div class="header-container">
       <div class="breadcrumb-group">
         <nav class="breadcrumb">
-          <mat-icon>home</mat-icon> Trang chủ <span class="sep">chevron_right</span> Tài khoản <span class="sep">chevron_right</span> <strong>Thông tin cá nhân</strong>
+          <button
+          type="button"
+          class="breadcrumb-link home-link"
+          (click)="goToBooks()"
+          aria-label="Trang tra cứu sách">
+            <mat-icon>home</mat-icon>
+            Trang chủ
+          </button>
+        <span class="sep">chevron_right</span>
+        <strong>Thông tin cá nhân</strong>
         </nav>
         <div class="title-row">
           <h1>Thông tin cá nhân</h1>
@@ -33,8 +43,15 @@ import { MatButtonModule } from '@angular/material/button';
     .subtitle { margin: 0; font-size: 14px; color: #444653; }
     .actions { display: flex; align-items: center; gap: 12px; }
     .read-only-pill { display: flex; align-items: center; gap: 6px; background: #e5eeff; padding: 6px 12px; border-radius: 8px; font-size: 12px; color: #444653; mat-icon { font-size: 16px; width: 16px; height: 16px; color: #757684; } }
+    .breadcrumb-link {border: none;background: none;padding: 0;font: inherit;color: #444653;cursor: pointer; display: flex; align-items: center; justify-content: flex-end; gap: 4px}
   `]
 })
 export class ProfileHeaderComponent {
   goBack() { history.back(); }
+
+  private readonly router = inject(Router);
+
+  goToBooks(): void {
+    this.router.navigate(['/reader/books']);
+  }
 }

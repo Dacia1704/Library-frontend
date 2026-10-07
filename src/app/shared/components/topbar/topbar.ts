@@ -17,6 +17,7 @@ import { LoginResponse } from '@model/auth/response/login-response';
 export class Topbar {
 
   goToProfile = output<void>();
+  goToMemberCard = output<void>();
   logoutClick = output<void>();
 
   private readonly authKey = 'library_auth';

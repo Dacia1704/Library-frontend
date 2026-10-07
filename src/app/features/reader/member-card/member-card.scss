@@ -1,0 +1,30 @@
+.member-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 8px;
+
+  @media (min-width: 1280px) { /* xl:grid-cols-12 theo Tailwind */
+    grid-template-columns: repeat(12, 1fr);
+
+    .left-col {
+      grid-column: span 6 / span 6;
+    }
+    .right-col {
+      grid-column: span 6 / span 6;
+    }
+  }
+}
+
+.left-col, .right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

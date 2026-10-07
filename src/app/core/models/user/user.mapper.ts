@@ -31,7 +31,6 @@ export class UserMapper {
       password,
       fullName: user.fullName,
       email: user.email,
-      identityNumber: '',   // filled separately — not stored on User domain model
       avatar: user.avatar,
       roleId: user.roleId,
       isActive: user.isActive,

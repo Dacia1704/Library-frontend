@@ -1,21 +1,23 @@
-<div class="profile-wrapper" *ngIf="member">
+@if (member(); as currentMember) {
+  <div class="profile-wrapper">
   <app-profile-header></app-profile-header>
   <app-profile-notice-banner></app-profile-notice-banner>
 
   <div class="bento-grid top-grid">
-    <app-profile-overview-card class="col-7" [member]="member"></app-profile-overview-card>
-    <app-profile-privileges-card class="col-5" [member]="member"></app-profile-privileges-card>
+    <app-profile-overview-card class="col-7" [member]="currentMember"></app-profile-overview-card>
+    <app-profile-privileges-card class="col-5" [member]="currentMember"></app-profile-privileges-card>
   </div>
 
   <div class="bento-grid mid-grid">
-    <app-profile-identity-info class="col-6" [member]="member"></app-profile-identity-info>
-    <app-profile-contact-info class="col-6" [member]="member"></app-profile-contact-info>
+    <app-profile-identity-info class="col-6" [member]="currentMember"></app-profile-identity-info>
+    <app-profile-contact-info class="col-6" [member]="currentMember"></app-profile-contact-info>
   </div>
 
   <div class="bento-grid bottom-grid">
-    <app-profile-digital-card class="col-5" [member]="member"></app-profile-digital-card>
+    <app-profile-digital-card class="col-5" [member]="currentMember"></app-profile-digital-card>
     <app-profile-rules class="col-7"></app-profile-rules>
   </div>
 
   <app-support-helpdesk></app-support-helpdesk>
 </div>
+}

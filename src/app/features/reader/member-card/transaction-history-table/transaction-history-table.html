@@ -1,0 +1,88 @@
+<div class="table-card">
+      <div class="table-header">
+        <div class="title">
+          <div class="title-row">
+            <mat-icon color="primary">receipt_long</mat-icon>
+            <h2>Lịch sử đóng phí & gia hạn thẻ</h2>
+          </div>
+          <p>Danh sách các giao dịch đóng phí duy trì niên liễm, phí cấp thẻ và gia hạn tài khoản tại quầy.</p>
+        </div>
+
+        <div class="filters">
+          <div class="search-box">
+            <mat-icon>search</mat-icon>
+            <input type="text" placeholder="Tìm theo mã biên lai..." />
+          </div>
+          <select class="filter-select">
+            <option value="all">Tất cả thời gian</option>
+            <option value="2024">Năm 2024</option>
+            <option value="2023">Năm 2023</option>
+          </select>
+          <button mat-stroked-button><mat-icon>file_download</mat-icon> Xuất Excel</button>
+          <button mat-icon-button class="refresh-btn"><mat-icon>refresh</mat-icon></button>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Mã biên lai</th>
+              <th>Thời gian giao dịch</th>
+              <th>Loại giao dịch</th>
+              <th class="text-right">Số tiền (VNĐ)</th>
+              <th class="text-center">Loại</th>
+              <th>Thủ thư tiếp nhận</th>
+              <th style="min-width: 200px">Ghi chú nghiệp vụ</th>
+              <!-- <th class="text-center">Thao tác</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let tx of transactions">
+              <td>
+                <div class="cell-group">
+                  <mat-icon class="text-primary" style="font-size:18px;width:18px;height:18px;">receipt</mat-icon>
+                  <span class="mono bold text-primary">{{ tx.id.toString().padStart(4, '0') }}</span>
+                </div>
+              </td>
+              <td>
+                <div class="cell-col">
+                  <strong>{{ tx.paidAt | date:'dd/MM/yyyy' }}</strong>
+                  <span class="sub">{{ tx.paidAt | date:'HH:mm:ss' }}</span>
+                </div>
+              </td>
+              <td>
+                <span class="badge blue"><span class="dot"></span> Gia hạn thẻ</span>
+              </td>
+              <td class="text-right mono bold" style="font-size: 15px;">{{ tx.amount | number:'1.0-0' }} đ</td>
+              <td class="text-center">
+                <span class="method-tag"><mat-icon>payments</mat-icon> {{ tx.paymentType }}</span>
+              </td>
+              <td>
+                <div class="cell-col">
+                  <strong>{{ tx.receivedByUsername }}</strong>
+                </div>
+              </td>
+              <td class="notes">{{ tx.note }}</td>
+              <!-- <td class="text-center">
+                <div class="actions">
+                  <button mat-icon-button title="Xem"><mat-icon>visibility</mat-icon></button>
+                  <button mat-icon-button title="In"><mat-icon>print</mat-icon></button>
+                </div>
+              </td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <span class="info">Hiển thị <strong>1 - {{ transactions.length }}</strong> của <strong>{{ transactions.length }}</strong> giao dịch</span>
+        <div class="pager">
+          <button mat-icon-button disabled><mat-icon>first_page</mat-icon></button>
+          <button mat-icon-button disabled><mat-icon>chevron_left</mat-icon></button>
+          <button class="page-num active">1</button>
+          <button mat-icon-button disabled><mat-icon>chevron_right</mat-icon></button>
+          <button mat-icon-button disabled><mat-icon>last_page</mat-icon></button>
+        </div>
+      </div>
+    </div>

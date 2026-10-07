@@ -1,0 +1,55 @@
+<div class="virtual-card">
+      <div class="bg-shape-1"></div>
+      <div class="bg-shape-2"></div>
+      <div class="mesh-pattern"></div>
+
+      <!-- Card Header -->
+      <div class="card-top z-index-1">
+        <div class="brand">
+          <div class="logo"><mat-icon>local_library</mat-icon></div>
+          <div class="brand-text">
+            <span class="main">THƯ VIỆN TRÍ TUỆ <mat-icon class="verify">verified</mat-icon></span>
+            <span class="sub">Thẻ bạn đọc chính quy • Smart Pass</span>
+          </div>
+        </div>
+        <div class="status-group">
+          <div class="nfc"><mat-icon>contactless</mat-icon></div>
+          <div class="status-pill"><span class="dot"></span> Hiệu lực</div>
+        </div>
+      </div>
+
+      <!-- Chip & ID -->
+      <div class="card-mid z-index-1">
+        <div class="emv-chip">
+          <div class="line"></div><div class="line"></div><div class="line"></div>
+          <div class="center-line"></div>
+        </div>
+        <div class="card-id">
+          <span class="lbl">Mã bạn đọc</span>
+          <span class="val">{{ member.memberCode }}</span>
+        </div>
+      </div>
+
+      <!-- Footer Info -->
+      <div class="card-bottom z-index-1">
+        <div class="user-info">
+          <span class="lbl">Họ và tên bạn đọc</span>
+          <div class="name">{{ member.user?.fullName | uppercase }}</div>
+          <div class="contact">
+            <span class="phone"><mat-icon>call</mat-icon> {{ member?.phone }}</span>
+            <span class="sep">•</span>
+            <span class="address">{{ member.address }}</span>
+          </div>
+        </div>
+        
+        <div class="expiry-qr">
+          <div class="expiry">
+            <span class="lbl">Hạn dùng</span>
+            <span class="val">{{ member.cardExpiry | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="qr-mock">
+             <mat-icon>qr_code_2</mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -25,6 +25,10 @@ export class ReaderLayout {
     this.router.navigate(['/reader/me']);
   }
 
+  goToMemberCard(): void {
+    this.router.navigate(['/reader/me/card']);
+  }
+
   readonly menu: NavItem[] = [
     {
       icon: 'search',

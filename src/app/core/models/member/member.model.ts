@@ -1,3 +1,4 @@
+import { CardStatus } from '@model/enum/card-status.enum';
 import { User } from '../user/user.model';
 
 export class Member {
@@ -8,6 +9,7 @@ export class Member {
   address: string;
   identityNumber: string;
   cardExpiry: Date;
+  cardStatus: CardStatus
 
   constructor(data: Partial<Member> = {}) {
     this.id = data.id ?? 0;
@@ -17,6 +19,7 @@ export class Member {
     this.address = data.address ?? '';
     this.identityNumber = data.identityNumber ?? '';
     this.cardExpiry = data.cardExpiry ?? new Date();
+    this.cardStatus = data.cardStatus ?? CardStatus.PENDING;
   }
 
   get isExpired(): boolean {

@@ -18,6 +18,7 @@ export class MemberMapper {
       address: res.address,
       identityNumber: res.identityNumber,
       cardExpiry: new Date(res.cardExpiry),
+      cardStatus: res.cardStatus
     });
   }
 
@@ -28,9 +29,11 @@ export class MemberMapper {
     return {
       userId: member.user.id,
       memberCode: member.memberCode,
+      identityNumber: member.identityNumber,
       phone: member.phone,
       address: member.address,
       cardExpiry: member.cardExpiry.toISOString().split('T')[0], // yyyy-MM-dd
+      cardStatus: member.cardStatus
     };
   }
 
@@ -39,11 +42,12 @@ export class MemberMapper {
    */
   static toCreateRequest(
     userId: number,
+    identityNumber: string,
     phone?: string,
     address?: string,
     amount?: number
   ): MemberCreateRequest {
-    return { userId, phone, address, amount };
+    return { userId, identityNumber, phone, address, amount };
   }
 
   /**

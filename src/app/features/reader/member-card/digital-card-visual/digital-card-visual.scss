@@ -1,0 +1,46 @@
+.virtual-card { width: 100%; aspect-ratio: 1.586 / 1; border-radius: 16px; padding: 24px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; color: white; background: linear-gradient(to top right, #001453, #00288e, #1e40af); box-shadow: 0 10px 25px rgba(0,20,83,0.3); transition: transform 0.3s; user-select: none; box-sizing: border-box; }
+    .virtual-card:hover { transform: scale(1.01); }
+    .z-index-1 { position: relative; z-index: 1; }
+    
+    /* Effects */
+    .bg-shape-1 { position: absolute; right: -80px; bottom: -80px; width: 320px; height: 320px; border-radius: 50%; background: rgba(255,255,255,0.05); filter: blur(24px); }
+    .bg-shape-2 { position: absolute; left: -48px; top: -48px; width: 256px; height: 256px; border-radius: 50%; background: rgba(137,245,231,0.1); filter: blur(20px); }
+    .mesh-pattern { position: absolute; inset: 0; opacity: 0.1; background-image: radial-gradient(rgba(255,255,255,0.8) 1px, transparent 1px); background-size: 20px 20px; }
+
+    /* Top */
+    .card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .brand { display: flex; gap: 12px; align-items: center; }
+    .logo { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 4px rgba(255,255,255,0.2); mat-icon { font-size: 24px; width: 24px; height: 24px; } }
+    .brand-text { display: flex; flex-direction: column; }
+    .brand-text .main { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 4px; letter-spacing: -0.01em; .verify { font-size: 15px; width: 15px; height: 15px; color: #89f5e7; } }
+    .brand-text .sub { font-size: 10px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.1em; }
+    
+    .status-group { display: flex; align-items: center; gap: 8px; }
+    .nfc { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; mat-icon { font-size: 20px; width: 20px; height: 20px; } }
+    .status-pill { display: flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 99px; background: rgba(16,185,129,0.2); color: #a7f3d0; font-size: 11px; font-weight: 600; backdrop-filter: blur(4px); }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: #34d399; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+    /* Mid */
+    .card-mid { display: flex; justify-content: space-between; align-items: center; margin: 8px 0; }
+    .emv-chip { width: 44px; height: 36px; border-radius: 6px; background: linear-gradient(to bottom right, #fde68a, #fcd34d, #d97706); position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-around; padding: 4px; opacity: 0.9; }
+    .emv-chip .line { height: 1px; width: 100%; background: rgba(133,77,14,0.4); }
+    .emv-chip .center-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: rgba(133,77,14,0.4); transform: translateX(-50%); }
+    .card-id { display: flex; flex-direction: column; text-align: right; }
+    .card-id .lbl { font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; }
+    .card-id .val { font-size: 24px; font-weight: 700; font-family: monospace; letter-spacing: 0.1em; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+
+    /* Bottom */
+    .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
+    .user-info { display: flex; flex-direction: column; overflow: hidden; }
+    .user-info .lbl { font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px; }
+    .user-info .name { font-size: 20px; font-weight: 700; letter-spacing: 0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+    .contact { display: flex; align-items: center; gap: 8px; font-size: 12px; opacity: 0.8; margin-top: 4px; }
+    .contact .phone { display: flex; align-items: center; gap: 4px; mat-icon { font-size: 14px; width: 14px; height: 14px; opacity: 0.8; } }
+    .contact .address { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
+    
+    .expiry-qr { display: flex; align-items: flex-end; gap: 12px; }
+    .expiry { display: flex; flex-direction: column; text-align: right; }
+    .expiry .lbl { font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; }
+    .expiry .val { font-size: 14px; font-weight: 700; font-family: monospace; letter-spacing: 0.05em; }
+    .qr-mock { width: 48px; height: 48px; background: #fff; border-radius: 8px; padding: 4px; color: #0b1c30; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); mat-icon { font-size: 40px; width: 40px; height: 40px; } }

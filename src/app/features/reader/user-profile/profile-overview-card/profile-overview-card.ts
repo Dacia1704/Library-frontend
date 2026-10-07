@@ -26,7 +26,7 @@ import { Member } from '@model/member/member.model';
           <div class="meta">
             <span class="code"><mat-icon>badge</mat-icon> {{ member.memberCode }}</span>
             <span class="dot">•</span>
-            <span class="level"><mat-icon>school</mat-icon> Hội viên học tập & nghiên cứu</span>
+            <span class="level"><mat-icon>school</mat-icon> {{member.user.roleName == 'MEMBER' ? (member.isExpired ? "BẠN ĐỌC" : "THÀNH VIÊN") : member.user.roleName}}</span>
           </div>
         </div>
       </div>

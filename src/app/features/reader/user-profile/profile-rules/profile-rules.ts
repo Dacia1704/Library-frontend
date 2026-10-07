@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { SettingService } from '@services/setting.service';
 
 @Component({
   selector: 'app-profile-rules',
@@ -35,7 +36,7 @@ import { MatIconModule } from '@angular/material/icon';
             <mat-icon>check_circle</mat-icon>
             <div class="text">
               <strong>Thời hạn trả sách</strong>
-              <p>Thời hạn mượn thông thường là 14 ngày. Có thể xin gia hạn tối đa 01 lần.</p>
+              <p>Thời hạn mượn thông thường là {{ SettingService.getMaxBorrowDays() }} ngày. Lưu ý trả sách đúng hạn nhé!</p>
             </div>
           </div>
           <div class="rule-item">
@@ -71,4 +72,6 @@ import { MatIconModule } from '@angular/material/icon';
     .date { color: #757684; }
   `]
 })
-export class ProfileRulesComponent {}
+export class ProfileRulesComponent {
+  SettingService = SettingService;
+}

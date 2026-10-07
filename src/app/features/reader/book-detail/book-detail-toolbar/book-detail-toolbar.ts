@@ -23,6 +23,7 @@ import { ToastService } from '@services/toast.service';
           aria-label="Trang tra cứu sách">
 
           <mat-icon>home</mat-icon>
+          Trang chủ
 
         </button>
 
@@ -101,6 +102,10 @@ import { ToastService } from '@services/toast.service';
       font: inherit;
       color: #444653;
       cursor: pointer;
+      display: flex; 
+      align-items: center; 
+      justify-content: flex-end; 
+      gap: 4px
     }
 
     .breadcrumb-link:hover {

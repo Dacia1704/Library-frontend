@@ -16,5 +16,10 @@ export const READER_ROUTES: Routes = [
     path: 'me',
     data: { title: 'Thông tin cá nhân' },
     loadComponent: () => import('./user-profile/user-profile').then(m => m.UserProfile)
+  },
+  {
+    path: 'me/card',
+    data: { title: 'Quản lý Thẻ thư viện' },
+    loadComponent: () => import('./member-card/member-card').then(m => m.MemberCard)
   }
 ];

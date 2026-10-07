@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { SettingService } from '../../../../core/services/setting.service';
 
 @Component({
   selector: 'app-book-borrow-rules',
@@ -17,7 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
           <mat-icon class="rule-icon">event_available</mat-icon>
           <div class="rule-content">
             <strong>Thời hạn mượn:</strong>
-            Tối đa 14 ngày (Được gia hạn thêm 01 lần qua cổng tra cứu).
+            Tối đa {{ SettingService.getMaxBorrowDays() }} ngày kể từ ngày bắt đầu mượn. Lưu ý trả sách đúng hạn nhé!
           </div>
         </div>
 
@@ -25,7 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
           <mat-icon class="rule-icon">filter_3</mat-icon>
           <div class="rule-content">
             <strong>Hạn mức thẻ:</strong>
-            Mượn đồng thời tối đa 03 cuốn/thẻ bạn đọc tiêu chuẩn.
+            Mượn đồng thời tối đa {{ SettingService.getMaxBookBorrow() }} cuốn/thẻ bạn đọc tiêu chuẩn.
           </div>
         </div>
 
@@ -53,4 +54,6 @@ import { MatIconModule } from '@angular/material/icon';
     .rule-content { font-size: 12px; color: #444653; line-height: 1.5; strong { display: block; color: #0b1c30; font-weight: 600; margin-bottom: 2px; } }
   `]
 })
-export class BookBorrowRules {}
+export class BookBorrowRules {
+  SettingService = SettingService;
+}

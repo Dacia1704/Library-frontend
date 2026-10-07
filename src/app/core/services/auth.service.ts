@@ -1,12 +1,13 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
 import { Router } from "@angular/router";
-import { map, Observable, tap } from "rxjs";
+import { map, Observable, tap, switchMap } from "rxjs";
 import { environment } from "@environments/environment";
 import { ApiResponse } from "@model/api-response";
 import { LoginResponse } from "@model/auth/response/login-response";
 import { LoginRequest } from "@model/auth/request/login-request";
 import { RefreshTokenResponse } from "@model/auth/response/refresh-token-response";
+import { SettingService } from "./setting.service";
 
 const KEY = 'library_auth'
 
@@ -16,6 +17,7 @@ const KEY = 'library_auth'
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
+  private settingService = inject(SettingService);
   private api = `${environment.apiUrl}/auth`;
 
   private get session(): LoginResponse | null {
@@ -47,7 +49,10 @@ export class AuthService {
   login(request: LoginRequest): Observable<LoginResponse> {
     return this.http.post<ApiResponse<LoginResponse>>(`${this.api}/login`, request).pipe(
       map(res => res.data),
-      tap(data => localStorage.setItem(KEY, JSON.stringify(data)))
+      tap(data => localStorage.setItem(KEY, JSON.stringify(data))),
+      switchMap(data => this.settingService.loadAndStoreSettings().pipe(
+        map(() => data)
+      ))
     )
   }
 
@@ -67,6 +72,7 @@ export class AuthService {
  
   clearSession() {
     localStorage.removeItem(KEY);
+    SettingService.clearLocalSettings();
     this.router.navigateByUrl('/login');
   }
   

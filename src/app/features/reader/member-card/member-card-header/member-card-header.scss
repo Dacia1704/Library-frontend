@@ -1,0 +1,10 @@
+.header-container { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; }
+    .breadcrumb-group { display: flex; flex-direction: column; gap: 4px; }
+    .breadcrumb { display: flex; align-items: center; gap: 4px; font-size: 13px; color: #444653; cursor: pointer; }
+    .breadcrumb span:hover:not(.sep) { color: #00288e; }
+    .sep { font-family: 'Material Symbols Outlined'; font-size: 14px; color: #757684; pointer-events: none; }
+    .breadcrumb strong { color: #00288e; font-weight: 600; }
+    h1 { margin: 0; font-size: 24px; font-weight: 700; color: #0b1c30; }
+    .subtitle { margin: 0; font-size: 14px; color: #444653; }
+    .actions { display: flex; gap: 12px; }
+    .text-primary { color: #00288e; font-weight: 600; }

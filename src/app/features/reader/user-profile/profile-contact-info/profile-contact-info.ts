@@ -48,19 +48,12 @@ import { Member } from '@model/member/member.model';
             <label>Ngày tạo tài khoản</label>
             <div class="val-row"><span>{{ member.user?.createdAt | date:'dd/MM/yyyy HH:mm' }}</span></div>
           </div>
-          <div class="field">
-            <label>Đăng nhập gần nhất</label>
-            <div class="val-col">
-              <span>Hôm nay, 08:45</span>
-              <span class="sub-ip">IP: 192.168.1.45</span>
-            </div>
-          </div>
         </div>
 
         <div class="field">
           <label>Vai trò & Quyền hạn hệ thống</label>
           <div class="role-row">
-            <strong>{{ member.user?.roleName }}</strong> <span class="dot">•</span> <span>Tra cứu tài liệu, Đăng ký mượn, Đọc tại chỗ</span>
+            <strong>{{ member.user.roleName }}</strong> <span class="dot">•</span> <span>{{member.user.roleName == "READER" ? "Tra cứu tài liệu, Đọc tại chỗ. Nếu bạn muốn mượn sách hãy đăng kí thành viên nhé!": "Tra cứu tài liệu, đăng kí mượn, đọc tại chỗ"}}</span>
           </div>
         </div>
       </div>
