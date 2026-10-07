@@ -13,6 +13,11 @@ export const READER_ROUTES: Routes = [
     loadComponent: () => import('./book-detail/book-detail').then(m => m.BookDetail),
   },
   {
+    path: 'borrows',
+    data: { title: 'Quản lý mượn/ trả sách' },
+    loadComponent: () => import('./book-borrows/book-borrows').then(m => m.BookBorrows),
+  },
+  {
     path: 'me',
     data: { title: 'Thông tin cá nhân' },
     loadComponent: () => import('./user-profile/user-profile').then(m => m.UserProfile)

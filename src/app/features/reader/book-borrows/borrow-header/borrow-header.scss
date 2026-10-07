@@ -1,0 +1,86 @@
+:host { display: block; }
+
+.borrow-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--on-surface-variant, #555);
+  flex-wrap: wrap;
+
+  .breadcrumb-icon {
+    font-size: 16px;
+  }
+
+  .chevron {
+    font-size: 14px;
+    color: var(--outline-variant, #aaa);
+  }
+
+  .brand-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    color: var(--on-surface-variant, #555);
+    cursor: pointer;
+    transition: color 0.15s;
+
+    &:hover { color: var(--primary, #00288e); }
+    &.static { cursor: default; }
+  }
+
+  .current {
+    color: var(--primary, #00288e);
+    font-weight: 600;
+  }
+}
+
+.header-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.title-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: -0.02em;
+  color: var(--on-surface, #0b1c30);
+  margin: 0;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: var(--on-surface-variant, #444653);
+  margin: 4px 0 0 0;
+}
+
+.mode-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  background: var(--surface-container, #e5eeff);
+  color: var(--primary, #00288e);
+  font-size: 12px;
+  font-weight: 500;
+
+  .mode-icon { font-size: 16px; }
+}

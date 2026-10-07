@@ -1,0 +1,43 @@
+<div class="card card-base">
+  <div class="bg-decoration"></div>
+
+  <div class="user-main">
+    <div class="avatar-wrap">
+      <img [src]="coverSrc" alt="Avatar" />
+      <div class="status-dot"><span></span></div>
+    </div>
+
+    <div class="info">
+      <div class="badges">
+        <span class="badge active"><span class="pulse"></span> Đang hoạt động</span>
+        <span class="badge role">{{ member.user?.roleName }}</span>
+      </div>
+      <h2>{{ member.user?.fullName }}</h2>
+      <div class="meta">
+        <span class="code"><mat-icon>badge</mat-icon> {{ member.memberCode }}</span>
+        <span class="dot">•</span>
+        <span class="level"><mat-icon>school</mat-icon> {{member.user.roleName == 'MEMBER' ? (member.isExpired ? "BẠN ĐỌC" : "THÀNH VIÊN") : member.user.roleName}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="dates-strip">
+    <div class="date-item">
+      <div class="icon bg-primary"><mat-icon>calendar_today</mat-icon></div>
+      <div class="text">
+        <span class="lbl">Ngày kích hoạt thẻ</span>
+        <span class="val">{{ member.user?.createdAt | date:'dd/MM/yyyy' }}</span>
+      </div>
+    </div>
+    <div class="date-item">
+      <div class="icon bg-secondary"><mat-icon>event_available</mat-icon></div>
+      <div class="text">
+        <span class="lbl">Hạn dùng thẻ</span>
+        <div class="val-group">
+          <span class="val">{{ member.cardExpiry | date:'dd/MM/yyyy' }}</span>
+          <span class="tag">Còn {{ daysRemaining }} ngày</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

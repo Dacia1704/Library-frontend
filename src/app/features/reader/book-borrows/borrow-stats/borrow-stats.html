@@ -1,0 +1,87 @@
+<section class="stats-grid">
+
+  <!-- Stat 1: Tổng số phiếu -->
+  <div class="stat-card tone-neutral">
+    <div class="stat-top">
+      <div class="stat-text">
+        <span class="stat-label">Tổng số sách</span>
+        <div class="stat-value">
+          {{ summary.total }}
+          <span class="stat-unit">sách</span>
+        </div>
+      </div>
+      <div class="stat-icon-wrap tone-neutral">
+        <span class="material-symbols-outlined">receipt_long</span>
+      </div>
+    </div>
+    <div class="stat-footer">
+      <span class="material-symbols-outlined footer-icon tone-primary">library_books</span>
+      <span>Đang xử lý dữ liệu...</span>
+    </div>
+    <span class="blob blob-primary"></span>
+  </div>
+
+  <!-- Stat 2: Đang mượn hợp lệ -->
+  <div class="stat-card tone-secondary">
+    <div class="stat-top">
+      <div class="stat-text">
+        <span class="stat-label tone-secondary">Đang mượn hợp lệ</span>
+        <div class="stat-value tone-secondary">
+          {{ summary.borrowing }}
+          <span class="stat-unit">sách</span>
+        </div>
+      </div>
+      <div class="stat-icon-wrap tone-secondary-icon">
+        <span class="material-symbols-outlined">menu_book</span>
+      </div>
+    </div>
+    <div class="stat-footer tone-secondary">
+      <span class="dot tone-secondary-dot"></span>
+      <span>Đang lưu hành</span>
+    </div>
+    <span class="blob blob-secondary"></span>
+  </div>
+
+  <!-- Stat 3: Quá hạn -->
+  <div class="stat-card tone-error">
+    <div class="stat-top">
+      <div class="stat-text">
+        <span class="stat-label tone-error">Quá hạn cần trả</span>
+        <div class="stat-value tone-error">
+          {{ summary.overdue }}
+          <span class="stat-unit">sách</span>
+        </div>
+      </div>
+      <div class="stat-icon-wrap tone-error-icon">
+        <span class="material-symbols-outlined">warning</span>
+      </div>
+    </div>
+    <div class="stat-footer tone-error">
+      <span class="material-symbols-outlined footer-icon">priority_high</span>
+      <span>Cần hoàn trả ngay</span>
+    </div>
+    <span class="blob blob-error"></span>
+  </div>
+
+  <!-- Stat 4: Đã hoàn trả -->
+  <div class="stat-card tone-muted">
+    <div class="stat-top">
+      <div class="stat-text">
+        <span class="stat-label">Đã hoàn trả</span>
+        <div class="stat-value">
+          {{ summary.returned }}
+          <span class="stat-unit">phiếu</span>
+        </div>
+      </div>
+      <div class="stat-icon-wrap tone-muted-icon">
+        <span class="material-symbols-outlined">inventory_2</span>
+      </div>
+    </div>
+    <div class="stat-footer">
+      <span class="material-symbols-outlined footer-icon tone-primary">check_circle</span>
+      <span>Đã lưu kho an toàn</span>
+    </div>
+    <span class="blob blob-muted"></span>
+  </div>
+
+</section>

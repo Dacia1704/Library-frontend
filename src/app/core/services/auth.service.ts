@@ -29,11 +29,12 @@ export class AuthService {
   get user() { return this.session; }
 
   isLoggedIn() { return !!this.accessToken; }
-  hasPermission(code: string) { return !!this.session?.authorities.includes(code); }
+  hasPermission(code: string) { return !!this.session?.authorities?.includes(code); }
 
   /** ADMIN | LIBRARIAN | MEMBER ... (bỏ tiền tố ROLE_) */
   role(): string | null {
-    const r = this.session?.authorities.find(a => a.startsWith('ROLE_'));
+    const authorities = this.session?.authorities ?? [];
+    const r = authorities.find((a: string) => a.startsWith('ROLE_'));
     return r ? r.replace('ROLE_', '') : null;
   }
   hasAnyRole(roles: string[]) { const r = this.role(); return !!r && roles.includes(r); }

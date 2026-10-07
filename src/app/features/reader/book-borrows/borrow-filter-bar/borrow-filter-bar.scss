@@ -1,0 +1,150 @@
+:host { display: block; }
+
+.filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--surface-container-lowest, #fff);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+// ─── Status tabs ─────────────────────────────────────────────────────
+.status-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+
+  @media (min-width: 1024px) { padding-bottom: 0; }
+}
+
+.tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s, color 0.15s, box-shadow 0.15s;
+  color: var(--on-surface-variant, #444653);
+
+  &:hover { background: var(--surface-container-low, #eff4ff); }
+
+  &.active {
+    background: var(--primary-container, #1e40af);
+    color: var(--on-primary, #fff);
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+
+  // Tone: error dùng cho tab "Quá hạn"
+  &.tone-error {
+    color: var(--error, #ba1a1a);
+    &:hover { background: rgba(255, 218, 214, 0.4); }
+    &.active { background: var(--error, #ba1a1a); color: var(--on-error, #fff); }
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 6px;
+    border-radius: 9999px;
+    font-size: 10px;
+    font-weight: 600;
+    background: var(--surface-container, #e5eeff);
+    color: var(--on-surface, #0b1c30);
+
+    &.tone-primary { background: rgba(255,255,255,0.20); color: var(--on-primary, #fff); }
+    &.tone-secondary { background: var(--secondary-fixed, #89f5e7); color: var(--on-secondary-fixed-variant, #005049); }
+    &.tone-muted { background: var(--surface-container, #e5eeff); color: var(--on-surface, #0b1c30); }
+    &.tone-error { background: var(--error, #ba1a1a); color: var(--on-error, #fff); }
+  }
+}
+
+// ─── Right controls ──────────────────────────────────────────────────
+.right-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-input-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: var(--outline, #757684);
+    pointer-events: none;
+  }
+}
+
+.search-input {
+  width: 100%;
+  padding: 6px 12px 6px 36px;
+  border-radius: 8px;
+  background: var(--surface-container-low, #eff4ff);
+  border: none;
+  font-size: 12px;
+  color: var(--on-surface, #0b1c30);
+  outline: none;
+  height: 36px;
+  box-sizing: border-box;
+  transition: box-shadow 0.15s;
+
+  &::placeholder { color: var(--outline, #757684); }
+
+  &:focus { box-shadow: 0 0 0 2px rgba(55, 85, 195, 0.4); }
+}
+
+.select-wrap {
+  position: relative;
+}
+
+.filter-select {
+  appearance: none;
+  background: var(--surface-container-low, #eff4ff);
+  color: var(--on-surface-variant, #444653);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 32px 6px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  height: 36px;
+  transition: box-shadow 0.15s;
+
+  &:focus { box-shadow: 0 0 0 2px rgba(55, 85, 195, 0.4); }
+}
+
+.select-arrow {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: var(--outline, #757684);
+  pointer-events: none;
+}

@@ -38,7 +38,7 @@ export class ReaderLayout {
     {
       icon: 'swap_horizontal_circle',
       label: 'Quản lý mượn / trả',
-      route: '/reader/borrow',
+      route: '/reader/borrows',
     },
     {
       icon: 'groups',

@@ -1,0 +1,58 @@
+<div class="book-borrows-wrapper">
+
+  <app-borrow-header></app-borrow-header>
+
+  @if (summary()) {
+    <app-borrow-stats
+      class="block"
+      [summary]="summary()!"
+    ></app-borrow-stats>
+  }
+
+  <app-borrow-notice-banner class="block"></app-borrow-notice-banner>
+
+  <app-borrow-filter-bar
+    class="block"
+    [chips]="statChips()"
+    [activeStatus]="null"
+    (filterChange)="onFilterChange($event)"
+  ></app-borrow-filter-bar>
+
+  <!-- Loading state -->
+  @if (isLoading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <span>Đang tải dữ liệu...</span>
+    </div>
+  } @else if (error()) {
+    <div class="error-state">
+      <span class="material-symbols-outlined error-icon">error</span>
+      <p>{{ error() }}</p>
+    </div>
+  } @else {
+    <!-- Records list -->
+    <div class="records-list">
+      @for (record of records(); track record.id) {
+        <app-borrow-record-card [record]="record"></app-borrow-record-card>
+      }
+
+      @if (records().length === 0) {
+        <div class="empty-state">
+          <span class="material-symbols-outlined empty-icon">inbox</span>
+          <p>Không có phiếu mượn nào.</p>
+        </div>
+      }
+    </div>
+
+    <app-borrow-pagination
+      class="block"
+      [total]="totalElements()"
+      [page]="page"
+      [size]="size"
+      (pageChange)="onPageChange($event)"
+    ></app-borrow-pagination>
+  }
+
+  <app-borrow-rules class="block"></app-borrow-rules>
+
+</div>

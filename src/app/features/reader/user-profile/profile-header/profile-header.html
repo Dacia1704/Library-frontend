@@ -1,0 +1,25 @@
+<div class="header-container">
+  <div class="breadcrumb-group">
+    <nav class="breadcrumb">
+      <button
+      type="button"
+      class="breadcrumb-link home-link"
+      (click)="goToBooks()"
+      aria-label="Trang tra cứu sách">
+        <mat-icon>home</mat-icon>
+        Trang chủ
+      </button>
+    <span class="sep">chevron_right</span>
+    <strong>Thông tin cá nhân</strong>
+    </nav>
+    <div class="title-row">
+      <h1>Thông tin cá nhân</h1>
+      <mat-icon class="verified">verified_user</mat-icon>
+    </div>
+    <p class="subtitle">Quản lý và theo dõi thông tin tài khoản bạn đọc tại thư viện</p>
+  </div>
+  <div class="actions">
+    <div class="read-only-pill"><mat-icon>lock</mat-icon> Hồ sơ chỉ xem (Read-only)</div>
+    <button mat-stroked-button (click)="goBack()"><mat-icon>arrow_back</mat-icon> Quay lại</button>
+  </div>
+</div>

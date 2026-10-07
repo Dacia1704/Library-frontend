@@ -1,0 +1,45 @@
+:host { display: block; }
+
+.notice-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--surface-container-low, #eff4ff);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.banner-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--primary-container, #1e40af);
+  color: var(--on-primary, #fff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+
+  .material-symbols-outlined { font-size: 20px; }
+}
+
+.banner-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.banner-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--on-surface, #0b1c30);
+}
+
+.banner-desc {
+  font-size: 14px;
+  color: var(--on-surface-variant, #444653);
+  margin: 2px 0 0 0;
+  line-height: 1.5;
+}

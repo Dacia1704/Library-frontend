@@ -1,0 +1,58 @@
+<section class="filter-bar">
+
+  <!-- Status Filter Tabs -->
+  <div class="status-tabs">
+    @for (chip of chips; track chip.key) {
+      <button
+        class="tab-btn tone-{{ chip.tone }}"
+        [class.active]="activeStatus === chip.key"
+        type="button"
+        (click)="pickStatus(chip.key)"
+      >
+        <span>{{ chip.label }}</span>
+        <span class="badge tone-{{ chip.tone }}">{{ chip.count }}</span>
+      </button>
+    }
+  </div>
+
+  <!-- Search + Selects -->
+  <div class="right-controls">
+    <div class="search-input-wrap">
+      <span class="material-symbols-outlined search-icon">search</span>
+      <input
+        class="search-input"
+        type="text"
+        placeholder="Tìm theo mã phiếu, tên sách..."
+        [(ngModel)]="keyword"
+        (input)="onKeywordInput()"
+      />
+    </div>
+
+    <div class="select-wrap">
+      <select
+        class="filter-select"
+        [(ngModel)]="dateRange"
+        (change)="onDateRangeChange()"
+      >
+        @for (opt of dateRangeOptions; track opt.value) {
+          <option [value]="opt.value">{{ opt.label }}</option>
+        }
+      </select>
+      <span class="material-symbols-outlined select-arrow">expand_more</span>
+    </div>
+
+    <div class="select-wrap">
+      <select
+        class="filter-select"
+        [(ngModel)]="sortBy"
+        (change)="onSortChange()"
+      >
+        @for (opt of sortOptions; track opt.value) {
+          <option [value]="opt.value">{{ opt.label }}</option>
+        }
+      </select>
+      <span class="material-symbols-outlined select-arrow">sort</span>
+    </div>
+  </div>
+
+</section>

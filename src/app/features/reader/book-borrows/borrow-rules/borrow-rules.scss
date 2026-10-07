@@ -1,0 +1,45 @@
+:host { display: block; }
+
+.rules-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  border-radius: 12px;
+  background: rgba(239, 244, 255, 0.6); // surface-container-low/60
+
+  @media (min-width: 640px) { flex-direction: row; }
+}
+
+.rules-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0, 40, 142, 0.10); // primary/10
+  color: var(--primary, #00288e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  .material-symbols-outlined { font-size: 22px; }
+}
+
+.rules-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.rules-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--on-surface, #0b1c30);
+}
+
+.rules-desc {
+  font-size: 12px;
+  color: var(--on-surface-variant, #444653);
+  margin: 4px 0 0 0;
+  line-height: 1.6;
+}

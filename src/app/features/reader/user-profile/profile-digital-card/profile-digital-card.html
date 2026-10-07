@@ -1,0 +1,31 @@
+<div class="digital-card">
+  <div class="watermark"><mat-icon>local_library</mat-icon></div>
+  <div class="glow"></div>
+
+  <div class="top-row">
+    <div class="brand">
+      <div class="icon"><mat-icon>school</mat-icon></div>
+      <div class="text">
+        <span class="sub">Thư viện Trung tâm</span>
+        <span class="main">Thẻ Bạn Đọc Điện Tử</span>
+      </div>
+    </div>
+    <mat-icon class="nfc">contactless</mat-icon>
+  </div>
+
+  <div class="mid-row">
+    <span class="lbl">Mã định danh thẻ thư viện</span>
+    <div class="code">{{ formatCode(member.memberCode) }}</div>
+  </div>
+
+  <div class="bottom-row">
+    <div class="owner">
+      <span class="lbl">Chủ thẻ</span>
+      <span class="val">{{ member.user?.fullName | uppercase }}</span>
+    </div>
+    <div class="expiry">
+      <span class="lbl">Thời hạn thẻ</span>
+      <span class="val mono">EXP: {{ member.cardExpiry | date:'MM/yyyy' }}</span>
+    </div>
+  </div>
+</div>
