@@ -1,0 +1,52 @@
+<div class="fines-filter-bar">
+  <div class="fines-filter-bar__search">
+    <span class="material-symbols-outlined fines-filter-bar__search-icon">search</span>
+    <input
+      class="fines-filter-bar__search-input"
+      [ngModel]="filters.search"
+      (ngModelChange)="onSearchChange($event)"
+      placeholder="Tìm theo phiếu mượn, tên sách, mã vạch..."
+      type="text"
+    />
+  </div>
+
+  <div class="fines-filter-bar__controls">
+    <div class="fines-filter-bar__select-wrapper">
+      <select
+        class="fines-filter-bar__select"
+        [ngModel]="filters.reason"
+        (ngModelChange)="onReasonChange($event)"
+      >
+        <option value="all">Tất cả lý do vi phạm</option>
+        <option value="OVERDUE">Nộp muộn</option>
+        <option value="LOST">Làm mất</option>
+        <option value="DAMAGED_LIGHT">Hư hỏng nhẹ</option>
+        <option value="DAMAGED_HEAVY_REPAIRABLE">Hỏng nặng (sửa được)</option>
+        <option value="DAMAGED_HEAVY_IRREPARABLE">Hỏng (không dùng được)</option>
+      </select>
+      <span class="material-symbols-outlined fines-filter-bar__select-icon">expand_more</span>
+    </div>
+
+    <div class="fines-filter-bar__select-wrapper">
+      <select
+        class="fines-filter-bar__select"
+        [ngModel]="filters.status"
+        (ngModelChange)="onStatusChange($event)"
+      >
+        <option value="all">Tất cả tình trạng thanh toán</option>
+        <option value="UNPAID">Chưa nộp</option>
+        <option value="PAID">Đã nộp</option>
+      </select>
+      <span class="material-symbols-outlined fines-filter-bar__select-icon">expand_more</span>
+    </div>
+
+    <button
+      class="fines-filter-bar__reset"
+      (click)="onReset.emit()"
+      title="Đặt lại bộ lọc"
+      type="button"
+    >
+      <span class="material-symbols-outlined fines-filter-bar__reset-icon">refresh</span>
+    </button>
+  </div>
+</div>

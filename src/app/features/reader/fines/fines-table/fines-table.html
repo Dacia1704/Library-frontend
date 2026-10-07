@@ -1,0 +1,83 @@
+<div class="fines-table">
+  <div class="fines-table__scroll">
+    <table class="fines-table__table">
+      <thead>
+        <tr>
+          <th>Ngày ghi nhận</th>
+          <th>Phiếu mượn</th>
+          <th>Tên sách & Mã vạch</th>
+          <th class="fines-table__th-center">Lý do vi phạm</th>
+          <th>Số ngày trễ / Mức độ</th>
+          <th class="fines-table__th-right">Số tiền phạt</th>
+          <th class="fines-table__th-center">Trạng thái</th>
+          <th>Ghi chú</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (fines.length === 0) {
+          <tr>
+            <td colspan="8" class="fines-table__empty-cell">
+              <div class="fines-table__empty">
+                <div class="fines-table__empty-icon">
+                  <span class="material-symbols-outlined fines-table__empty-icon-symbol">search_off</span>
+                </div>
+                <p class="fines-table__empty-title">Không tìm thấy khoản phạt phù hợp</p>
+                <p class="fines-table__empty-desc">Vui lòng điều chỉnh lại từ khóa hoặc các tiêu chí bộ lọc.</p>
+              </div>
+            </td>
+          </tr>
+        }
+        @for (fine of fines; track fine.id) {
+          <tr class="fines-table__row">
+            <td class="fines-table__td-date">
+              {{ formatDate(fine.createdAt) }}
+              <span class="fines-table__time">{{ formatTime(fine.createdAt) }}</span>
+            </td>
+            <td class="fines-table__td-code">
+              <span class="fines-table__code">{{ fine.borrowCode || 'N/A' }}</span>
+            </td>
+            <td class="fines-table__td-book">
+              <span class="fines-table__book-title">{{ fine.bookTitle || 'Đang tải...' }}</span>
+              <span class="fines-table__barcode">Mã: {{ fine.barcode || 'N/A' }}</span>
+            </td>
+            <td class="fines-table__td-center">
+              <span class="fines-table__reason-pill" [ngClass]="getReasonClass(fine.reason)">
+                {{ getReasonLabel(fine.reason) }}
+              </span>
+            </td>
+            <td class="fines-table__td-overdue">
+              @if (fine.overdueDays) {
+                <span class="fines-table__overdue-title">Quá hạn {{ fine.overdueDays }} ngày</span>
+                <span class="fines-table__overdue-sub">2.000đ × {{ fine.overdueDays }} ngày</span>
+              } @else {
+                <span class="fines-table__muted">-</span>
+              }
+            </td>
+            <td class="fines-table__td-right">
+              <span [class.fines-table__amount--paid]="fine.isPaid"
+                    [class.fines-table__amount--unpaid]="!fine.isPaid">
+                {{ formatCurrency(fine.amount) }} VNĐ
+              </span>
+            </td>
+            <td class="fines-table__td-center">
+              @if (fine.isPaid) {
+                <span class="fines-table__status fines-table__status--paid">
+                  <span class="fines-table__status-dot fines-table__status-dot--paid"></span>
+                  Đã nộp
+                </span>
+              } @else {
+                <span class="fines-table__status fines-table__status--unpaid">
+                  <span class="fines-table__status-dot fines-table__status-dot--unpaid"></span>
+                  Chưa nộp
+                </span>
+              }
+            </td>
+            <td class="fines-table__td-note">
+              <p class="fines-table__note" [title]="fine.note || ''">{{ fine.note || '-' }}</p>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

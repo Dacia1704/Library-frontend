@@ -1,0 +1,68 @@
+<div class="fines-wrapper">
+  <!-- Header -->
+  <app-fines-header
+    (onPrint)="printStatement()"
+    (onShowPolicy)="showPolicyDialog()"
+  ></app-fines-header>
+
+  <!-- Notice Banner -->
+  <app-fines-notice-banner></app-fines-notice-banner>
+
+  <!-- Stats Cards -->
+  <app-fines-stats [summary]="summary()"></app-fines-stats>
+
+  <!-- Tabs Container -->
+  <section class="fines-tabs-section">
+    <!-- Tab Controls & Filter Bar -->
+    <div class="fines-tabs-section__header">
+      <div class="fines-tabs-section__tabs-row">
+        <app-fines-tabs
+          [activeTab]="activeTab()"
+          [finesCount]="unpaidFinesCount()"
+          [historyCount]="historyCount()"
+          (onTabChange)="switchTab($event)"
+        ></app-fines-tabs>
+      </div>
+
+      @if (activeTab() === 'fines') {
+        <app-fines-filter-bar
+          [filters]="filters()"
+          (filtersChange)="onFiltersChange($event)"
+          (onReset)="resetFilters()"
+        ></app-fines-filter-bar>
+      }
+    </div>
+
+    <!-- Tab 1 View: Bảng các khoản phạt -->
+    @if (activeTab() === 'fines') {
+      <div class="fines-tabs-section__content">
+        <app-fines-table [fines]="filteredFines()"></app-fines-table>
+        <app-fine-tariff-legend></app-fine-tariff-legend>
+      </div>
+    }
+
+    <!-- Tab 2 View: Lịch sử thanh toán phạt -->
+    @if (activeTab() === 'history') {
+      <div class="fines-tabs-section__content">
+        <app-fines-history-table
+          [payments]="payments()"
+          [totalPayments]="totalPayments()"
+          [totalPaidAmount]="totalPaidAmount()"
+          (onViewReceipt)="showReceiptDialog($event)"
+          (onPrint)="printReceipt($event)"
+        ></app-fines-history-table>
+      </div>
+    }
+  </section>
+
+  <!-- FAQ & Guidelines Card -->
+  <app-fines-faq></app-fines-faq>
+
+  <!-- Dialogs -->
+  <app-policy-dialog #policyDialog></app-policy-dialog>
+  <app-receipt-dialog
+    #receiptDialog
+    [payment]="selectedPayment()"
+    (onPrint)="printReceipt(selectedPayment()!)"
+  ></app-receipt-dialog>
+</div>

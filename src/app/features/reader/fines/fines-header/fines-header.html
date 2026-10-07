@@ -1,0 +1,46 @@
+<section class="fines-header">
+  <!-- Breadcrumb -->
+  <nav class="fines-header__breadcrumb" aria-label="Đường dẫn trang">
+    <a class="fines-header__breadcrumb-link" href="#">Trang chủ</a>
+    <span class="material-symbols-outlined fines-header__breadcrumb-icon">chevron_right</span>
+    <a class="fines-header__breadcrumb-link" href="#">Quản lý mượn / trả</a>
+    <span class="material-symbols-outlined fines-header__breadcrumb-icon">chevron_right</span>
+    <span class="fines-header__breadcrumb-current">Tiền phạt của tôi</span>
+  </nav>
+
+  <!-- Header Content & Tools -->
+  <div class="fines-header__main">
+    <div class="fines-header__info">
+      <div class="fines-header__title-group">
+        <h1 class="fines-header__title">Tiền phạt của tôi</h1>
+        <span class="fines-header__badge">
+          <span class="material-symbols-outlined fines-header__badge-icon">visibility</span>
+          Chế độ tra cứu bạn đọc (Chỉ xem)
+        </span>
+      </div>
+      <p class="fines-header__subtitle">
+        Theo dõi các khoản phát sinh phí phạt vi phạm quy chế mượn trả và lịch sử thanh toán tại quầy.
+      </p>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="fines-header__actions">
+      <button
+        class="fines-header__btn fines-header__btn--secondary"
+        (click)="onPrint.emit()"
+        type="button"
+      >
+        <span class="material-symbols-outlined fines-header__btn-icon fines-header__btn-icon--muted">print</span>
+        <span>In sao kê phí</span>
+      </button>
+      <button
+        class="fines-header__btn fines-header__btn--primary"
+        (click)="onShowPolicy.emit()"
+        type="button"
+      >
+        <span class="material-symbols-outlined fines-header__btn-icon">menu_book</span>
+        <span>Quy định xử phạt</span>
+      </button>
+    </div>
+  </div>
+</section>

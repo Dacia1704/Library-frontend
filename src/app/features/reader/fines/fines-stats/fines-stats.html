@@ -1,0 +1,69 @@
+<section class="stats-grid">
+  <!-- Card 1: Tổng tiền phạt -->
+  <div class="stat-card stat-card--neutral">
+    <div class="stat-card__header">
+      <span class="stat-card__label">Tổng tiền phạt</span>
+      <div class="stat-card__icon stat-card__icon--primary">
+        <span class="material-symbols-outlined stat-card__icon-symbol">receipt_long</span>
+      </div>
+    </div>
+    <div class="stat-card__body">
+      <div class="stat-card__value">
+        {{ formatCurrency(summary?.totalFines || 0) }}
+        <span class="stat-card__unit">VNĐ</span>
+      </div>
+      <p class="stat-card__desc">
+        <span class="stat-card__dot stat-card__dot--outline"></span>
+        Gồm {{ summary?.totalFinesCount || 0 }} khoản phạt phát sinh từ trước đến nay
+      </p>
+    </div>
+  </div>
+
+  <!-- Card 2: Đã thanh toán -->
+  <div class="stat-card stat-card--neutral">
+    <div class="stat-card__header">
+      <span class="stat-card__label">Đã thanh toán</span>
+      <div class="stat-card__icon stat-card__icon--secondary">
+        <span class="material-symbols-outlined stat-card__icon-symbol">check_circle</span>
+      </div>
+    </div>
+    <div class="stat-card__body">
+      <div class="stat-card__value stat-card__value--secondary">
+        {{ formatCurrency(summary?.paidAmount || 0) }}
+        <span class="stat-card__unit stat-card__unit--secondary">VNĐ</span>
+      </div>
+      <p class="stat-card__desc">
+        <span class="stat-card__dot stat-card__dot--secondary"></span>
+        Đã hoàn tất thanh toán {{ summary?.paidCount || 0 }} biên lai
+      </p>
+    </div>
+  </div>
+
+  <!-- Card 3: Còn phải nộp (Highlighted in RED/ROSE) -->
+  <div class="stat-card stat-card--error">
+    <div class="stat-card__bg-circle"></div>
+    <div class="stat-card__header">
+      <div class="stat-card__title-group">
+        <span class="stat-card__label stat-card__label--error">Còn phải nộp</span>
+        <span class="stat-card__badge">Chưa thanh toán</span>
+      </div>
+      <div class="stat-card__icon stat-card__icon--error">
+        <span class="material-symbols-outlined stat-card__icon-symbol">warning</span>
+      </div>
+    </div>
+    <div class="stat-card__body stat-card__body--z10">
+      <div class="stat-card__value stat-card__value--error">
+        {{ formatCurrency(summary?.unpaidAmount || 0) }}
+        <span class="stat-card__unit stat-card__unit--error">VNĐ</span>
+      </div>
+      <p class="stat-card__desc stat-card__desc--error">
+        <span class="material-symbols-outlined stat-card__desc-icon">lock</span>
+        <span>Cần thanh toán để mở khóa quyền mượn sách mới
+          <ng-container *ngIf="summary?.overdueFinesCount">
+            • {{ summary?.overdueFinesCount }} phiếu quá hạn ({{ summary?.overdueBooksCount }} cuốn)
+          </ng-container>
+        </span>
+      </p>
+    </div>
+  </div>
+</section>

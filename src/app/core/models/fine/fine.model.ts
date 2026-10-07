@@ -1,60 +1,43 @@
-package com.example.library.entity;
+import { BorrowDetail } from "@model/borrow-record/borrow-detail";
 
-import com.example.library.entity.enums.FineReason;
-import jakarta.persistence.*;
-import lombok.*;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
-@Entity
-@Table(name = "fines")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class Fine {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "borrow_id", nullable = false)
-    private BorrowRecord borrowRecord;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "borrow_detail_id")
-    private BorrowDetail borrowDetail;
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal amount;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private FineReason reason;
-
-    @Column(name = "overdue_days")
-    private Integer overdueDays;
-
-    @Column(length = 255)
-    private String note;
-
-    @Column(columnDefinition = "VARCHAR(MAX)")
-    private String attachment;
-
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "is_deleted", nullable = false)
-    @Builder.Default
-    private Boolean isDeleted = false;
-
-    @PrePersist
-    protected void onCreate() {
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
-    }
+// Fine model for frontend
+export interface Fine {
+  id: number;
+  borrowId: number;
+  borrowDetailId?: number;
+  borrowDetail?: BorrowDetail;
+  amount: number;
+  reason: FineReason;
+  overdueDays?: number;
+  note?: string;
+  createdAt: string;
+  isDeleted: boolean;
+  // Computed/display fields
+  borrowCode?: string;
+  bookTitle?: string;
+  barcode?: string;
+  isPaid?: boolean;
 }
+
+export type FineReason = 
+  | 'OVERDUE'           // Nộp muộn
+  | 'LOST'              // Làm mất
+  | 'DAMAGED_LIGHT'     // Hư hỏng nhẹ
+  | 'DAMAGED_HEAVY_REPAIRABLE'  // Hỏng nặng (sửa được)
+  | 'DAMAGED_HEAVY_IRREPARABLE'; // Hỏng (không dùng được)
+
+export const FINE_REASON_LABELS: Record<FineReason, string> = {
+  OVERDUE: 'Nộp muộn',
+  LOST: 'Làm mất',
+  DAMAGED_LIGHT: 'Hư hỏng nhẹ',
+  DAMAGED_HEAVY_REPAIRABLE: 'Hỏng nặng (sửa được)',
+  DAMAGED_HEAVY_IRREPARABLE: 'Hỏng (không dùng được)',
+};
+
+export const FINE_REASON_COLORS: Record<FineReason, { bg: string; text: string }> = {
+  OVERDUE: { bg: 'bg-amber-50', text: 'text-amber-800' },
+  LOST: { bg: 'bg-red-100', text: 'text-red-900' },
+  DAMAGED_LIGHT: { bg: 'bg-blue-50', text: 'text-blue-700' },
+  DAMAGED_HEAVY_REPAIRABLE: { bg: 'bg-orange-50', text: 'text-orange-700' },
+  DAMAGED_HEAVY_IRREPARABLE: { bg: 'bg-rose-50', text: 'text-rose-700' },
+};
