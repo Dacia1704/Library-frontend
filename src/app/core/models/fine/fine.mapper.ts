@@ -19,8 +19,6 @@ export class FineMapper {
       note: res.note,
       createdAt: res.createdAt,
       isDeleted: res.isDeleted,
-      // Computed fields - will be mapped from additional API data or left as undefined
-      isPaid: false, // TODO: This needs to come from a join with fine_payments
     };
   }
 

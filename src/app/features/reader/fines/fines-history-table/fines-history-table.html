@@ -6,7 +6,6 @@
           <th>Mã biên lai thu</th>
           <th>Ngày thanh toán</th>
           <th class="fines-history-table__th-right">Số tiền thu</th>
-          <th class="fines-history-table__th-center">Phương thức</th>
           <th>Thủ thư thu tiền</th>
           <th>Ghi chú nghiệp vụ</th>
           <th class="fines-history-table__th-center">Thao tác</th>
@@ -35,7 +34,7 @@
                 <span class="fines-history-table__receipt-icon">
                   <span class="material-symbols-outlined fines-history-table__receipt-icon-symbol">receipt</span>
                 </span>
-                <span class="fines-history-table__receipt-code">{{ payment.receiptCode || 'N/A' }}</span>
+                <span class="fines-history-table__receipt-code">#{{ payment.id || 'N/A' }}</span>
               </div>
             </td>
             <td class="fines-history-table__td-date">
@@ -44,12 +43,6 @@
             </td>
             <td class="fines-history-table__td-right">
               <span class="fines-history-table__amount">{{ formatCurrency(payment.amount) }} VNĐ</span>
-            </td>
-            <td class="fines-history-table__td-center">
-              <span class="fines-history-table__method">
-                <span class="material-symbols-outlined fines-history-table__method-icon">payments</span>
-                {{ payment.paymentMethod === 'TRANSFER' ? 'Chuyển khoản' : 'Tiền mặt' }}
-              </span>
             </td>
             <td class="fines-history-table__td-staff">
               <span class="fines-history-table__staff-name">{{ payment.receivedByUsername || 'Đang tải...' }}</span>
@@ -67,14 +60,6 @@
                   type="button"
                 >
                   <span class="material-symbols-outlined fines-history-table__action-icon">visibility</span>
-                </button>
-                <button
-                  class="fines-history-table__action-btn"
-                  (click)="onPrint.emit(payment)"
-                  title="In lại phiếu thu"
-                  type="button"
-                >
-                  <span class="material-symbols-outlined fines-history-table__action-icon">print</span>
                 </button>
               </div>
             </td>

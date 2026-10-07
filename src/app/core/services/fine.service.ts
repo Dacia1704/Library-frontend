@@ -24,13 +24,15 @@ export class FineService {
           .set('size', size.toString()),
       })
       .pipe(
-        map((response) => ({
+        map((response) => { 
+          console.log(FineMapper.fromResponseList(response.data.data));
+          return {
           currentPage: response.data.currentPage,
           pageSize: response.data.pageSize,
           totalPages: response.data.totalPages,
           totalElements: response.data.totalElements,
           data: FineMapper.fromResponseList(response.data.data),
-        }))
+        }})
       );
   }
 

@@ -8,7 +8,4 @@ export interface FinePayment {
   receivedByUsername?: string;
   note?: string;
   isDeleted: boolean;
-  // Computed/display fields
-  receiptCode?: string;  // e.g., BLP-2024-089
-  paymentMethod?: 'CASH' | 'TRANSFER';
 }

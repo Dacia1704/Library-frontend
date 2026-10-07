@@ -12,11 +12,6 @@ export interface Fine {
   note?: string;
   createdAt: string;
   isDeleted: boolean;
-  // Computed/display fields
-  borrowCode?: string;
-  bookTitle?: string;
-  barcode?: string;
-  isPaid?: boolean;
 }
 
 export type FineReason = 

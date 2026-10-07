@@ -34,11 +34,11 @@
               <span class="fines-table__time">{{ formatTime(fine.createdAt) }}</span>
             </td>
             <td class="fines-table__td-code">
-              <span class="fines-table__code">{{ fine.borrowCode || 'N/A' }}</span>
+              <span class="fines-table__code">#{{ fine.borrowDetail?.id || 'N/A' }}</span>
             </td>
             <td class="fines-table__td-book">
-              <span class="fines-table__book-title">{{ fine.bookTitle || 'Đang tải...' }}</span>
-              <span class="fines-table__barcode">Mã: {{ fine.barcode || 'N/A' }}</span>
+              <span class="fines-table__book-title">{{ fine.borrowDetail?.book?.title || 'Đang tải...' }}</span>
+              <span class="fines-table__barcode">Mã: {{ fine.borrowDetail?.book?.bookCode || 'N/A' }}</span>
             </td>
             <td class="fines-table__td-center">
               <span class="fines-table__reason-pill" [ngClass]="getReasonClass(fine.reason)">
@@ -48,29 +48,15 @@
             <td class="fines-table__td-overdue">
               @if (fine.overdueDays) {
                 <span class="fines-table__overdue-title">Quá hạn {{ fine.overdueDays }} ngày</span>
-                <span class="fines-table__overdue-sub">2.000đ × {{ fine.overdueDays }} ngày</span>
+                <span class="fines-table__overdue-sub">{{ fineOverduePerDay }} × {{ fine.overdueDays }} ngày</span>
               } @else {
                 <span class="fines-table__muted">-</span>
               }
             </td>
             <td class="fines-table__td-right">
-              <span [class.fines-table__amount--paid]="fine.isPaid"
-                    [class.fines-table__amount--unpaid]="!fine.isPaid">
+              <span [class.fines-table__amount--paid]>
                 {{ formatCurrency(fine.amount) }} VNĐ
               </span>
-            </td>
-            <td class="fines-table__td-center">
-              @if (fine.isPaid) {
-                <span class="fines-table__status fines-table__status--paid">
-                  <span class="fines-table__status-dot fines-table__status-dot--paid"></span>
-                  Đã nộp
-                </span>
-              } @else {
-                <span class="fines-table__status fines-table__status--unpaid">
-                  <span class="fines-table__status-dot fines-table__status-dot--unpaid"></span>
-                  Chưa nộp
-                </span>
-              }
             </td>
             <td class="fines-table__td-note">
               <p class="fines-table__note" [title]="fine.note || ''">{{ fine.note || '-' }}</p>

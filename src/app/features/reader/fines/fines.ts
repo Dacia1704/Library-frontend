@@ -54,7 +54,6 @@ export class FinesComponent implements OnInit, OnDestroy {
 
   // Computed signals (auto-recalc khi dependency đổi)
   readonly filteredFines = computed<Fine[]>(() => this.applyFilters(this.fines(), this.filters()));
-  readonly unpaidFinesCount = computed<number>(() => this.fines().filter((f) => !f.isPaid).length);
   readonly historyCount = computed<number>(() => this.payments().length);
   readonly totalPayments = computed<number>(() => this.payments().length);
   readonly totalPaidAmount = computed<number>(() =>
@@ -118,19 +117,12 @@ export class FinesComponent implements OnInit, OnDestroy {
     unpaidTotal: number,
     paidTotal: number
   ): FineSummary {
-    const paidFines = fines.filter((f) => f.isPaid);
-    const unpaidFines = fines.filter((f) => !f.isPaid);
-    const overdueFines = fines.filter((f) => f.reason === 'OVERDUE' && !f.isPaid);
 
     return {
       totalFines: unpaidTotal + paidTotal,
       totalFinesCount: fines.length,
       paidAmount: paidTotal,
-      paidCount: paidFines.length,
       unpaidAmount: unpaidTotal,
-      unpaidCount: unpaidFines.length,
-      overdueFinesCount: overdueFines.length,
-      overdueBooksCount: overdueFines.length,
     };
   }
 
@@ -145,27 +137,6 @@ export class FinesComponent implements OnInit, OnDestroy {
 
   private applyFilters(fines: Fine[], filters: FinesFilterParams): Fine[] {
     return fines.filter((fine) => {
-      // Search filter
-      if (filters.search) {
-        const search = filters.search.toLowerCase();
-        const matchesSearch =
-          (fine.borrowCode?.toLowerCase().includes(search) ?? false) ||
-          (fine.bookTitle?.toLowerCase().includes(search) ?? false) ||
-          (fine.barcode?.toLowerCase().includes(search) ?? false);
-        if (!matchesSearch) return false;
-      }
-
-      // Reason filter
-      if (filters.reason !== 'all' && fine.reason !== filters.reason) {
-        return false;
-      }
-
-      // Status filter
-      if (filters.status !== 'all') {
-        const isPaid = filters.status === 'PAID';
-        if (fine.isPaid !== isPaid) return false;
-      }
-
       return true;
     });
   }

@@ -1,4 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
+import { SettingService } from '@services/setting.service';
+import { TextUtils } from '@shared/utils/text-utils';
 
 @Component({
   selector: 'app-policy-dialog',
@@ -22,5 +24,23 @@ export class PolicyDialogComponent {
       this.dialogEl.close();
     }
     this.onClose.emit();
+  }
+
+  get fineOverduePerDay(): string {
+    return TextUtils.toVnd(SettingService.getFineOverduePerDay());
+  }
+
+  get fineDamagedLightRate(): string {
+    return TextUtils.toPercentage(SettingService.getFineDamagedLightRate());
+  }
+  get fineDamagedHeavyRepairableRate(): string {
+    return TextUtils.toPercentage(SettingService.getFineDamagedHeavyRepairableRate());
+  }
+  get fineDamagedHeavyIrreparableRate(): string {
+    return TextUtils.toPercentage(SettingService.getFineDamagedHeavyIrreparableRate());
+  }
+
+  get fineLostRate(): string {
+    return TextUtils.toPercentage(SettingService.getFineLostRate());
   }
 }

@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Fine, FINE_REASON_LABELS, FineReason } from '@model/fine';
+import { SettingService } from '@services/setting.service';
+import { TextUtils } from '@shared/utils/text-utils';
 
 @Component({
   selector: 'app-fines-table',
@@ -39,5 +41,9 @@ export class FinesTableComponent {
       DAMAGED_HEAVY_IRREPARABLE: 'fines-table__reason-pill--rose',
     };
     return classMap[reason] || '';
+  }
+
+  get fineOverduePerDay(): string {
+    return TextUtils.toVnd(SettingService.getFineOverduePerDay());
   }
 }

@@ -34,11 +34,11 @@
   }
 
   &__th-center {
-    text-align: center;
+    text-align: left;
   }
 
   &__th-right {
-    text-align: right;
+    text-align: left;
   }
 
   &__row {
@@ -99,7 +99,7 @@
 
   &__td-right {
     padding: 16px 12px;
-    text-align: right;
+    text-align: left;
     white-space: nowrap;
   }
 
@@ -111,7 +111,7 @@
 
   &__td-center {
     padding: 16px 12px;
-    text-align: center;
+    text-align: left;
     white-space: nowrap;
   }
 

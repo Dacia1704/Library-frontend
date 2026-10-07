@@ -8,35 +8,35 @@
     <!-- Nộp muộn -->
     <div class="fine-tariff-legend__card">
       <span class="fine-tariff-legend__pill fine-tariff-legend__pill--amber">Nộp muộn</span>
-      <span class="fine-tariff-legend__amount">2.000 VNĐ / cuốn / ngày</span>
+      <span class="fine-tariff-legend__amount">{{ fineOverduePerDay }} / cuốn / ngày</span>
       <span class="fine-tariff-legend__desc">Tính theo lịch mở cửa thư viện</span>
     </div>
 
     <!-- Hư hỏng nhẹ -->
     <div class="fine-tariff-legend__card">
       <span class="fine-tariff-legend__pill fine-tariff-legend__pill--blue">Hư hỏng nhẹ</span>
-      <span class="fine-tariff-legend__amount">Bồi hoàn 20% giá trị sách</span>
+      <span class="fine-tariff-legend__amount">Bồi hoàn {{ fineDamagedLightRate }} giá trị sách</span>
       <span class="fine-tariff-legend__desc">Gấp nếp góc, vết bút chì nhẹ</span>
     </div>
 
     <!-- Hỏng nặng (sửa được) -->
     <div class="fine-tariff-legend__card">
       <span class="fine-tariff-legend__pill fine-tariff-legend__pill--orange">Hỏng nặng (sửa được)</span>
-      <span class="fine-tariff-legend__amount">Bồi hoàn 50% giá trị sách</span>
+      <span class="fine-tariff-legend__amount">Bồi hoàn {{ fineDamagedHeavyRepairableRate }} giá trị sách</span>
       <span class="fine-tariff-legend__desc">Rách bìa, bung gáy trang ruột</span>
     </div>
 
     <!-- Hỏng (không dùng được) -->
     <div class="fine-tariff-legend__card">
       <span class="fine-tariff-legend__pill fine-tariff-legend__pill--rose">Hỏng (không dùng được)</span>
-      <span class="fine-tariff-legend__amount">100% giá + 20.000đ xử lý</span>
+      <span class="fine-tariff-legend__amount">Bồi hoàn {{ fineDamagedHeavyIrreparableRate }} giá xử lý</span>
       <span class="fine-tariff-legend__desc">Ướt mục nát, mất trang sách</span>
     </div>
 
     <!-- Làm mất sách -->
     <div class="fine-tariff-legend__card">
       <span class="fine-tariff-legend__pill fine-tariff-legend__pill--red">Làm mất sách</span>
-      <span class="fine-tariff-legend__amount">Sách mới hoặc 150% giá</span>
+      <span class="fine-tariff-legend__amount">Sách mới hoặc bồi hoàn {{ fineLostRate }} giá</span>
       <span class="fine-tariff-legend__desc">Tính theo giá niêm yết hiện hành</span>
     </div>
   </div>

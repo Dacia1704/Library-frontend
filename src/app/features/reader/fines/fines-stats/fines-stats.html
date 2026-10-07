@@ -12,10 +12,6 @@
         {{ formatCurrency(summary?.totalFines || 0) }}
         <span class="stat-card__unit">VNĐ</span>
       </div>
-      <p class="stat-card__desc">
-        <span class="stat-card__dot stat-card__dot--outline"></span>
-        Gồm {{ summary?.totalFinesCount || 0 }} khoản phạt phát sinh từ trước đến nay
-      </p>
     </div>
   </div>
 
@@ -32,10 +28,6 @@
         {{ formatCurrency(summary?.paidAmount || 0) }}
         <span class="stat-card__unit stat-card__unit--secondary">VNĐ</span>
       </div>
-      <p class="stat-card__desc">
-        <span class="stat-card__dot stat-card__dot--secondary"></span>
-        Đã hoàn tất thanh toán {{ summary?.paidCount || 0 }} biên lai
-      </p>
     </div>
   </div>
 
@@ -56,14 +48,6 @@
         {{ formatCurrency(summary?.unpaidAmount || 0) }}
         <span class="stat-card__unit stat-card__unit--error">VNĐ</span>
       </div>
-      <p class="stat-card__desc stat-card__desc--error">
-        <span class="material-symbols-outlined stat-card__desc-icon">lock</span>
-        <span>Cần thanh toán để mở khóa quyền mượn sách mới
-          <ng-container *ngIf="summary?.overdueFinesCount">
-            • {{ summary?.overdueFinesCount }} phiếu quá hạn ({{ summary?.overdueBooksCount }} cuốn)
-          </ng-container>
-        </span>
-      </p>
     </div>
   </div>
 </section>

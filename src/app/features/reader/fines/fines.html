@@ -18,7 +18,7 @@
       <div class="fines-tabs-section__tabs-row">
         <app-fines-tabs
           [activeTab]="activeTab()"
-          [finesCount]="unpaidFinesCount()"
+          [finesCount]="filteredFines().length"
           [historyCount]="historyCount()"
           (onTabChange)="switchTab($event)"
         ></app-fines-tabs>

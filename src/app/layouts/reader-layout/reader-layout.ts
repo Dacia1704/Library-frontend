@@ -41,11 +41,6 @@ export class ReaderLayout {
       route: '/reader/borrows',
     },
     {
-      icon: 'groups',
-      label: 'Quản lý độc giả',
-      route: '/reader/members',
-    },
-    {
       icon: 'receipt_long',
       label: 'Quản lý phí phạt',
       route: '/reader/fines',

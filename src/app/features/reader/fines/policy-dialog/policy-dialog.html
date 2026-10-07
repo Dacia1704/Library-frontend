@@ -20,17 +20,17 @@
 
     <div class="policy-dialog__body">
       <p>
-        <strong>1. Trả sách chậm:</strong> Tính phí 2.000 VNĐ/cuốn/ngày (áp dụng tất cả các ngày thư viện mở cửa).
+        <strong>1. Trả sách chậm:</strong> Tính phí {{ fineOverduePerDay }}/cuốn/ngày (áp dụng tất cả các ngày thư viện mở cửa).
         Quá hạn quá 30 ngày, hệ thống sẽ chuyển sang diện nghi ngờ làm mất.
       </p>
       <p><strong>2. Hư hỏng tài liệu:</strong> Tùy mức độ thẩm định của bộ phận bảo quản:</p>
       <ul class="policy-dialog__list">
-        <li>Gấp nếp, vẽ bẩn nhẹ: Phạt 20% giá sách ghi trên trang bìa sau.</li>
-        <li>Rách trang, bong bìa (có thể đóng gáy lại): Phạt 50% giá sách.</li>
-        <li>Thấm nước làm mục, nấm mốc hoặc mất trang ruột: Đền 100% sách mới hoặc giá trị sách kèm 20.000 VNĐ phí nghiệp vụ.</li>
+        <li>Gấp nếp, vẽ bẩn nhẹ: Phạt {{ fineDamagedLightRate }} giá sách ghi trên trang bìa sau.</li>
+        <li>Rách trang, bong bìa (có thể đóng gáy lại): Phạt {{ fineDamagedHeavyRepairableRate }} giá sách.</li>
+        <li>Thấm nước làm mục, nấm mốc hoặc mất trang ruột: Đền {{ fineDamagedHeavyIrreparableRate }} giá sách.</li>
       </ul>
       <p>
-        <strong>3. Mất sách:</strong> Bạn đọc mua lại đúng phiên bản hoặc bồi thường 150% giá trị trị giá sách nếu sách không còn lưu hành thị trường.
+        <strong>3. Mất sách:</strong> Bạn đọc mua lại đúng phiên bản hoặc bồi thường {{ fineLostRate }} giá trị trị giá sách nếu sách không còn lưu hành thị trường.
       </p>
     </div>
 
