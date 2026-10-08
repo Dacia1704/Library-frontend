@@ -18,7 +18,8 @@ export class MemberMapper {
       address: res.address,
       identityNumber: res.identityNumber,
       cardExpiry: new Date(res.cardExpiry),
-      cardStatus: res.cardStatus
+      cardStatus: res.cardStatus,
+      createdAt: new Date(res.createdAt)
     });
   }
 

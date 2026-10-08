@@ -1,0 +1,116 @@
+<section class="overdue-table">
+  <!-- Header -->
+  <header class="overdue-table__header">
+    <div class="overdue-table__header-left">
+      <div class="overdue-table__title-group">
+        <span class="material-symbols-outlined overdue-table__title-icon">warning</span>
+        <h2 class="overdue-table__title">Phiếu mượn quá hạn</h2>
+      </div>
+      <span class="overdue-table__badge">
+        {{ overdueCount }} phiếu quá hạn
+      </span>
+      <span class="overdue-table__sub">• Cần liên hệ nhắc trả hoặc ghi nhận phạt</span>
+    </div>
+    <div class="overdue-table__header-right">
+      <div class="overdue-table__search">
+        <span class="material-symbols-outlined overdue-table__search-icon">search</span>
+        <input
+          class="overdue-table__search-input"
+          type="text"
+          placeholder="Tìm độc giả hoặc mã sách..."
+        />
+      </div>
+      <button class="overdue-table__btn overdue-table__btn--error" type="button">
+        <span class="material-symbols-outlined overdue-table__btn-icon">send_time_extension</span>
+        <span>Gửi nhắc nhở hàng loạt</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Table -->
+  <div class="overdue-table__scroll">
+    <table class="overdue-table__table">
+      <thead>
+        <tr>
+          <th>Độc giả</th>
+          <th>Sách đang mượn & Mã vạch</th>
+          <th class="overdue-table__th-right">Hạn trả</th>
+          <th class="overdue-table__th-center">Tình trạng trễ</th>
+          <th class="overdue-table__th-right">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of borrows(); track item.id) {
+          <tr class="overdue-table__row">
+            <td class="overdue-table__td-reader">
+              <span class="overdue-table__reader-name">
+                {{ item.borrowRecord.member.user.fullName }}
+              </span>
+              <span class="overdue-table__reader-meta">
+                {{ item.borrowRecord.member.memberCode }} • {{ item.borrowRecord.member.phone }}
+              </span>
+            </td>
+            <td class="overdue-table__td-book">
+              <span class="overdue-table__book-title">{{ item.book.title }}</span>
+              <span class="overdue-table__book-meta">{{ item.book.bookCode }}</span>
+            </td>
+            <td class="overdue-table__td-right overdue-table__td-due">
+              {{ formatDate(item.borrowRecord.dueDate) }}
+            </td>
+            <td class="overdue-table__td-center">
+              <span class="overdue-table__overdue-pill">
+                Trễ {{ calcOverdueDays(item.borrowRecord.dueDate) }} ngày
+              </span>
+            </td>
+            <td class="overdue-table__td-right">
+              <div class="overdue-table__actions">
+                <button class="overdue-table__btn overdue-table__btn--ghost" type="button">
+                  Nhắc trả (SMS/Zalo)
+                </button>
+                <button class="overdue-table__btn overdue-table__btn--error-soft" type="button">
+                  Lập phạt
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <footer class="overdue-table__pagination">
+    <span class="overdue-table__pagination-info">
+      Trang {{ currentPage() + 1 }} / {{ totalPages() || 1 }}
+      • {{ totalElements() }} phiếu
+    </span>
+    <div class="overdue-table__pagination-actions">
+      <button
+        class="overdue-table__page-btn"
+        type="button"
+        (click)="goToPage(currentPage() - 1)"
+        [disabled]="currentPage() === 0"
+      >
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      @for (p of pages; track p) {
+        <button
+          class="overdue-table__page-btn"
+          [class.overdue-table__page-btn--active]="p === currentPage()"
+          type="button"
+          (click)="goToPage(p)"
+        >
+          {{ p + 1 }}
+        </button>
+      }
+      <button
+        class="overdue-table__page-btn"
+        type="button"
+        (click)="goToPage(currentPage() + 1)"
+        [disabled]="currentPage() >= totalPages() - 1"
+      >
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </footer>
+</section>

@@ -80,9 +80,11 @@ export class BorrowRecordService {
       .set('page', page.toString())
       .set('size', size.toString());
 
-    if (filter.memberId != null) params = params.set('memberId', filter.memberId.toString());
-    if (filter.borrowDate) params = params.set('borrowDate', filter.borrowDate);
-    if (filter.bookId != null) params = params.set('bookId', filter.bookId.toString());
+    if (filter.memberKeyword) params = params.set('memberKeyword', filter.memberKeyword);
+    if (filter.bookKeyword) params = params.set('bookKeyword', filter.bookKeyword);
+    if (filter.startBorrowDate) params = params.set('startBorrowDate', filter.startBorrowDate);
+    if (filter.endBorrowDate) params = params.set('endBorrowDate', filter.endBorrowDate);
+    if (filter.status) params = params.set('status', filter.status);
 
     return this.http
       .get<ApiResponse<PageResponse<BorrowRecordResponse>>>(

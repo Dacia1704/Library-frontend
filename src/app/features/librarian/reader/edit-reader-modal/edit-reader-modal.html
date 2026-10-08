@@ -1,0 +1,153 @@
+@if (isOpen() && member()) {
+  <div class="edit-modal__backdrop" (click)="close()">
+    <div class="edit-modal" (click)="$event.stopPropagation()">
+      <!-- Header -->
+      <div class="edit-modal__header">
+        <div class="edit-modal__title-group">
+          <div class="edit-modal__icon-wrap">
+            <span class="material-symbols-outlined">edit_square</span>
+          </div>
+          <div class="edit-modal__title-block">
+            <h3 class="edit-modal__title">Chỉnh sửa thông tin độc giả</h3>
+            <span class="edit-modal__sub">{{ member()!.memberCode }}</span>
+          </div>
+        </div>
+        <button class="edit-modal__close" type="button" (click)="close()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <form class="edit-modal__form" (submit)="submit($event)">
+        <div class="edit-modal__body">
+          <!-- User Info Section -->
+          <div class="edit-modal__section">
+            <h5 class="edit-modal__section-title">
+              <span class="material-symbols-outlined">account_circle</span>
+              Thông tin tài khoản
+            </h5>
+            <div class="edit-modal__grid">
+              <div class="edit-modal__field">
+                <label class="edit-modal__label">
+                  <span>Họ và tên</span>
+                  <span class="edit-modal__required">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  [value]="fullName()"
+                  (input)="setFullName($any($event.target).value)"
+                />
+              </div>
+              <div class="edit-modal__field">
+                <label class="edit-modal__label">
+                  <span>Email</span>
+                  <span class="edit-modal__required">*</span>
+                </label>
+                <input
+                  type="email"
+                  required
+                  [value]="email()"
+                  (input)="setEmail($any($event.target).value)"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Personal Info Section -->
+          <div class="edit-modal__section">
+            <h5 class="edit-modal__section-title">
+              <span class="material-symbols-outlined">badge</span>
+              Thông tin cá nhân
+            </h5>
+            <div class="edit-modal__grid">
+              <div class="edit-modal__field">
+                <label class="edit-modal__label">
+                  <span>Số CCCD</span>
+                  <span class="edit-modal__required">*</span>
+                </label>
+                <input
+                  type="text"
+                  maxlength="12"
+                  pattern="[0-9]{12}"
+                  required
+                  class="edit-modal__input-mono"
+                  [value]="identityNumber()"
+                  (input)="setIdentityNumber($any($event.target).value)"
+                />
+              </div>
+              <div class="edit-modal__field">
+                <label class="edit-modal__label">
+                  <span>Số điện thoại</span>
+                </label>
+                <input
+                  type="tel"
+                  maxlength="15"
+                  [value]="phone()"
+                  (input)="setPhone($any($event.target).value)"
+                />
+              </div>
+              <div class="edit-modal__field edit-modal__field--full">
+                <label class="edit-modal__label">
+                  <span>Địa chỉ</span>
+                </label>
+                <input
+                  type="text"
+                  [value]="address()"
+                  (input)="setAddress($any($event.target).value)"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Info Section -->
+          <div class="edit-modal__section">
+            <h5 class="edit-modal__section-title">
+              <span class="material-symbols-outlined">library_books</span>
+              Thông tin thẻ thư viện
+            </h5>
+            <div class="edit-modal__grid">
+              <div class="edit-modal__field">
+                <label class="edit-modal__label">
+                  <span>Trạng thái thẻ</span>
+                </label>
+                <select
+                  [value]="cardStatus()"
+                  (change)="setCardStatus($any($event.target).value)"
+                >
+                  <option value="PENDING">Chờ phát hành</option>
+                  <option value="ISSUED">Đã phát hành</option>
+                </select>
+              </div>
+              <div class="edit-modal__field">
+                <label class="edit-modal__label">
+                  <span>Ngày hết hạn</span>
+                </label>
+                <input
+                  type="date"
+                  [value]="cardExpiry()"
+                  (input)="setCardExpiry($any($event.target).value)"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="edit-modal__footer">
+          <button class="edit-modal__btn edit-modal__btn--ghost" type="button" (click)="close()" [disabled]="isSubmitting()">
+            Hủy bỏ
+          </button>
+          <button class="edit-modal__btn edit-modal__btn--primary" type="submit" [disabled]="isSubmitting()">
+            @if (isSubmitting()) {
+              <span class="material-symbols-outlined">hourglass_empty</span>
+            } @else {
+              <span class="material-symbols-outlined">check</span>
+            }
+            <span>{{ isSubmitting() ? 'Đang lưu...' : 'Lưu thay đổi' }}</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

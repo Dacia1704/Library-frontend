@@ -1,0 +1,39 @@
+:host {
+  display: block;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--on-surface-variant, #444653);
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--on-surface-variant, #444653);
+    text-decoration: none;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: var(--primary, #00288e);
+    }
+  }
+
+  &__icon {
+    font-size: 16px;
+  }
+
+  &__separator {
+    font-size: 14px;
+  }
+
+  &__text {
+    &--active {
+      color: var(--primary, #00288e);
+      font-weight: 600;
+    }
+  }
+}

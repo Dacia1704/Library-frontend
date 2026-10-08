@@ -1,0 +1,176 @@
+@if (isOpen()) {
+  <div class="register-modal__backdrop" (click)="close()">
+    <div class="register-modal" (click)="$event.stopPropagation()">
+      <!-- Header -->
+      <div class="register-modal__header">
+        <div class="register-modal__title-group">
+          <div class="register-modal__icon-wrap">
+            <span class="material-symbols-outlined">person_add</span>
+          </div>
+          <div class="register-modal__title-block">
+            <h3 class="register-modal__title">Đăng ký độc giả mới</h3>
+            <span class="register-modal__sub">Mở tài khoản định danh bạn đọc vào hệ thống thư viện</span>
+          </div>
+        </div>
+        <button class="register-modal__close" type="button" (click)="close()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <form class="register-modal__form" (submit)="submit($event)">
+        <div class="register-modal__grid">
+          <div class="register-modal__field">
+            <label class="register-modal__label">
+              <span>Họ và tên</span>
+              <span class="register-modal__required">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Nguyễn Văn A"
+              required
+              [value]="fullName()"
+              (input)="setFullName($any($event.target).value)"
+            />
+          </div>
+
+          <div class="register-modal__field">
+            <label class="register-modal__label">
+              <span>Tên đăng nhập (Username)</span>
+              <span class="register-modal__required">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="nguyenvana"
+              required
+              [value]="username()"
+              (input)="setUsername($any($event.target).value)"
+            />
+          </div>
+
+          <div class="register-modal__field">
+            <label class="register-modal__label">
+              <span>Email liên lạc</span>
+              <span class="register-modal__required">*</span>
+            </label>
+            <input
+              type="email"
+              placeholder="nguyenvana@gmail.com"
+              required
+              [value]="email()"
+              (input)="setEmail($any($event.target).value)"
+            />
+          </div>
+
+          <div class="register-modal__field">
+            <label class="register-modal__label">
+              <span>Mật khẩu khởi tạo</span>
+              <span class="register-modal__required">*</span>
+            </label>
+            <div class="register-modal__pwd-wrap">
+              <input
+                [type]="showPassword() ? 'text' : 'password'"
+                placeholder="••••••••"
+                required
+                minlength="6"
+                [value]="password()"
+                (input)="setPassword($any($event.target).value)"
+              />
+              <button
+                class="register-modal__pwd-toggle"
+                type="button"
+                (click)="togglePasswordVisibility()"
+              >
+                <span class="material-symbols-outlined">
+                  {{ showPassword() ? 'visibility_off' : 'visibility' }}
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <div class="register-modal__field">
+            <label class="register-modal__label">
+              <span>Số Căn cước công dân (CCCD)</span>
+              <span class="register-modal__required">*</span>
+            </label>
+            <input
+              type="text"
+              maxlength="12"
+              pattern="[0-9]{12}"
+              placeholder="Ví dụ: 001201012345"
+              required
+              class="register-modal__input-mono"
+              [value]="identityNumber()"
+              (input)="setIdentityNumber($any($event.target).value)"
+            />
+          </div>
+
+          <div class="register-modal__field">
+            <label class="register-modal__label">
+              <span>Số điện thoại</span>
+            </label>
+            <input
+              type="tel"
+              placeholder="0912 345 678"
+              maxlength="15"
+              [value]="phone()"
+              (input)="setPhone($any($event.target).value)"
+            />
+          </div>
+
+          <div class="register-modal__field register-modal__field--full">
+            <label class="register-modal__label">
+              <span>Địa chỉ</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành phố"
+              [value]="address()"
+              (input)="setAddress($any($event.target).value)"
+            />
+          </div>
+
+          <div class="register-modal__field">
+            <label class="register-modal__label">
+              <span>Số tháng đăng ký</span>
+              <span class="register-modal__required">*</span>
+            </label>
+            <input
+              type="number"
+              min="1"
+              placeholder="1"
+              required
+              [value]="monthRequest()"
+              (input)="setMonthRequest($any($event.target).value)"
+            />
+            <span class="register-modal__hint">Phí 1 tháng: {{ memberPaymentMonth }}</span>
+          </div>
+        </div>
+
+        <div class="register-modal__summary">
+          <div class="register-modal__summary-row">
+            <span class="register-modal__summary-label">
+              Tổng tiền cần thu ({{ monthRequest() }} tháng × {{ memberPaymentMonth }} + phí làm thẻ {{ cardMakerFee }}):
+            </span>
+            <span class="register-modal__summary-value">{{ calculatedAmountText }}</span>
+          </div>
+          <p class="register-modal__note">Lưu ý thu đủ tiền trước khi tạo member nhé</p>
+        </div>
+
+        <div class="register-modal__footer">
+          <button class="register-modal__btn register-modal__btn--ghost" type="button" (click)="close()" [disabled]="isSubmitting()">
+            Hủy bỏ
+          </button>
+          <button class="register-modal__btn register-modal__btn--primary" type="submit" [disabled]="isSubmitting()">
+            @if (isSubmitting()) {
+              <span class="material-symbols-outlined">hourglass_empty</span>
+            } @else {
+              <span class="material-symbols-outlined">check</span>
+            }
+            <span>{{ isSubmitting() ? 'Đang xử lý...' : 'Tạo tài khoản' }}</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

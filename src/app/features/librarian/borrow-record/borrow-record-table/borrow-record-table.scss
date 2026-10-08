@@ -1,0 +1,398 @@
+:host {
+  display: block;
+}
+
+.table-section {
+  border-radius: 12px;
+  background: var(--surface-container-lowest, #fff);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+
+  &__scroll {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  &__table {
+    width: 100%;
+    min-width: 760px;
+    text-align: left;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  thead tr {
+    background: rgba(239, 244, 255, 0.7);
+    color: var(--on-surface-variant, #444653);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-weight: 600;
+  }
+
+  th {
+    padding: 12px 16px;
+    white-space: nowrap;
+  }
+
+  tbody {
+    background: var(--surface-container-lowest, #fff);
+  }
+
+  // ─── Row States ────────────────────────────────────────────────
+  &__row {
+    transition: background 0.15s ease;
+    cursor: pointer;
+
+    &:hover:not(&--selected) {
+      background: var(--surface-container-low, #eff4ff);
+    }
+
+    &--selected {
+      background: rgba(229, 238, 255, 0.6);
+    }
+
+    &--overdue {
+      background: rgba(255, 218, 214, 0.2);
+      border-left: 4px solid var(--error, #ba1a1a);
+
+      &:hover {
+        background: rgba(255, 218, 214, 0.3);
+      }
+    }
+  }
+
+  td {
+    padding: 12px 16px;
+  }
+
+  // ─── Checkbox ─────────────────────────────────────────────────
+  &__th-check {
+    width: 48px;
+    text-align: center;
+  }
+
+  &__td-check {
+    text-align: center;
+  }
+
+  &__checkbox {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    accent-color: var(--primary, #00288e);
+
+    &--error {
+      accent-color: var(--error, #ba1a1a);
+    }
+  }
+
+  // ─── Code ─────────────────────────────────────────────────────
+  &__td-code {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  &__overdue-icon {
+    font-size: 16px;
+    color: var(--error, #ba1a1a);
+  }
+
+  &__code {
+    color: var(--on-surface, #0b1c30);
+
+    &--error {
+      color: var(--error, #ba1a1a);
+    }
+  }
+
+  // ─── Reader ───────────────────────────────────────────────────
+  &__td-reader {
+    min-width: 200px;
+  }
+
+  &__reader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+
+    &[data-tone='overdue'] {
+      background: var(--error-container, #ffdad6);
+      color: var(--error, #ba1a1a);
+    }
+
+    &[data-tone='borrowing'] {
+      background: var(--primary-fixed, #dde1ff);
+      color: var(--on-primary-fixed, #001453);
+    }
+
+    &[data-tone='returned'] {
+      background: var(--surface-variant, #d3e4fe);
+      color: var(--on-surface, #0b1c30);
+    }
+  }
+
+  &__reader-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 4px;
+  }
+
+  &__reader-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--on-surface, #0b1c30);
+  }
+
+  &__reader-meta {
+    font-size: 11px;
+    color: var(--on-surface-variant, #444653);
+  }
+
+  // ─── Dates ────────────────────────────────────────────────────
+  &__td-date {
+    color: var(--on-surface, #0b1c30);
+    white-space: nowrap;
+  }
+
+  &__td-due {
+    min-width: 140px;
+  }
+
+  &__due-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__due-date--error {
+    color: var(--error, #ba1a1a);
+    font-weight: 600;
+  }
+
+  &__overdue-badge {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--error, #ba1a1a);
+  }
+
+  &__days-left {
+    font-size: 11px;
+    color: var(--on-surface-variant, #444653);
+  }
+
+  &__returned-date {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--secondary, #006a61);
+  }
+
+  // ─── Status ───────────────────────────────────────────────────
+  &__th-center {
+    text-align: center;
+  }
+
+  &__td-status {
+    text-align: center;
+  }
+
+  &__status-pill {
+    display: inline-flex;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 600;
+
+    &[data-status='overdue'] {
+      background: var(--error-container, #ffdad6);
+      color: var(--on-error-container, #93000a);
+    }
+
+    &[data-status='borrowing'] {
+      background: var(--surface-container-high, #dce9ff);
+      color: var(--primary, #00288e);
+    }
+
+    &[data-status='returned'] {
+      background: var(--secondary-fixed, #89f5e7);
+      color: var(--on-secondary-fixed, #00201d);
+    }
+  }
+
+  // ─── Books ────────────────────────────────────────────────────
+  &__td-books {
+    text-align: center;
+  }
+
+  &__book-count {
+    display: inline-flex;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: var(--surface-container, #e5eeff);
+    color: var(--on-surface, #0b1c30);
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  // ─── Actions ─────────────────────────────────────────────────
+  &__th-right {
+    text-align: right;
+  }
+
+  &__td-actions {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  &__actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    justify-content: flex-end;
+  }
+
+  &__action-btn {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &--primary {
+      background: var(--surface-container, #e5eeff);
+      color: var(--primary, #00288e);
+
+      &:hover {
+        background: var(--primary, #00288e);
+        color: var(--on-primary, #fff);
+      }
+    }
+
+    &--error {
+      background: var(--error-container, #ffdad6);
+      color: var(--error, #ba1a1a);
+
+      &:hover {
+        background: var(--error, #ba1a1a);
+        color: var(--on-error, #fff);
+      }
+    }
+
+    &--disabled {
+      background: var(--surface-container-high, #dce9ff);
+      color: var(--on-surface-variant, #444653);
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+
+  &__icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    color: var(--on-surface-variant, #444653);
+
+    .material-symbols-outlined {
+      font-size: 18px;
+    }
+
+    &:hover {
+      background: var(--surface-container, #e5eeff);
+      color: var(--primary, #00288e);
+    }
+  }
+
+  // ─── Pagination ───────────────────────────────────────────────
+  &__pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 24px;
+    border-top: 1px solid var(--outline-variant, #c5d3f0);
+    flex-wrap: wrap;
+  }
+
+  &__pagination-info {
+    font-size: 14px;
+    color: var(--on-surface-variant, #444653);
+
+    strong {
+      color: var(--on-surface, #0b1c30);
+      font-weight: 600;
+    }
+  }
+
+  &__pagination-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__pagination-ellipsis {
+    padding: 0 8px;
+    color: var(--on-surface-variant, #444653);
+    font-size: 12px;
+  }
+
+  &__page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: 6px;
+    border: 1px solid var(--outline-variant, #c5d3f0);
+    background: var(--surface-container-low, #eff4ff);
+    color: var(--on-surface, #0b1c30);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    .material-symbols-outlined {
+      font-size: 16px;
+    }
+
+    &:hover:not(:disabled):not(&--active) {
+      background: var(--surface-container-high, #dce9ff);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    &--active {
+      background: var(--primary, #00288e);
+      color: var(--on-primary, #fff);
+      border-color: var(--primary, #00288e);
+    }
+  }
+}

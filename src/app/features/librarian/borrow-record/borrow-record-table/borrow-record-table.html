@@ -1,0 +1,160 @@
+<section class="table-section">
+  <div class="table-section__scroll">
+    <table class="table-section__table">
+      <thead>
+        <tr>
+          <th class="table-section__th-check">
+            <input class="table-section__checkbox" type="checkbox" />
+          </th>
+          <th>Mã phiếu</th>
+          <th>Độc giả</th>
+          <th>Ngày mượn</th>
+          <th>Hạn trả</th>
+          <th class="table-section__th-center">Trạng thái</th>
+          <th class="table-section__th-center">Số sách</th>
+          <th class="table-section__th-right">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (record of records(); track record.id) {
+          <tr
+            class="table-section__row"
+            [class.table-section__row--overdue]="record.status === 'overdue'"
+            [class.table-section__row--selected]="isSelected(record.id)"
+            (click)="selectRecord(record)"
+          >
+            <td class="table-section__td-check" (click)="$event.stopPropagation()">
+              <input
+                class="table-section__checkbox"
+                [class.table-section__checkbox--error]="record.status === 'overdue'"
+                type="checkbox"
+                [checked]="isSelected(record.id)"
+              />
+            </td>
+            <td class="table-section__td-code">
+              @if (record.status === 'overdue') {
+                <span class="table-section__overdue-icon material-symbols-outlined">priority_high</span>
+              }
+              <span class="table-section__code" [class.table-section__code--error]="record.status === 'overdue'">
+                #{{ record.id }}
+              </span>
+            </td>
+            <td class="table-section__td-reader">
+              <div class="table-section__reader">
+                <div class="table-section__avatar" [attr.data-tone]="record.status">
+                  {{ record.member.user.fullName.charAt(0) }}
+                </div>
+                <div class="table-section__reader-info">
+                  <span class="table-section__reader-name">{{ record.member.user.fullName }}</span>
+                  <span class="table-section__reader-meta">{{ record.member.memberCode }}</span>
+                </div>
+              </div>
+            </td>
+            <td class="table-section__td-date">{{ formatDate(record.borrowDate) }}</td>
+            <td class="table-section__td-due">
+              <div class="table-section__due-info">
+                <span [class.table-section__due-date--error]="record.status === 'overdue'">
+                  {{ formatDate(record.dueDate) }}
+                </span>
+                @if (record.status === 'overdue' && record.overdueDays) {
+                  <span class="table-section__overdue-badge">Trễ {{ record.overdueDays }} ngày</span>
+                }
+                @if (record.status === 'borrowing') {
+                  <span class="table-section__days-left">Còn {{ record.daysLeft }} ngày</span>
+                }
+                @if (record.status === 'returned') {
+                  <span class="table-section__returned-date">Đã trả</span>
+                }
+              </div>
+            </td>
+            <td class="table-section__td-status">
+              <span class="table-section__status-pill" [attr.data-status]="record.status">
+                @switch (record.status) {
+                  @case ('overdue') {
+                    Quá hạn
+                  }
+                  @case ('borrowing') {
+                    Đang mượn
+                  }
+                  @case ('returned') {
+                    Đã trả
+                  }
+                }
+              </span>
+            </td>
+            <td class="table-section__td-books">
+              <span class="table-section__book-count">{{ record.bookCount }} cuốn</span>
+            </td>
+            <td class="table-section__td-actions" (click)="$event.stopPropagation()">
+              <div class="table-section__actions">
+                @if (record.status === 'overdue') {
+                  <button class="table-section__action-btn table-section__action-btn--error" type="button">
+                    Thu hồi
+                  </button>
+                }
+                @if (record.status === 'borrowing') {
+                  <button class="table-section__action-btn table-section__action-btn--primary" type="button">
+                    Trả sách
+                  </button>
+                }
+                @if (record.status === 'returned') {
+                  <button class="table-section__action-btn table-section__action-btn--disabled" type="button" disabled>
+                    Hoàn tất
+                  </button>
+                }
+                <button class="table-section__icon-btn" title="Xem chi tiết" type="button">
+                  <span class="material-symbols-outlined">visibility</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <footer class="table-section__pagination">
+    <span class="table-section__pagination-info">
+      Hiển thị <strong>{{ pageRangeStart() }} - {{ pageRangeEnd() }}</strong> trên tổng số <strong>{{ totalElements() }}</strong> phiếu mượn
+    </span>
+    <div class="table-section__pagination-actions">
+      <button
+        class="table-section__page-btn"
+        type="button"
+        [disabled]="currentPage() === 0"
+        (click)="onPageChange(currentPage() - 1)"
+      >
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      @for (page of pageNumbers; track page) {
+        <button
+          class="table-section__page-btn"
+          [class.table-section__page-btn--active]="page === currentPage()"
+          type="button"
+          (click)="onPageChange(page)"
+        >
+          {{ page + 1 }}
+        </button>
+      }
+      @if (totalPages() > 5) {
+        <span class="table-section__pagination-ellipsis">...</span>
+        <button
+          class="table-section__page-btn"
+          type="button"
+          (click)="onPageChange(totalPages() - 1)"
+        >
+          {{ totalPages() }}
+        </button>
+      }
+      <button
+        class="table-section__page-btn"
+        type="button"
+        [disabled]="currentPage() >= totalPages() - 1"
+        (click)="onPageChange(currentPage() + 1)"
+      >
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </footer>
+</section>

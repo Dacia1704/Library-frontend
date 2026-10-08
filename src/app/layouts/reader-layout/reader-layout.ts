@@ -33,7 +33,7 @@ export class ReaderLayout {
     {
       icon: 'search',
       label: 'Tra cứu sách',
-      route: '/reader',
+      route: '/reader/books',
     },
     {
       icon: 'swap_horizontal_circle',

@@ -1,0 +1,46 @@
+<section class="reader-page">
+  <app-reader-breadcrumb />
+  <app-reader-header [members]="members()" [totalElements]="totalElements()" />
+  <app-reader-toolbar
+    (register)="openRegisterModal()"
+    (filterChange)="onFilterChange($event)"
+  />
+  <app-reader-table
+    [members]="members()"
+    [totalElements]="totalElements()"
+    [currentPage]="currentPage()"
+    [pageSize]="pageSize()"
+    (action)="onAction($event)"
+    (pageChange)="onPageChange($event)"
+    (pageSizeChange)="onPageSizeChange($event)"
+  />
+
+  <!-- Register Modal -->
+  <app-register-reader-modal
+    [isOpen]="isRegisterModalOpen()"
+    (closed)="closeRegisterModal()"
+    (created)="onReaderCreated($event)"
+  />
+
+  <!-- View Detail Modal -->
+  <app-view-reader-modal
+    [isOpen]="isViewModalOpen()"
+    [member]="selectedMember()"
+    (closed)="closeViewModal()"
+  />
+
+  <!-- Edit Modal -->
+  <app-edit-reader-modal
+    [isOpen]="isEditModalOpen()"
+    [member]="selectedMember()"
+    (closed)="closeEditModal()"
+    (updated)="onMemberUpdated($event)"
+  />
+
+  <!-- Success Toast -->
+  <app-success-toast
+    [visible]="isToastVisible()"
+    [readerName]="toastReaderName()"
+    (closed)="closeToast()"
+  />
+</section>

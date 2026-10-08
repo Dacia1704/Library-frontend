@@ -1,0 +1,73 @@
+<div class="toolbar">
+  <div class="toolbar__filters">
+    <!-- Member Search -->
+    <div class="toolbar__input-wrap">
+      <span class="material-symbols-outlined toolbar__input-icon">badge</span>
+      <input
+        class="toolbar__input"
+        type="text"
+        placeholder="Mã thẻ (MBR-...), Tên, CCCD..."
+        [value]="memberKeyword()"
+        (input)="memberKeyword.set($any($event.target).value)"
+      />
+    </div>
+
+    <!-- Date Range Start -->
+    <div class="toolbar__input-wrap">
+      <span class="material-symbols-outlined toolbar__input-icon">date_range</span>
+      <input
+        class="toolbar__input"
+        type="date"
+        [value]="startDate()"
+        (input)="startDate.set($any($event.target).value)"
+      />
+    </div>
+
+    <!-- Status Filter -->
+    <div class="toolbar__select-wrap">
+      <select
+        class="toolbar__select"
+        [value]="status()"
+        (change)="status.set($any($event.target).value)"
+      >
+        @for (s of statuses; track s.value) {
+          <option [value]="s.value">{{ s.label }}</option>
+        }
+      </select>
+      <span class="material-symbols-outlined toolbar__select-icon">expand_more</span>
+    </div>
+
+    <!-- Book Search -->
+    <div class="toolbar__input-wrap">
+      <span class="material-symbols-outlined toolbar__input-icon">menu_book</span>
+      <input
+        class="toolbar__input"
+        type="text"
+        placeholder="Tên sách, Barcode / ISBN..."
+        [value]="bookKeyword()"
+        (input)="bookKeyword.set($any($event.target).value)"
+      />
+    </div>
+
+    <!-- Date Range End -->
+    <div class="toolbar__input-wrap">
+      <span class="material-symbols-outlined toolbar__input-icon">date_range</span>
+      <input
+        class="toolbar__input"
+        type="date"
+        [value]="endDate()"
+        (input)="endDate.set($any($event.target).value)"
+      />
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="toolbar__actions">
+      <button class="toolbar__btn toolbar__btn--primary" title="Áp dụng bộ lọc" type="button" (click)="onApply()">
+        <span class="material-symbols-outlined">filter_alt</span>
+      </button>
+      <button class="toolbar__btn toolbar__btn--secondary" title="Đặt lại bộ lọc" type="button" (click)="onReset()">
+        <span class="material-symbols-outlined">restart_alt</span>
+      </button>
+    </div>
+  </div>
+</div>

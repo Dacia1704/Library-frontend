@@ -1,0 +1,117 @@
+:host {
+  display: block;
+}
+
+.overview-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__title-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  &__title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--on-surface, #0b1c30);
+    letter-spacing: -0.015em;
+    margin: 0;
+    line-height: 32px;
+  }
+
+  &__shift-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 10px;
+    border-radius: 9999px;
+    background: var(--secondary-container, #86f2e4);
+    color: var(--on-secondary-container, #006f66);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  &__shift-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--secondary, #006a61);
+    animation: overview-pulse 1.5s ease-in-out infinite;
+  }
+
+  &__subtitle {
+    font-size: 14px;
+    color: var(--on-surface-variant, #444653);
+    margin: 4px 0 0;
+    max-width: 768px;
+    line-height: 20px;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    white-space: nowrap;
+  }
+
+  &__btn-icon {
+    font-size: 20px;
+  }
+
+  &__btn--secondary {
+    background: var(--surface-container-lowest, #fff);
+    color: var(--on-surface, #0b1c30);
+
+    .overview-header__btn-icon {
+      color: var(--primary, #00288e);
+    }
+
+    &:hover {
+      background: var(--surface-container-high, #dce9ff);
+    }
+  }
+}
+
+@keyframes overview-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
