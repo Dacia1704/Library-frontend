@@ -1,0 +1,81 @@
+<div class="fines-history-table">
+  <div class="fines-history-table__scroll">
+    <table class="fines-history-table__table">
+      <thead>
+        <tr>
+          <th>Mã biên lai thu</th>
+          <th>Ngày thanh toán</th>
+          <th class="fines-history-table__th-right">Số tiền thu</th>
+          <th>Thủ thư thu tiền</th>
+          <th>Ghi chú nghiệp vụ</th>
+          <th class="fines-history-table__th-center">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (payments.length === 0) {
+          <tr>
+            <td colspan="7" class="fines-history-table__empty-cell">
+              <div class="fines-history-table__empty">
+<div class="fines-history-table__empty-icon">
+                <span class="material-symbols-outlined fines-history-table__empty-icon-symbol">receipt_long</span>
+              </div>
+                <p class="fines-history-table__empty-title">Chưa có lịch sử thanh toán</p>
+                <p class="fines-history-table__empty-desc">
+                  Các khoản thanh toán sẽ hiển thị tại đây sau khi bạn thanh toán tiền phạt.
+                </p>
+              </div>
+            </td>
+          </tr>
+        }
+        @for (payment of payments; track payment.id) {
+          <tr class="fines-history-table__row">
+            <td class="fines-history-table__td-receipt">
+              <div class="fines-history-table__receipt">
+                <span class="fines-history-table__receipt-icon">
+                  <span class="material-symbols-outlined fines-history-table__receipt-icon-symbol">receipt</span>
+                </span>
+                <span class="fines-history-table__receipt-code">#{{ payment.id || 'N/A' }}</span>
+              </div>
+            </td>
+            <td class="fines-history-table__td-date">
+              <span class="fines-history-table__date">{{ formatDate(payment.paidAt) }}</span>
+              <span class="fines-history-table__time">{{ formatTime(payment.paidAt) }}</span>
+            </td>
+            <td class="fines-history-table__td-right">
+              <span class="fines-history-table__amount">{{ formatCurrency(payment.amount) }} VNĐ</span>
+            </td>
+            <td class="fines-history-table__td-staff">
+              <span class="fines-history-table__staff-name">{{ payment.receivedByUsername || 'Đang tải...' }}</span>
+              <span class="fines-history-table__staff-code">Mã TT: {{ payment.receivedBy || 'N/A' }}</span>
+            </td>
+            <td class="fines-history-table__td-note">
+              {{ payment.note || '-' }}
+            </td>
+            <td class="fines-history-table__td-center">
+              <div class="fines-history-table__actions">
+                <button
+                  class="fines-history-table__action-btn fines-history-table__action-btn--primary"
+                  (click)="onViewReceipt.emit(payment)"
+                  title="Xem chi tiết biên lai"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined fines-history-table__action-icon">visibility</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (payments.length > 0) {
+    <div class="fines-history-table__summary">
+      <span>Hiển thị {{ payments.length }} / {{ totalPayments }} biên lai thanh toán đã lưu</span>
+      <span class="fines-history-table__summary-total">
+        Tổng giá trị đã nộp qua quầy:
+        <strong class="fines-history-table__total-amount">{{ formatCurrency(totalPaidAmount) }} VNĐ</strong>
+      </span>
+    </div>
+  }
+</div>

@@ -7,65 +7,10 @@ import { Member } from '@model/member/member.model';
   selector: 'app-profile-digital-card',
   standalone: true,
   imports: [CommonModule, MatIconModule],
-  template: `
-    <div class="digital-card">
-      <div class="watermark"><mat-icon>local_library</mat-icon></div>
-      <div class="glow"></div>
-      
-      <div class="top-row">
-        <div class="brand">
-          <div class="icon"><mat-icon>school</mat-icon></div>
-          <div class="text">
-            <span class="sub">Thư viện Trung tâm</span>
-            <span class="main">Thẻ Bạn Đọc Điện Tử</span>
-          </div>
-        </div>
-        <mat-icon class="nfc">contactless</mat-icon>
-      </div>
-
-      <div class="mid-row">
-        <span class="lbl">Mã định danh thẻ thư viện</span>
-        <div class="code">{{ formatCode(member.memberCode) }}</div>
-      </div>
-
-      <div class="bottom-row">
-        <div class="owner">
-          <span class="lbl">Chủ thẻ</span>
-          <span class="val">{{ member.user?.fullName | uppercase }}</span>
-        </div>
-        <div class="expiry">
-          <span class="lbl">Thời hạn thẻ</span>
-          <span class="val mono">EXP: {{ member.cardExpiry | date:'MM/yyyy' }}</span>
-        </div>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .digital-card { background: linear-gradient(135deg, #00288e, #1e40af); color: #fff; border-radius: 12px; padding: 24px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box; min-height: 220px; box-shadow: 0 4px 12px rgba(0,40,142,0.3); }
-    .watermark { position: absolute; right: -24px; bottom: -40px; opacity: 0.1; mat-icon { font-size: 160px; width: 160px; height: 160px; } pointer-events: none; }
-    .glow { position: absolute; top: 0; right: 0; width: 120px; height: 120px; background: rgba(137,245,231,0.1); border-radius: 50%; filter: blur(24px); pointer-events: none; }
-    
-    .top-row { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 1; }
-    .brand { display: flex; gap: 12px; align-items: center; }
-    .icon { width: 40px; height: 40px; background: rgba(255,255,255,0.15); backdrop-filter: blur(4px); border-radius: 8px; display: flex; align-items: center; justify-content: center; mat-icon { font-size: 24px; width: 24px; height: 24px; } }
-    .text { display: flex; flex-direction: column; }
-    .sub { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #a8b8ff; font-weight: 600; }
-    .main { font-size: 16px; font-weight: 700; }
-    .nfc { color: #89f5e7; font-size: 28px; width: 28px; height: 28px; }
-    
-    .mid-row { margin: 32px 0; position: relative; z-index: 1; }
-    .mid-row .lbl { font-size: 11px; color: #a8b8ff; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 4px; }
-    .code { font-family: monospace; font-size: 24px; font-weight: 700; letter-spacing: 0.15em; }
-    
-    .bottom-row { display: flex; justify-content: space-between; align-items: flex-end; position: relative; z-index: 1; }
-    .owner, .expiry { display: flex; flex-direction: column; }
-    .expiry { align-items: flex-end; }
-    .lbl { font-size: 11px; color: #a8b8ff; }
-    .val { font-size: 14px; font-weight: 600; }
-    .mono { font-family: monospace; font-weight: 500; }
-  `]
+  templateUrl: './profile-digital-card.html',
+  styleUrls: ['./profile-digital-card.scss']
 })
-export class ProfileDigitalCardComponent {
+export class ProfileDigitalCard {
   @Input({ required: true }) member!: Member;
 
   formatCode(code: string): string {

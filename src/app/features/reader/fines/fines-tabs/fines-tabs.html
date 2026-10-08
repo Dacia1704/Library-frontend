@@ -1,0 +1,36 @@
+<div class="fines-tabs">
+  <div class="fines-tabs__switcher" role="tablist">
+    <button
+      class="fines-tabs__btn"
+      [class.fines-tabs__btn--active]="activeTab === 'fines'"
+      (click)="onTabChange.emit('fines')"
+      role="tab"
+      type="button"
+    >
+      <span class="material-symbols-outlined fines-tabs__btn-icon">receipt</span>
+      <span>Các khoản phạt</span>
+      <span *ngIf="finesCount > 0" class="fines-tabs__badge fines-tabs__badge--error">
+        {{ finesCount }}
+      </span>
+    </button>
+    <button
+      class="fines-tabs__btn"
+      [class.fines-tabs__btn--active]="activeTab === 'history'"
+      (click)="onTabChange.emit('history')"
+      role="tab"
+      type="button"
+    >
+      <span class="material-symbols-outlined fines-tabs__btn-icon">history</span>
+      <span>Lịch sử thanh toán phạt</span>
+      <span *ngIf="historyCount > 0" class="fines-tabs__badge fines-tabs__badge--muted">
+        {{ historyCount }}
+      </span>
+    </button>
+  </div>
+
+  <!-- Quick Info Tag -->
+  <div class="fines-tabs__info">
+    <span class="material-symbols-outlined fines-tabs__info-icon">check_circle</span>
+    <span>Cập nhật theo dữ liệu thực tế tại quầy</span>
+  </div>
+</div>

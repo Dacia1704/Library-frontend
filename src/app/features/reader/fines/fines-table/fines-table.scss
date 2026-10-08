@@ -1,0 +1,259 @@
+:host {
+  display: block;
+}
+
+.fines-table {
+  &__scroll {
+    overflow-x: auto;
+    width: 100%;
+  }
+
+  &__table {
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+    border-collapse: collapse;
+
+    thead tr {
+      background: rgba(229, 238, 255, 0.7);
+      color: var(--on-surface-variant, #444653);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    th {
+      padding: 12px;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    tbody {
+      background: var(--surface-container-lowest, #fff);
+    }
+  }
+
+  &__th-center {
+    text-align: left;
+  }
+
+  &__th-right {
+    text-align: left;
+  }
+
+  &__row {
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: rgba(229, 238, 255, 0.5);
+    }
+  }
+
+  &__td-date {
+    padding: 14px 12px;
+    white-space: nowrap;
+    color: var(--on-surface, #0b1c30);
+    font-weight: 500;
+  }
+
+  &__time {
+    display: block;
+    font-size: 11px;
+    color: var(--outline, #757684);
+  }
+
+  &__td-code {
+    padding: 14px 12px;
+    white-space: nowrap;
+  }
+
+  &__code {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--primary, #00288e);
+  }
+
+  &__td-book {
+    padding: 14px 12px;
+    min-width: 220px;
+  }
+
+  &__book-title {
+    display: block;
+    font-weight: 600;
+    color: var(--on-surface, #0b1c30);
+  }
+
+  &__barcode {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--outline, #757684);
+  }
+
+  &__td-center {
+    padding: 14px 12px;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  &__reason-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 500;
+
+    &--amber {
+      background: #fffbeb;
+      color: #92400e;
+    }
+
+    &--red {
+      background: #fee2e2;
+      color: #7f1d1d;
+    }
+
+    &--blue {
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    &--orange {
+      background: #fff7ed;
+      color: #c2410c;
+    }
+
+    &--rose {
+      background: #fff1f2;
+      color: #be123c;
+    }
+  }
+
+  &__td-overdue {
+    padding: 14px 12px;
+    white-space: nowrap;
+  }
+
+  &__overdue-title {
+    display: block;
+    font-weight: 600;
+    color: var(--error, #ba1a1a);
+  }
+
+  &__overdue-sub {
+    display: block;
+    font-size: 11px;
+    color: var(--on-surface-variant, #444653);
+  }
+
+  &__muted {
+    color: var(--on-surface-variant, #444653);
+  }
+
+  &__td-right {
+    padding: 14px 12px;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  &__amount--paid {
+    font-weight: 600;
+    color: var(--on-surface, #0b1c30);
+  }
+
+  &__amount--unpaid {
+    font-weight: 600;
+    color: var(--error, #ba1a1a);
+  }
+
+  &__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+
+    &--paid {
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    &--unpaid {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+  }
+
+  &__status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+
+    &--paid {
+      background: #059669;
+    }
+
+    &--unpaid {
+      background: #dc2626;
+    }
+  }
+
+  &__td-note {
+    padding: 14px 12px;
+    color: var(--on-surface-variant, #444653);
+    font-size: 12px;
+    max-width: 240px;
+  }
+
+  &__note {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+  }
+
+  &__empty-cell {
+    padding: 48px 0;
+    text-align: center;
+  }
+
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__empty-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--surface-container, #e5eeff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--outline, #757684);
+  }
+
+  &__empty-icon-symbol {
+    font-size: 24px;
+  }
+
+  &__empty-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--on-surface, #0b1c30);
+    margin: 12px 0 0;
+  }
+
+  &__empty-desc {
+    font-size: 12px;
+    color: var(--on-surface-variant, #444653);
+    margin: 4px 0 0;
+  }
+}

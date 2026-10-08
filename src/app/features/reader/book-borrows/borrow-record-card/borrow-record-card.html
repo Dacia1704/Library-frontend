@@ -1,0 +1,147 @@
+<article class="record-card">
+
+  <!-- Card Header -->
+  <header
+    class="card-header"
+    (click)="toggle()"
+  >
+    <div class="header-left">
+      <!-- Status Icon -->
+      <div class="header-icon tone-{{ statusTone }}">
+        <span class="material-symbols-outlined header-icon-symbol">{{ statusIcon }}</span>
+      </div>
+
+      <div class="header-text">
+        <!-- Tags row -->
+        <div class="header-tags">
+          <span class="record-code">#{{ borrowIdLable }}</span>
+          <span class="status-pill tone-{{ statusTone }}">
+            <span class="material-symbols-outlined pill-icon">{{ statusIcon }}</span>
+            {{ statusLabel }} - {{returnDateLabel}}
+          </span>
+        </div>
+
+        <!-- Book title + author -->
+        <div class="book-preview">
+          <img class="preview-cover" [src]="bookCoverSrc" [alt]="bookTitle" />
+          <div class="preview-text">
+            <span class="preview-title">{{ bookTitle }}</span>
+            <span class="preview-author">{{ bookAuthor }}</span>
+          </div>
+        </div>
+
+        <!-- Meta row -->
+        <div class="header-meta">
+          <span class="meta-item">
+            <span class="material-symbols-outlined meta-icon">calendar_today</span>
+            Mượn: <strong>{{ borrowDateLabel }}</strong>
+          </span>
+          <span class="meta-item tone-{{ dueDateTone }}">
+            <span class="material-symbols-outlined meta-icon">
+              {{ dueDateTone === 'error' ? 'event_busy' : (dueDateTone === 'secondary' ? 'schedule' : 'event_available') }}
+            </span>
+            Hạn trả: {{ dueDateLabel }}
+          </span>
+          <span class="meta-item">
+            <span class="material-symbols-outlined meta-icon">person</span>
+            Thủ thư: {{ librarianLabel }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: fine + toggle -->
+    <div class="header-right">
+      <div class="fine-info">
+        <span class="fine-label">{{ fineLabel }}</span>
+        <span class="fine-value tone-{{ fineTone }}">{{ fineAmountVnd }}</span>
+      </div>
+      <button class="toggle-btn" type="button" (click)="$event.stopPropagation(); toggle()">
+        <span>{{ toggleLabel }}</span>
+        <span class="material-symbols-outlined toggle-icon" [class.expanded]="expanded()">{{ toggleIcon }}</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Expandable Detail -->
+  @if (expanded()) {
+    <div class="details">
+      <div class="detail-grid">
+        <!-- Book info -->
+        <div class="detail-section">
+          <h4 class="section-title">Thông tin ấn phẩm</h4>
+          <div class="detail-row">
+            <span class="detail-key">Mã vạch</span>
+            <span class="detail-val mono">{{ bookCode }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-key">Vị trí kệ</span>
+            <span class="detail-val">{{ shelfCode }} — {{ shelfLocation }}</span>
+          </div>
+        </div>
+
+        <!-- Borrow record info -->
+        <div class="detail-section">
+          <h4 class="section-title">Thông tin phiếu mượn</h4>
+          <div class="detail-row">
+            <span class="detail-key">Mã phiếu</span>
+            <span class="detail-val mono">#{{ recordIdLabel }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-key">Ngày mượn</span>
+            <span class="detail-val">{{ borrowDateLabel }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-key">Hạn trả</span>
+            <span class="detail-val tone-{{ dueDateTone }}">{{ dueDateLabel }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-key">Ngày trả thực tế</span>
+            <span class="detail-val">
+              {{ record.returnDate ? record.returnDate.toLocaleDateString('vi-VN') : '—' }}
+            </span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-key">Thủ thư</span>
+            <span class="detail-val">{{ librarianLabel }}</span>
+          </div>
+        </div>
+
+        <!-- Fine -->
+        <div class="detail-section">
+          <h4 class="section-title">Phí phạt</h4>
+          <div class="detail-row">
+            <span class="detail-key">Số tiền</span>
+            <span class="detail-val fine-amount tone-{{ fineTone }}">{{ fineAmountVnd }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-key">Trạng thái</span>
+            <span class="detail-val">
+              {{ record.returnDate ? 'Đã thanh toán tại quầy' : 'Chưa thanh toán' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overdue action strip -->
+      @if (isOverdueUnReturned || isOverdueReturned) {
+        <div class="overdue-strip">
+          <div class="strip-left">
+            <span class="material-symbols-outlined strip-icon">report</span>
+            <span class="strip-amount">
+              Tổng tiền phạt tạm tính: {{ fineAmountVnd }}
+            </span>
+            <span class="strip-note">
+              • Vui lòng mang sách đến Quầy thủ thư để hoàn tất thủ tục trả sách và nộp phạt.
+            </span>
+          </div>
+          <div class="strip-right">
+            <span class="strip-desk-label">Địa điểm trả sách:</span>
+            <span class="strip-desk-value">Quầy thủ thư — Tầng 1</span>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+</article>

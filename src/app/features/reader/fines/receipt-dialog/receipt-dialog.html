@@ -1,0 +1,64 @@
+<dialog
+  class="receipt-dialog"
+  #dialog
+  id="receipt-dialog"
+>
+  <div class="receipt-dialog__content">
+    <div class="receipt-dialog__header">
+      <div class="receipt-dialog__title-group">
+        <span class="material-symbols-outlined receipt-dialog__title-icon">verified</span>
+        <h4 class="receipt-dialog__title">Chi tiết biên lai điện tử</h4>
+      </div>
+      <button
+        class="receipt-dialog__close"
+        (click)="close()"
+        type="button"
+      >
+        <span class="material-symbols-outlined receipt-dialog__close-icon">close</span>
+      </button>
+    </div>
+
+    <div class="receipt-dialog__body">
+      <div class="receipt-dialog__row">
+        <span class="receipt-dialog__key">Mã biên lai:</span>
+        <span class="receipt-dialog__value receipt-dialog__value--code">{{ payment?.id || '-' }}</span>
+      </div>
+      <div class="receipt-dialog__row">
+        <span class="receipt-dialog__key">Thời gian:</span>
+        <span class="receipt-dialog__value">{{ formattedDate }}</span>
+      </div>
+      <div class="receipt-dialog__row">
+        <span class="receipt-dialog__key">Số tiền thu:</span>
+        <span class="receipt-dialog__value receipt-dialog__value--amount">{{ formattedAmount }}</span>
+      </div>
+      <div class="receipt-dialog__row">
+        <span class="receipt-dialog__key">Phương thức:</span>
+        <span class="receipt-dialog__value">
+          {{ payment?.paymentMethod === 'TRANSFER' ? 'Chuyển khoản' : 'Tiền mặt' }}
+        </span>
+      </div>
+      <div class="receipt-dialog__row">
+        <span class="receipt-dialog__key">Thủ thư xác nhận:</span>
+        <span class="receipt-dialog__value">{{ payment?.receivedByUsername || '-' }}</span>
+      </div>
+    </div>
+
+    <div class="receipt-dialog__footer">
+      <button
+        class="receipt-dialog__print"
+        (click)="onPrint.emit()"
+        type="button"
+      >
+        <span class="material-symbols-outlined receipt-dialog__print-icon">print</span>
+        In biên lai
+      </button>
+      <button
+        class="receipt-dialog__confirm"
+        (click)="close()"
+        type="button"
+      >
+        Đóng
+      </button>
+    </div>
+  </div>
+</dialog>
