@@ -40,9 +40,12 @@ export class MemberService {
   /**
    * Get all members (flat list)
    */
-  getMembers(): Observable<ApiResponse<Member[]>> {
+  getMembers(keyword?: string): Observable<ApiResponse<Member[]>> {
+    const params = new URLSearchParams({
+      keyword: keyword ?? '',
+    });
     return this.http
-      .get<ApiResponse<MemberResponse[]>>(`${this.api}`)
+      .get<ApiResponse<MemberResponse[]>>(`${this.api}?${params.toString()}`)
       .pipe(
         map(response => ({
           ...response,

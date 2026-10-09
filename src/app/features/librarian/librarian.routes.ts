@@ -19,4 +19,16 @@ export const LIBRARIAN_ROUTES: Routes = [
     loadComponent: () =>
       import('./borrow-record/borrow-record').then(m => m.BorrowRecordPage),
   },
+  {
+    path: 'borrow-records/create',
+    data: { title: 'Lập phiếu mượn mới' },
+    loadComponent: () =>
+      import('./borrow-create/borrow-create').then(m => m.BorrowCreatePage),
+  },
+  {
+    path: 'return-book',
+    data: { title: 'Nhận trả sách & Ghi nhận phạt' },
+    loadComponent: () =>
+      import('./return-book/return-book').then(m => m.ReturnBookPage),
+  },
 ];

@@ -135,7 +135,7 @@
     <!-- Drawer Actions -->
     <footer class="drawer__footer">
       @if (status() === 'overdue' || status() === 'borrowing') {
-        <button class="drawer__action-btn drawer__action-btn--primary" type="button">
+        <button class="drawer__action-btn drawer__action-btn--primary" type="button" (click)="navigateToReturnBook()">
           <span class="material-symbols-outlined">assignment_turned_in</span>
           <span>Nhận trả sách & Thu tiền phạt ({{ formatCurrency(totalFine()) }}đ)</span>
         </button>

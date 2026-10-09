@@ -1,0 +1,215 @@
+:host {
+  display: block;
+}
+
+.fine-schedule {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border-radius: var(--radius-xl);
+  background: var(--surface-container-lowest, #ffffff);
+  box-shadow: var(--shadow-card);
+
+  // Header
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-sm);
+  }
+
+  &__title-group {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  &__icon {
+    font-size: 20px;
+    color: var(--primary, #1E40AF);
+  }
+
+  &__title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  &__regulation {
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    background: var(--surface-container, #e5eeff);
+    color: var(--on-surface-variant, #444653);
+  }
+
+  &__desc {
+    font-size: 12px;
+    color: var(--on-surface-variant, #444653);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  // Tiers
+  &__tiers {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding-top: var(--space-xs);
+  }
+
+  // Footer
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--surface-container, #e5eeff);
+  }
+
+  &__footer-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--on-surface-variant, #444653);
+    cursor: pointer;
+    transition: color 0.15s ease;
+
+    .material-symbols-outlined {
+      font-size: 14px;
+    }
+
+    &:hover {
+      color: var(--primary, #1E40AF);
+    }
+  }
+
+  &__version {
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--on-surface-variant, #444653);
+  }
+
+  // Payment
+  &__payment {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    padding: var(--space-md);
+    border-radius: var(--radius);
+    background: var(--surface-container, #e5eeff);
+  }
+
+  &__payment-icon {
+    font-size: 20px;
+    color: var(--primary, #1E40AF);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  &__payment-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__payment-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary, #1E40AF);
+  }
+
+  &__payment-desc {
+    font-size: 12px;
+    color: var(--on-surface, #0b1c30);
+    line-height: 1.5;
+  }
+}
+
+// Tier
+.tier {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  border-radius: var(--radius);
+  background: var(--surface-container-low, #eff4ff);
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: var(--surface-container, #e5eeff);
+  }
+
+  &--highlight {
+    background: var(--error-container, #ffdad6);
+
+    &:hover {
+      background: rgba(255, 218, 214, 0.8);
+    }
+
+    .tier__number {
+      background: var(--error-container, #ffdad6);
+      color: var(--on-error-container, #93000a);
+    }
+  }
+
+  &__number {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-fixed, #dde1ff);
+    color: var(--on-primary-fixed, #001453);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  &__desc {
+    font-size: 12px;
+    color: var(--on-surface-variant, #444653);
+  }
+
+  &__rate {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+
+  &__rate-value {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--tertiary, #611e00);
+    white-space: nowrap;
+
+    &--error {
+      color: var(--error, #EF4444);
+    }
+  }
+
+  &__rate-additional {
+    font-size: 12px;
+    color: var(--on-surface-variant, #444653);
+  }
+}

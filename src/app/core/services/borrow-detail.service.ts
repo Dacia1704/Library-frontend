@@ -70,6 +70,11 @@ export class BorrowDetailService {
       .get<ApiResponse<BorrowDetailSummaryResponse>>(`${this.api}/summary/me`);
   }
 
+  getSummary(userId: string): Observable<ApiResponse<BorrowDetailSummaryResponse>> {
+    return this.http
+      .get<ApiResponse<BorrowDetailSummaryResponse>>(`${this.api}/summary/${userId}`);
+  }
+
   getMyPagination(
     filter: BorrowDetailFilter,
     page: number,

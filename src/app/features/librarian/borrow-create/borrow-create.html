@@ -1,0 +1,46 @@
+<div class="borrow-create">
+  <app-borrow-create-breadcrumb></app-borrow-create-breadcrumb>
+  <app-borrow-create-header
+    [librarian]="currentLibrarian"
+    (onRefresh)="refreshForm()">
+  </app-borrow-create-header>
+
+  <div class="borrow-create__content">
+    <div class="borrow-create__left">
+      <app-borrow-create-violation-alert
+        [hasViolation]="hasViolation"
+        [violationMessage]="violationMessage"
+        (dismiss)="dismissViolation()">
+      </app-borrow-create-violation-alert>
+
+      <app-borrow-create-flow
+        [selectedPatron]="selectedPatron"
+        [selectedBooks]="selectedBooks"
+        [hasViolation]="hasViolation"
+        (patronChange)="onPatronChange($event)"
+        (bookSelected)="onBookSelected($event)"
+        (bookRemoved)="onBookRemoved($event)">
+      </app-borrow-create-flow>
+    </div>
+
+    <div class="borrow-create__right">
+      <app-borrow-create-summary
+        [librarian]="currentLibrarian"
+        [selectedPatron]="selectedPatron"
+        [selectedBooks]="selectedBooks"
+        [borrowDays]="borrowDays"
+        [dueDate]="dueDate"
+        [notes]="notes"
+        [quotaText]="quotaText"
+        [canCreate]="canCreateTicket"
+        (daysChange)="onDaysChange($event)"
+        (daysSet)="setBorrowDays($event)"
+        (notesChange)="onNotesChange($event)"
+        (submit)="submitBorrowTicket()"
+        (print)="printAndSave()"
+        (cancel)="cancelTransaction()"
+        (bookRemove)="onBookRemoved($event)">
+      </app-borrow-create-summary>
+    </div>
+  </div>
+</div>

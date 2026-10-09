@@ -1,0 +1,170 @@
+@if (isOpen && book) {
+  <div class="modal-overlay" (click)="onClose()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <!-- Modal Header -->
+      <header class="modal__header">
+        <div class="modal__header-left">
+          <div class="modal__header-icon">
+            <span class="material-symbols-outlined">receipt_long</span>
+          </div>
+          <div class="modal__header-info">
+            <h3 class="modal__title">Trả sách & ghi nhận phạt</h3>
+            <span class="modal__subtitle">Xác nhận hiện trạng và tính phí hoàn trả ấn phẩm</span>
+          </div>
+        </div>
+        <button class="modal__close-btn" type="button" (click)="onClose()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </header>
+
+      <!-- Modal Body -->
+      <div class="modal__body">
+        <!-- Book Summary -->
+        <div class="modal__book-summary">
+          <img class="modal__book-cover" [src]="book.coverUrl" [alt]="'Bìa sách ' + book.title" />
+          <div class="modal__book-info">
+            <span class="modal__book-title">{{ book.title }}</span>
+            <div class="modal__book-meta">
+              <span>Mã: <strong class="modal__book-barcode">{{ book.barcode }}</strong></span>
+              <span>•</span>
+              <span>Giá bìa: <strong>{{ formatCurrency(book.price) }}</strong></span>
+            </div>
+          </div>
+          <span class="modal__book-shelf">{{ book.shelf }}</span>
+        </div>
+
+        <!-- Overdue Notice -->
+        @if (overdueDays > 0) {
+          <div class="modal__overdue-notice">
+            <span class="material-symbols-outlined">schedule</span>
+            <div class="modal__overdue-info">
+              <span class="modal__overdue-title">Phạt nộp muộn (Tự động)</span>
+              <span class="modal__overdue-desc">Quá hạn: <strong>{{ overdueDays }} ngày</strong> × {{ formatCurrency(OVERDUE_FINE_PER_DAY) }}/ngày</span>
+            </div>
+            <span class="modal__overdue-amount">{{ formatCurrency(overdueFine) }}</span>
+          </div>
+        }
+
+        <!-- Book Condition Selection -->
+        <div class="modal__condition-section">
+          <div class="modal__condition-header">
+            <label class="modal__label">Tình trạng ấn phẩm thực tế:</label>
+            <span class="modal__label-hint">Chọn mức độ hư hại nếu có</span>
+          </div>
+          <div class="modal__condition-options">
+            @for (option of conditionOptions; track option.value) {
+              <label 
+                class="modal__condition-option"
+                [class.modal__condition-option--selected]="bookCondition() === option.value"
+                (click)="setBookCondition(option.value)"
+              >
+                <input 
+                  type="radio" 
+                  [value]="option.value"
+                  [checked]="bookCondition() === option.value"
+                  (change)="setBookCondition(option.value)"
+                />
+                <div class="modal__condition-content">
+                  <span class="modal__condition-label">{{ option.label }}</span>
+                  @if (option.description) {
+                    <span class="modal__condition-desc">{{ option.description }}</span>
+                  }
+                </div>
+              </label>
+            }
+          </div>
+        </div>
+
+        <!-- Notes Section -->
+        <div class="modal__notes-section">
+          <label class="modal__label">Ghi chú hiện trạng ấn phẩm:</label>
+          <textarea 
+            class="modal__textarea" 
+            rows="2" 
+            placeholder="Nhập ghi chú về tình trạng sách..."
+            [value]="note()"
+            (input)="onNoteChange($event)"
+          ></textarea>
+
+          <!-- Evidence Upload -->
+          <div class="modal__upload-section">
+            <span class="modal__label">Ảnh minh chứng hư hại (Tùy chọn):</span>
+            <div class="modal__upload-area">
+              @if (damageImageUrl()) {
+                <div class="modal__upload-preview">
+                  <img [src]="damageImageUrl()!" alt="Ảnh minh chứng" />
+                  <button class="modal__upload-remove" type="button">
+                    <span class="material-symbols-outlined">close</span>
+                  </button>
+                </div>
+              }
+              <div class="modal__upload-action" (click)="onUploadImage($event)">
+                <span class="material-symbols-outlined">add_a_photo</span>
+                <span>Chụp webcam hoặc tải ảnh</span>
+                <span class="modal__upload-hint">JPG, PNG (Tối đa 5MB)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fine Summary Table -->
+        <div class="modal__fine-section">
+          <span class="modal__label">Bảng tổng hợp mức phạt chi tiết:</span>
+          <div class="modal__fine-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Lý do</th>
+                  <th>Cách tính</th>
+                  <th class="modal__fine-table--right">Số tiền</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if (overdueFine > 0) {
+                  <tr>
+                    <td>Nộp muộn quá hạn</td>
+                    <td>{{ overdueDays }} ngày × {{ formatCurrency(OVERDUE_FINE_PER_DAY) }}</td>
+                    <td class="modal__fine-table--right">{{ formatCurrency(overdueFine) }}</td>
+                  </tr>
+                }
+                @if (conditionFine > 0) {
+                  <tr>
+                    <td>{{ getConditionLabel(bookCondition()) }}</td>
+                    <td>{{ getConditionCalcDesc() }}</td>
+                    <td class="modal__fine-table--right">{{ formatCurrency(conditionFine) }}</td>
+                  </tr>
+                }
+                @if (totalFine > 0) {
+                  <tr class="modal__fine-table--total">
+                    <td colspan="2">TỔNG PHẠT PHẢI THU:</td>
+                    <td class="modal__fine-table--total-value">{{ formatCurrency(totalFine) }}</td>
+                  </tr>
+                } @else {
+                  <tr class="modal__fine-table--total">
+                    <td colspan="2">Không có phạt</td>
+                    <td class="modal__fine-table--total-value">0 VNĐ</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Payment Method Selection -->
+      </div>
+
+      <!-- Modal Footer -->
+      <footer class="modal__footer">
+        <button class="modal__btn modal__btn--secondary" type="button" (click)="onClose()">
+          Hủy bỏ
+        </button>
+        <div class="modal__footer-right">
+          <button class="modal__btn modal__btn--primary" type="button" (click)="onConfirm()">
+            <span class="material-symbols-outlined">check_circle</span>
+            <span>Xác nhận trả sách{{ totalFine > 0 ? ' & Thu ' + formatCurrency(totalFine) : '' }}</span>
+          </button>
+        </div>
+      </footer>
+    </div>
+  </div>
+}

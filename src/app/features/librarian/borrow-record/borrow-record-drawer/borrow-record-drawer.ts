@@ -1,4 +1,5 @@
-import { Component, input, output, computed } from '@angular/core';
+import { Component, input, output, computed, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { BorrowRecord as BorrowRecordModel } from '@model/borrow-record/borrow-record';
 import { BorrowStatus } from '@model/enum/borrow-status.enum';
 
@@ -10,6 +11,8 @@ import { BorrowStatus } from '@model/enum/borrow-status.enum';
   styleUrls: ['./borrow-record-drawer.scss'],
 })
 export class BorrowRecordDrawerComponent {
+  private readonly router = inject(Router);
+
   // ===== Input =====
   readonly record = input<BorrowRecordModel | null>(null);
   // ===== Output =====
@@ -82,5 +85,14 @@ export class BorrowRecordDrawerComponent {
 
   close(): void {
     this.closed.emit();
+  }
+
+  navigateToReturnBook(): void {
+    // Close drawer and navigate to return book page
+    this.closed.emit();
+    // Pass the record ID as query param for pre-loading
+    this.router.navigate(['/librarian/return-book'], {
+      queryParams: { recordId: this.record()?.id }
+    });
   }
 }
