@@ -1,5 +1,6 @@
 import { MemberMapper } from "@model/member/member.mapper";
 import { UserMapper } from "@model/user/user.mapper";
+import { BookMapper } from "@model/book/book.mapper";
 import { BorrowRecord } from "./borrow-record";
 import { BorrowRecordResponse } from "./response/borrow-record-response";
 
@@ -17,9 +18,7 @@ export class BorrowRecordMapper {
       note: res.note,
       borrowDetails: res.borrowDetails.map(d => ({
         id: d.id,
-        bookId: d.book.id,
-        bookTitle: d.book.title,
-        bookCode: d.book.bookCode,
+        book: BookMapper.toModel(d.book),
         returnDate: d.returnDate ? new Date(d.returnDate) : undefined,
         fineAmount: d.fineAmount ?? 0,
         borrowStatus: d.borrowStatus,

@@ -77,13 +77,25 @@ export class FineService {
   }
 
   /**
-   * Lấy tổng tiền phạt còn phải nộp theo userId (cho librarian)
+   * Lấy tổng tiền phạt theo userId (cho librarian)
    * GET /api/fines/total
    */
   getTotalByUserId(userId: number): Observable<number> {
     return this.http
       .get<ApiResponse<number>>(`${this.api}/total`, {
         params: new HttpParams().set('userId', userId.toString()),
+      })
+      .pipe(map((response) => response.data));
+  }
+
+  /**
+   * Lấy tổng tiền phạt theo memberId (cho librarian)
+   * GET /api/fines/total
+   */
+  getTotalByMemberId(memberId: number): Observable<number> {
+    return this.http
+      .get<ApiResponse<number>>(`${this.api}/total`, {
+        params: new HttpParams().set('memberId', memberId.toString()),
       })
       .pipe(map((response) => response.data));
   }

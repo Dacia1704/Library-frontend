@@ -1,0 +1,91 @@
+<div class="toolbar">
+  <div class="filters-grid">
+    <!-- Search Name -->
+    <div class="filter-item">
+      <label class="filter-label">Tên / Username</label>
+      <div class="input-with-icon">
+        <span class="material-symbols-outlined">search</span>
+        <input 
+          type="text"
+          class="filter-input"
+          placeholder="Tìm họ tên, username..."
+          [(ngModel)]="searchName"
+        />
+      </div>
+    </div>
+
+    <!-- Search Email -->
+    <div class="filter-item">
+      <label class="filter-label">Email</label>
+      <div class="input-with-icon">
+        <span class="material-symbols-outlined">mail</span>
+        <input 
+          type="text"
+          class="filter-input"
+          placeholder="Tìm theo email..."
+          [(ngModel)]="searchEmail"
+        />
+      </div>
+    </div>
+
+    <!-- Role Select -->
+    <div class="filter-item">
+      <label class="filter-label">Vai trò</label>
+      <div class="select-wrapper">
+        <select class="filter-select" [(ngModel)]="selectedRole">
+          @for (role of roles; track role.value) {
+            <option [value]="role.value">{{ role.label }}</option>
+          }
+        </select>
+        <span class="material-symbols-outlined select-icon">expand_more</span>
+      </div>
+    </div>
+
+    <!-- Card Status -->
+    <div class="filter-item">
+      <label class="filter-label">Thẻ thành viên</label>
+      <div class="select-wrapper">
+        <select class="filter-select" [(ngModel)]="selectedCardStatus">
+          @for (status of cardStatuses; track status.value) {
+            <option [value]="status.value">{{ status.label }}</option>
+          }
+        </select>
+        <span class="material-symbols-outlined select-icon">expand_more</span>
+      </div>
+    </div>
+
+    <!-- Phone Search -->
+    <div class="filter-item">
+      <label class="filter-label">Số điện thoại</label>
+      <div class="input-with-icon">
+        <span class="material-symbols-outlined">call</span>
+        <input 
+          type="text"
+          class="filter-input"
+          placeholder="Tìm theo SĐT..."
+          [(ngModel)]="searchPhone"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Strip -->
+  <div class="action-strip">
+    <div class="left-actions">
+      <label class="toggle-wrapper">
+        <input type="checkbox" [(ngModel)]="showDeleted" class="toggle-input" />
+        <span class="toggle-switch"></span>
+        <span class="toggle-label">Hiện người dùng đã xóa</span>
+      </label>
+      <span class="deleted-count">Đã xóa 3</span>
+    </div>
+
+    <div class="right-actions">
+      <button class="btn-reset" (click)="resetFilters()">
+        <span class="material-symbols-outlined">restart_alt</span>
+        Đặt lại bộ lọc
+      </button>
+      <span class="result-count">Đang lọc: <strong>8 kết quả</strong></span>
+    </div>
+  </div>
+</div>

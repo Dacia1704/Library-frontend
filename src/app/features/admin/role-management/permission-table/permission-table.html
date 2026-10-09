@@ -1,0 +1,68 @@
+<div class="permission-table-container">
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <div class="search-wrapper">
+        <span class="material-symbols-outlined">search</span>
+        <input type="text" class="search-input" placeholder="Tìm mã quyền hạn e.g. BOOK_WRITE, BORROW_RETURN..." />
+      </div>
+      <button class="btn-toolbar">
+        <span class="material-symbols-outlined">category</span>
+        Tất cả 7 nhóm chức năng
+      </button>
+    </div>
+    <button class="btn-primary">
+      <span class="material-symbols-outlined">add_circle</span>
+      + Thêm quyền hệ thống mới
+    </button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrapper">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th class="col-num text-center">#</th>
+          <th class="col-code">Mã quyền hạn (Key)</th>
+          <th class="col-name">Tên quyền hiển thị</th>
+          <th class="col-category">Nhóm chức năng</th>
+          <th class="col-desc">Mô tả mục đích</th>
+          <th class="col-risk">Cấp độ rủi ro</th>
+          <th class="col-actions text-right">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (perm of permissions; track perm.id) {
+          <tr>
+            <td class="col-num text-center">{{ perm.id | number: '2.0' }}</td>
+            <td class="col-code">
+              <span class="code-badge">{{ perm.code }}</span>
+            </td>
+            <td class="col-name">
+              <span class="perm-name">{{ perm.name }}</span>
+            </td>
+            <td class="col-category">
+              <span class="category-badge">{{ perm.category }}</span>
+            </td>
+            <td class="col-desc">
+              <span class="desc-text">{{ perm.description }}</span>
+            </td>
+            <td class="col-risk">
+              <span class="risk-badge" [ngClass]="perm.riskClass">{{ perm.riskLevel }}</span>
+            </td>
+            <td class="col-actions text-right">
+              <button class="action-btn">
+                <span class="material-symbols-outlined">edit</span>
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer -->
+  <div class="table-footer">
+    <span>Hiển thị 4 trong tổng số 32 quyền hạn hệ thống định nghĩa trong cơ sở dữ liệu.</span>
+  </div>
+</div>

@@ -27,4 +27,12 @@ export const routes: Routes = [
       { path: '', loadChildren: () => import('./features/librarian/librarian.routes').then(m => m.LIBRARIAN_ROUTES) },
     ],
   },
+  {
+    path: 'admin',
+    canActivate: [roleGuard(['ADMIN'])],
+    loadComponent: () => import('./layouts/admin-layout/admin-layout').then(m => m.AdminLayout),
+    children: [
+      { path: '', loadChildren: () => import('./features/admin/admin.routes').then(m => m.ADMIN_ROUTES) },
+    ],
+  },
 ];

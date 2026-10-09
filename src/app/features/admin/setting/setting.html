@@ -1,0 +1,55 @@
+<div class="setting-page">
+  
+  <!-- Header -->
+  <app-setting-header />
+
+  <!-- Quick Stats -->
+  <div class="stats-strip">
+    <div class="stat-item">
+      <span class="stat-label">Tổng tham số</span>
+      <span class="stat-value">14</span>
+      <span class="stat-sub">
+        <span class="material-symbols-outlined">check</span> 100% Hoạt động
+      </span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Mức trần quá hạn</span>
+      <span class="stat-value">5.000<span class="stat-unit">đ</span></span>
+      <span class="stat-sub">Áp dụng trên 1 ngày/cuốn</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Chu kỳ mượn chuẩn</span>
+      <span class="stat-value">14<span class="stat-unit">ngày</span></span>
+      <span class="stat-sub">Tối đa 5 cuốn/thẻ</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Khóa nợ thư viện</span>
+      <span class="stat-value">50.000<span class="stat-unit">đ</span></span>
+      <span class="stat-sub">Ngưỡng tự động tạm khóa</span>
+    </div>
+  </div>
+
+  <!-- Setting Groups -->
+  <app-setting-groups />
+
+  <!-- Setting Table -->
+  <app-setting-table />
+
+  <!-- Audit Banner -->
+  <div class="audit-banner">
+    <div class="audit-icon">
+      <span class="material-symbols-outlined">verified_user</span>
+    </div>
+    <div class="audit-content">
+      <span class="audit-title">Cơ chế kiểm soát an toàn & Nhật ký kiểm toán</span>
+      <p class="audit-desc">
+        Mọi thay đổi cấu hình trên trang này đều tạo bản ghi Audit Log được mã hóa HMAC-SHA256, tự động đồng bộ sang cụm máy chủ sao lưu lúc 00:00 hàng ngày.
+      </p>
+    </div>
+    <button class="audit-btn">
+      <span class="material-symbols-outlined">receipt_long</span>
+      Xem nhật ký thay đổi
+    </button>
+  </div>
+
+</div>

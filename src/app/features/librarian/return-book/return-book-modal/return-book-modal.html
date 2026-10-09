@@ -21,7 +21,7 @@
       <div class="modal__body">
         <!-- Book Summary -->
         <div class="modal__book-summary">
-          <img class="modal__book-cover" [src]="book.coverUrl" [alt]="'Bìa sách ' + book.title" />
+          <img class="modal__book-cover" [src]="coverSrc(book)" [alt]="'Bìa sách ' + book.title" />
           <div class="modal__book-info">
             <span class="modal__book-title">{{ book.title }}</span>
             <div class="modal__book-meta">
@@ -30,7 +30,7 @@
               <span>Giá bìa: <strong>{{ formatCurrency(book.price) }}</strong></span>
             </div>
           </div>
-          <span class="modal__book-shelf">{{ book.shelf }}</span>
+          <span class="modal__book-shelf">{{ book.shelfCode }}</span>
         </div>
 
         <!-- Overdue Notice -->
@@ -39,7 +39,7 @@
             <span class="material-symbols-outlined">schedule</span>
             <div class="modal__overdue-info">
               <span class="modal__overdue-title">Phạt nộp muộn (Tự động)</span>
-              <span class="modal__overdue-desc">Quá hạn: <strong>{{ overdueDays }} ngày</strong> × {{ formatCurrency(OVERDUE_FINE_PER_DAY) }}/ngày</span>
+              <span class="modal__overdue-desc">Quá hạn: <strong>{{ overdueDays }} ngày</strong> × {{ formatCurrency(overdueFinePerDay) }}/ngày</span>
             </div>
             <span class="modal__overdue-amount">{{ formatCurrency(overdueFine) }}</span>
           </div>
@@ -123,7 +123,7 @@
                 @if (overdueFine > 0) {
                   <tr>
                     <td>Nộp muộn quá hạn</td>
-                    <td>{{ overdueDays }} ngày × {{ formatCurrency(OVERDUE_FINE_PER_DAY) }}</td>
+                    <td>{{ overdueDays }} ngày × {{ formatCurrency(overdueFinePerDay) }}</td>
                     <td class="modal__fine-table--right">{{ formatCurrency(overdueFine) }}</td>
                   </tr>
                 }

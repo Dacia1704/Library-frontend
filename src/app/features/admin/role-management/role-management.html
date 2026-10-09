@@ -1,0 +1,95 @@
+<div class="role-management">
+  
+  <!-- Header -->
+  <app-role-management-header />
+
+  <!-- Notification Banner -->
+  <div class="notification-banner">
+    <div class="banner-icon">
+      <span class="material-symbols-outlined">admin_panel_settings</span>
+    </div>
+    <div class="banner-content">
+      <div class="banner-title">
+        <span>Kiểm soát truy cập phân tán (RBAC v2.4)</span>
+        <span class="banner-badge">Bảo mật cao</span>
+      </div>
+      <p class="banner-desc">
+        Tất cả thay đổi quyền hạn được ghi nhật ký tự động vào Audit Log. Quyền đặc quyền hệ thống yêu cầu xác thực 2 lớp.
+      </p>
+    </div>
+    <button class="banner-btn">
+      <span class="material-symbols-outlined">history</span>
+      Nhật ký phân quyền
+    </button>
+  </div>
+
+  <!-- KPI Counters -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-info">
+        <span class="kpi-label">Tổng số vai trò</span>
+        <span class="kpi-value">5</span>
+        <span class="kpi-sub">
+          <span class="material-symbols-outlined">check_circle</span>
+          1 vai trò hệ thống mặc định
+        </span>
+      </div>
+      <div class="kpi-icon">
+        <span class="material-symbols-outlined">badge</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-info">
+        <span class="kpi-label">Tổng quyền hệ thống</span>
+        <span class="kpi-value">32</span>
+        <span class="kpi-sub">
+          <span class="material-symbols-outlined">folder_managed</span>
+          Phân bổ trên 7 phân hệ
+        </span>
+      </div>
+      <div class="kpi-icon">
+        <span class="material-symbols-outlined">key</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-info">
+        <span class="kpi-label">Người dùng đã gán quyền</span>
+        <span class="kpi-value">1.248</span>
+        <span class="kpi-sub">
+          <span class="material-symbols-outlined">trending_up</span>
+          100% tài khoản hoạt động
+        </span>
+      </div>
+      <div class="kpi-icon">
+        <span class="material-symbols-outlined">groups</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-info">
+        <span class="kpi-label">Quyền hạn rủi ro cao</span>
+        <span class="kpi-value kpi-value-warn">6</span>
+        <span class="kpi-sub kpi-sub-warn">
+          <span class="material-symbols-outlined">security</span>
+          Chỉ Super Admin & Ca trưởng
+        </span>
+      </div>
+      <div class="kpi-icon">
+        <span class="material-symbols-outlined">shield_person</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <app-role-management-tabs 
+    [rolesComponent]="rolesTable"
+    [permissionsComponent]="permissionsTable"
+  />
+
+  <!-- Tab Contents -->
+  <app-role-table #rolesTable />
+  <app-permission-table #permissionsTable />
+
+</div>

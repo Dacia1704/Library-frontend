@@ -1,0 +1,32 @@
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--label-md);
+  color: var(--text-secondary);
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--primary);
+    }
+
+    .material-symbols-outlined {
+      font-size: 16px;
+    }
+  }
+
+  .material-symbols-outlined {
+    font-size: 14px;
+  }
+
+  &__current {
+    font-weight: 600;
+    color: var(--primary);
+  }
+}

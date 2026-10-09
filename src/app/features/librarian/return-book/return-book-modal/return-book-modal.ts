@@ -1,21 +1,28 @@
-import { Component, EventEmitter, Input, Output, signal, computed } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BorrowedBook } from '../return-book-table/return-book-table';
+import { SettingService } from '@core/services/setting.service';
+import { ImageUtils } from '@shared/utils/image-utils';
 
 export type BookCondition = 'good' | 'damaged-light' | 'damaged-heavy' | 'damaged-unusable' | 'lost';
 export type PaymentMethod = 'cash' | 'vietqr' | 'debt';
 
 export interface ReturnModalData {
-  book: BorrowedBook;
-  overdueDays: number;
-  overdueFine: number;
   bookCondition: BookCondition;
-  conditionFine: number;
   totalFine: number;
   paymentMethod: PaymentMethod;
   note: string;
   damageImageUrl?: string;
+}
+
+export interface BookForReturn {
+  id: string;
+  title: string;
+  barcode: string;
+  cover: string;
+  price: number;
+  shelfCode: string;
+  overdueDays: number;
 }
 
 @Component({
@@ -27,14 +34,14 @@ export interface ReturnModalData {
 })
 export class ReturnBookModalComponent {
   @Input() isOpen = false;
-  @Input() set data(value: BorrowedBook | null) {
+  @Input() set data(value: BookForReturn | null) {
     this._book.set(value);
     this.resetForm();
   }
   @Output() close = new EventEmitter<void>();
   @Output() confirm = new EventEmitter<ReturnModalData>();
 
-  private _book = signal<BorrowedBook | null>(null);
+  private _book = signal<BookForReturn | null>(null);
   
   // Form state
   bookCondition = signal<BookCondition>('good');
@@ -42,16 +49,28 @@ export class ReturnBookModalComponent {
   note = signal('');
   damageImageUrl = signal<string | null>(null);
 
-  // Fine rates
-  readonly OVERDUE_FINE_PER_DAY = 5000;
-  readonly DAMAGED_LIGHT_RATE = 0.20;
-  readonly DAMAGED_HEAVY_RATE = 0.50;
-  readonly DAMAGED_UNUSABLE_RATE = 1.0;
-  readonly LOST_RATE = 1.0;
-  readonly RECOVERY_FEE = 10000;
-  readonly CATALOG_FEE = 20000;
+  // Fine rates from settings
+  private get overdueFinePerDay(): number {
+    return SettingService.getFineOverduePerDay();
+  }
 
-  get book(): BorrowedBook | null {
+  private get damagedLightRate(): number {
+    return SettingService.getFineDamagedLightRate();
+  }
+
+  private get damagedHeavyRepairableRate(): number {
+    return SettingService.getFineDamagedHeavyRepairableRate();
+  }
+
+  private get damagedHeavyIrreparableRate(): number {
+    return SettingService.getFineDamagedHeavyIrreparableRate();
+  }
+
+  private get lostRate(): number {
+    return SettingService.getFineLostRate();
+  }
+
+  get book(): BookForReturn | null {
     return this._book();
   }
 
@@ -60,23 +79,21 @@ export class ReturnBookModalComponent {
   }
 
   get overdueFine(): number {
-    return this.overdueDays * this.OVERDUE_FINE_PER_DAY;
+    return this.overdueDays * this.overdueFinePerDay;
   }
 
   get conditionFine(): number {
-    const book = this._book();
-    if (!book) return 0;
-    const price = book.price;
+    const price = this._book()?.price ?? 0;
     
     switch (this.bookCondition()) {
       case 'damaged-light':
-        return price * this.DAMAGED_LIGHT_RATE;
+        return price * this.damagedLightRate;
       case 'damaged-heavy':
-        return price * this.DAMAGED_HEAVY_RATE;
+        return price * this.damagedHeavyRepairableRate;
       case 'damaged-unusable':
-        return price * this.DAMAGED_UNUSABLE_RATE + this.RECOVERY_FEE;
+        return price * this.damagedHeavyIrreparableRate;
       case 'lost':
-        return price * this.LOST_RATE + this.CATALOG_FEE;
+        return price * this.lostRate;
       default:
         return 0;
     }
@@ -91,8 +108,8 @@ export class ReturnBookModalComponent {
       { value: 'good', label: 'Bình thường (không phạt)', description: '' },
       { value: 'damaged-light', label: 'Hư hỏng nhẹ (20%)', description: 'Rách góc, gập nếp nhẹ' },
       { value: 'damaged-heavy', label: 'Hư hỏng nặng - còn sửa (50%)', description: 'Bung gáy, rách nhiều' },
-      { value: 'damaged-unusable', label: 'Hư hỏng nặng - không dùng được (100% + phí)', description: 'Mất trang nội dung, ướt sũng hoặc biến dạng' },
-      { value: 'lost', label: 'Làm mất sách', description: 'Không thể hoàn trả bản gốc' },
+      { value: 'damaged-unusable', label: 'Hư hỏng nặng - không dùng được (100%)', description: 'Mất trang nội dung, ướt sũng hoặc biến dạng' },
+      { value: 'lost', label: 'Làm mất sách (100%)', description: 'Không thể hoàn trả bản gốc' },
     ];
   }
 
@@ -126,15 +143,8 @@ export class ReturnBookModalComponent {
   }
 
   onConfirm(): void {
-    const book = this._book();
-    if (!book) return;
-
     const data: ReturnModalData = {
-      book,
-      overdueDays: this.overdueDays,
-      overdueFine: this.overdueFine,
       bookCondition: this.bookCondition(),
-      conditionFine: this.conditionFine,
       totalFine: this.totalFine,
       paymentMethod: this.paymentMethod(),
       note: this.note(),
@@ -165,21 +175,23 @@ export class ReturnBookModalComponent {
   }
 
   getConditionCalcDesc(): string {
-    const book = this._book();
-    if (!book) return '';
-    const price = book.price;
+    const price = this._book()?.price ?? 0;
     
     switch (this.bookCondition()) {
       case 'damaged-light':
-        return `20% × ${this.formatCurrency(price)} (Giá bìa)`;
+        return `${this.damagedLightRate * 100}% × ${this.formatCurrency(price)} (Giá bìa)`;
       case 'damaged-heavy':
-        return `50% × ${this.formatCurrency(price)} (Giá bìa)`;
+        return `${this.damagedHeavyRepairableRate * 100}% × ${this.formatCurrency(price)} (Giá bìa)`;
       case 'damaged-unusable':
-        return `100% × ${this.formatCurrency(price)} + ${this.formatCurrency(this.RECOVERY_FEE)}`;
+        return `${this.damagedHeavyIrreparableRate * 100}% × ${this.formatCurrency(price)} (Giá bìa)`;
       case 'lost':
-        return `100% × ${this.formatCurrency(price)} + ${this.formatCurrency(this.CATALOG_FEE)}`;
+        return `${this.lostRate * 100}% × ${this.formatCurrency(price)} (Giá bìa)`;
       default:
         return '';
     }
+  }
+
+  coverSrc(book: BookForReturn): string {
+    return ImageUtils.toImageSrc(book?.cover);
   }
 }

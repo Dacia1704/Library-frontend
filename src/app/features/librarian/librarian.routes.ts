@@ -31,4 +31,22 @@ export const LIBRARIAN_ROUTES: Routes = [
     loadComponent: () =>
       import('./return-book/return-book').then(m => m.ReturnBookPage),
   },
+  {
+    path: 'fines/receive',
+    data: { title: 'Thu tiền phạt độc giả' },
+    loadComponent: () =>
+      import('./receive-fine/receive-fine').then(m => m.ReceiveFinePage),
+  },
+  {
+    path: 'books',
+    data: { title: 'Kho sách' },
+    loadComponent: () =>
+      import('./book/book').then(m => m.BookPage),
+  },
+  {
+    path: 'catalog',
+    data: { title: 'Danh mục sách & Siêu dữ liệu' },
+    loadComponent: () =>
+      import('./category-author-publisher/category-author-publisher').then(m => m.CategoryAuthorPublisherPage),
+  },
 ];

@@ -1,0 +1,178 @@
+<div class="book-search">
+  <!-- Search Input & Reset Button -->
+  <div class="book-search__row">
+    <div class="book-search__input-wrapper">
+      <span class="material-symbols-outlined book-search__search-icon">search</span>
+      <input
+        class="book-search__input"
+        type="text"
+        placeholder="Tìm theo tên sách, từ khóa nội dung, mã kệ hoặc ISBN..."
+        (input)="onKeywordChange($event)"
+      />
+      @if (isClearVisible()) {
+        <button class="book-search__clear-btn" type="button" (click)="onClearSearch()">
+          Xóa
+        </button>
+      }
+    </div>
+    <div class="book-search__controls">
+      <button class="book-search__reset-btn" type="button" (click)="onReset()">
+        <span class="material-symbols-outlined book-search__reset-icon">restart_alt</span>
+        <span>Đặt lại bộ lọc</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Filter Dropdowns Grid -->
+  <div class="book-search__filters">
+    <!-- Filter: Danh mục (Multi-select) -->
+    <div class="book-search__filter">
+      <label class="book-search__filter-label">Danh mục</label>
+      <div class="book-search__multi-select">
+        <button
+          class="book-search__multi-select-trigger"
+          type="button"
+          (click)="toggleDropdown('category')"
+        >
+          <span class="book-search__multi-select-text">
+            @if (getSelectedCategoriesCount() === 0) {
+              Tất cả danh mục
+            } @else {
+              {{ getSelectedCategoriesCount() }} danh mục
+            }
+          </span>
+          <span class="material-symbols-outlined book-search__multi-select-icon">expand_more</span>
+        </button>
+        @if (openDropdown() === 'category') {
+          <div class="book-search__multi-select-dropdown">
+            @for (cat of categories(); track cat.id) {
+              <label class="book-search__multi-select-option">
+                <input
+                  type="checkbox"
+                  [checked]="isCategorySelected(cat.id)"
+                  (change)="toggleCategory(cat.id)"
+                />
+                <span>{{ cat.name }}</span>
+              </label>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Filter: Tác giả (Multi-select) -->
+    <div class="book-search__filter">
+      <label class="book-search__filter-label">Tác giả</label>
+      <div class="book-search__multi-select">
+        <button
+          class="book-search__multi-select-trigger"
+          type="button"
+          (click)="toggleDropdown('author')"
+        >
+          <span class="book-search__multi-select-text">
+            @if (getSelectedAuthorsCount() === 0) {
+              Tất cả tác giả
+            } @else {
+              {{ getSelectedAuthorsCount() }} tác giả
+            }
+          </span>
+          <span class="material-symbols-outlined book-search__multi-select-icon">expand_more</span>
+        </button>
+        @if (openDropdown() === 'author') {
+          <div class="book-search__multi-select-dropdown">
+            @for (author of authors(); track author.id) {
+              <label class="book-search__multi-select-option">
+                <input
+                  type="checkbox"
+                  [checked]="isAuthorSelected(author.id)"
+                  (change)="toggleAuthor(author.id)"
+                />
+                <span>{{ author.name }}</span>
+              </label>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Filter: Nhà xuất bản (Multi-select) -->
+    <div class="book-search__filter">
+      <label class="book-search__filter-label">Nhà xuất bản</label>
+      <div class="book-search__multi-select">
+        <button
+          class="book-search__multi-select-trigger"
+          type="button"
+          (click)="toggleDropdown('publisher')"
+        >
+          <span class="book-search__multi-select-text">
+            @if (getSelectedPublishersCount() === 0) {
+              Tất cả NXB
+            } @else {
+              {{ getSelectedPublishersCount() }} NXB
+            }
+          </span>
+          <span class="material-symbols-outlined book-search__multi-select-icon">expand_more</span>
+        </button>
+        @if (openDropdown() === 'publisher') {
+          <div class="book-search__multi-select-dropdown">
+            @for (pub of publishers(); track pub.id) {
+              <label class="book-search__multi-select-option">
+                <input
+                  type="checkbox"
+                  [checked]="isPublisherSelected(pub.id)"
+                  (change)="togglePublisher(pub.id)"
+                />
+                <span>{{ pub.name }}</span>
+              </label>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Filter: ISBN -->
+    <div class="book-search__filter">
+      <label class="book-search__filter-label">Mã ISBN</label>
+      <input
+        class="book-search__input-small"
+        type="text"
+        placeholder="978-604..."
+        (input)="onIsbnChange($event)"
+      />
+    </div>
+
+    <!-- Filter: Năm xuất bản -->
+    <div class="book-search__filter">
+      <label class="book-search__filter-label">Năm xuất bản</label>
+      <div class="book-search__select-wrapper">
+        <select
+          class="book-search__select"
+          (change)="onYearChange($event)"
+        >
+          <option value="all">Tất cả năm</option>
+          @for (year of years(); track year) {
+            <option [value]="year">{{ year }}</option>
+          }
+        </select>
+        <span class="material-symbols-outlined book-search__select-icon">expand_more</span>
+      </div>
+    </div>
+
+    <!-- Filter: Tình trạng kho -->
+    <div class="book-search__filter">
+      <label class="book-search__filter-label">Tình trạng kho</label>
+      <div class="book-search__select-wrapper">
+        <select
+          class="book-search__select"
+          (change)="onStockStatusChange($event)"
+        >
+          <option value="all">Tất cả tình trạng</option>
+          <option value="available">Còn sách trong kho</option>
+          <option value="out_of_stock">Hết sách (Còn lại = 0)</option>
+          <option value="low_stock">Sắp hết (≤ 2 cuốn)</option>
+        </select>
+        <span class="material-symbols-outlined book-search__select-icon">expand_more</span>
+      </div>
+    </div>
+  </div>
+</div>

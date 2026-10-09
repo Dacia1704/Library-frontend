@@ -1,24 +1,27 @@
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthService } from '@core/services/auth.service';
 import { ToastService } from '@core/services/toast.service';
+import { BorrowRecordService } from '@core/services/borrow-record.service';
+import { BorrowDetailService } from '@core/services/borrow-detail.service';
+import { BorrowRecord } from '@model/borrow-record/borrow-record';
+import { BorrowDetail } from '@model/borrow-record/borrow-record';
+import { FineReason } from '@model/enum/fine-reason.enum';
 
 import { ReturnBookHeaderComponent } from './return-book-header/return-book-header';
 import { ReturnBookRecordCardComponent, RecordCardData } from './return-book-record-card/return-book-record-card';
 import { ReturnBookTableComponent, BorrowedBook } from './return-book-table/return-book-table';
 import { ReturnBookFineScheduleComponent } from './return-book-fine-schedule/return-book-fine-schedule';
 import { ReturnBookTipsComponent } from './return-book-tips/return-book-tips';
-import { ReturnBookModalComponent, ReturnModalData } from './return-book-modal/return-book-modal';
+import { ReturnBookModalComponent, BookCondition, PaymentMethod, BookForReturn } from './return-book-modal/return-book-modal';
 
 @Component({
   selector: 'app-return-book-page',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
     ReturnBookHeaderComponent,
     ReturnBookRecordCardComponent,
     ReturnBookTableComponent,
@@ -29,18 +32,20 @@ import { ReturnBookModalComponent, ReturnModalData } from './return-book-modal/r
   templateUrl: './return-book.html',
   styleUrls: ['./return-book.scss'],
 })
-export class ReturnBookPage {
+export class ReturnBookPage implements OnInit {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
   private readonly toast = inject(ToastService);
-  private readonly router = inject(Router);
+  private readonly borrowRecordService = inject(BorrowRecordService);
+  private readonly borrowDetailService = inject(BorrowDetailService);
 
   // ===== State =====
-  searchKeyword = signal('');
-  currentRecord = signal<RecordCardData | null>(null);
-  borrowedBooks = signal<BorrowedBook[]>([]);
+  currentRecord = signal<BorrowRecord | null>(null);
   autoPrintEnabled = signal(true);
-  selectedBook = signal<BorrowedBook | null>(null);
+  selectedBook = signal<BookForReturn | null>(null);
   isModalOpen = signal(false);
+  isLoading = signal(false);
 
   // ===== Computed =====
   get currentLibrarian(): { name: string; role: string } {
@@ -56,51 +61,108 @@ export class ReturnBookPage {
   }
 
   get totalBooks(): number {
-    return this.borrowedBooks().length;
+    return this.currentRecord()?.borrowDetails.length ?? 0;
   }
 
-  get pendingBooks(): BorrowedBook[] {
-    return this.borrowedBooks().filter(b => b.status !== 'returned');
+  get recordCardData(): RecordCardData | null {
+    const record = this.currentRecord();
+    if (!record) return null;
+
+    const returnedCount = record.borrowDetails.filter(d => d.borrowStatus === 'RETURNED').length;
+
+    return {
+      recordId: String(record.id),
+      recordCode: `PM-${record.id}`,
+      createdAt: record.borrowDate.toISOString(),
+      status: record.status,
+      overdueDays: record.overdueDays,
+      memberName: record.member.user.fullName,
+      memberCode: record.member.memberCode,
+      memberRole: record.member.user.roleName ?? '',
+      phone: record.member.phone ?? '',
+      email: record.member.user.email ?? '',
+      borrowDate: record.borrowDate.toISOString().split('T')[0],
+      dueDate: record.dueDate.toISOString().split('T')[0],
+      borrowDays: Math.ceil((record.dueDate.getTime() - record.borrowDate.getTime()) / (1000 * 60 * 60 * 24)),
+      totalBooks: record.borrowDetails.length,
+      returnedCount,
+      librarianName: record.librarian.fullName ?? '',
+    };
   }
 
-  constructor() {
-    // Load sample data on init (demo mode)
-    this.loadSampleData();
+  get borrowedBooks(): BorrowedBook[] {
+    const record = this.currentRecord();
+    if (!record) return [];
+
+    return record.borrowDetails.map((detail, index) => ({
+      id: String(detail.id),
+      number: index + 1,
+      title: detail.book.title,
+      author: detail.book.authors?.map(a => a.name).join(', ') ?? '',
+      publisher: detail.book.publishers?.map(p => p.name).join(', ') ?? '',
+      cover: detail.book.cover ?? '',
+      barcode: detail.book.bookCode,
+      price: Number(detail.book.price) || 0,
+      shelf: detail.book.shelf?.code ? `Kệ ${detail.book.shelf.code}` : '',
+      status: detail.borrowStatus === 'RETURNED' ? 'returned' : (detail.borrowStatus === 'OVERDUE' ? 'overdue' : 'pending') as 'pending' | 'overdue' | 'returned',
+      overdueDays: this.calculateOverdueDays(detail),
+      returnDate: detail.returnDate?.toISOString().split('T')[0],
+      returnedBy: detail.returnDate ? record.librarian.fullName : undefined,
+      condition: undefined,
+      damageNote: undefined,
+      detail,
+    }));
   }
 
-  // ===== Search =====
-  onSearchKeywordChange(keyword: string): void {
-    this.searchKeyword.set(keyword);
+  ngOnInit(): void {
+    // Get record ID from route query params
+    const recordId = this.route.snapshot.queryParamMap.get('recordId');
+    if (recordId) {
+      this.loadRecord(Number(recordId));
+    }
   }
 
-  onLoadRecord(): void {
-    // TODO: Call API to load borrow record by keyword
-    console.log('Load record:', this.searchKeyword());
-    
-    // Demo: Load sample data
-    this.loadSampleData();
+  loadRecord(id: number): void {
+    this.isLoading.set(true);
+    this.borrowRecordService.getById(String(id)).subscribe({
+      next: (response) => {
+        this.currentRecord.set(response.data);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error('Error loading record:', err);
+        this.toast.error('Không thể tải thông tin phiếu mượn');
+        this.isLoading.set(false);
+      },
+    });
   }
 
   onRefresh(): void {
-    this.searchKeyword.set('');
     this.currentRecord.set(null);
-    this.borrowedBooks.set([]);
   }
 
   // ===== Modal =====
   onProcessReturn(book: BorrowedBook): void {
-    this.selectedBook.set(book);
+    // Create BookForReturn from BorrowedBook
+    const bookForReturn: BookForReturn = {
+      id: book.id,
+      title: book.title,
+      barcode: book.barcode,
+      cover: book.cover,
+      price: book.price,
+      shelfCode: book.shelf,
+      overdueDays: book.overdueDays ?? 0,
+    };
+    this.selectedBook.set(bookForReturn);
     this.isModalOpen.set(true);
   }
 
   onQuickReturnAll(): void {
-    // Quick return all books without penalty
     console.log('Quick return all');
     this.toast.info('Đang xử lý trả nhanh tất cả sách...');
   }
 
   onSelectAll(): void {
-    // Select all pending books
     console.log('Select all');
   }
 
@@ -109,31 +171,53 @@ export class ReturnBookPage {
     this.selectedBook.set(null);
   }
 
-  onModalConfirm(data: ReturnModalData): void {
-    console.log('Confirm return:', data);
-    
-    // Update the book's status to returned
-    const books = this.borrowedBooks();
-    const updatedBooks = books.map(b => {
-      if (b.id === data.book.id) {
-        return {
-          ...b,
-          status: 'returned' as const,
-          returnDate: new Date().toISOString().split('T')[0],
-          condition: data.bookCondition,
-          damageNote: data.note,
-        };
-      }
-      return b;
+  onModalConfirm(data: { bookCondition: BookCondition; totalFine: number; paymentMethod: PaymentMethod; note: string }): void {
+    const book = this.selectedBook();
+    if (!book) return;
+
+    // Find the original detail from record
+    const record = this.currentRecord();
+    const detail = record?.borrowDetails.find(d => String(d.id) === book.id);
+    if (!detail) return;
+
+    // Build fine requests
+    const fineRequests: { reason: FineReason; note?: string }[] = [];
+
+    // 1. Overdue fine if applicable
+    if (book.overdueDays > 0) {
+      fineRequests.push({
+        reason: FineReason.OVERDUE,
+        note: `Quá hạn ${book.overdueDays} ngày`,
+      });
+    }
+
+    // 2. Damage fine based on condition
+    if (data.bookCondition !== 'good') {
+      const reason = this.getFineReason(data.bookCondition);
+      fineRequests.push({
+        reason,
+        note: data.note,
+      });
+    }
+
+    // Call API
+    this.borrowDetailService.returnBook(book.id, { fineRequests }).subscribe({
+      next: () => {
+        this.toast.success(`Đã xác nhận trả sách "${book.title}"${data.totalFine > 0 ? ` và thu ${this.formatCurrency(data.totalFine)}` : ''}`);
+        
+        // Reload record to get updated data
+        const recordId = this.currentRecord()?.id;
+        if (recordId) {
+          this.loadRecord(recordId);
+        }
+
+        this.onModalClose();
+      },
+      error: (err) => {
+        console.error('Error returning book:', err);
+        this.toast.error('Không thể xác nhận trả sách');
+      },
     });
-    this.borrowedBooks.set(updatedBooks);
-
-    // Show success toast
-    this.toast.success(`Đã xác nhận trả sách "${data.book.title}"${data.totalFine > 0 ? ` và thu ${this.formatCurrency(data.totalFine)}` : ''}`);
-
-    // Close modal
-    this.isModalOpen.set(false);
-    this.selectedBook.set(null);
   }
 
   onAutoPrintChange(enabled: boolean): void {
@@ -149,77 +233,42 @@ export class ReturnBookPage {
     console.log('View shift history');
   }
 
-  // ===== Demo Data =====
-  private loadSampleData(): void {
-    // Sample record data
-    this.currentRecord.set({
-      recordId: 'PM-2025-0895',
-      recordCode: 'PM-2025-0895',
-      createdAt: '2025-02-05T09:15:00',
-      status: 'overdue',
-      overdueDays: 5,
-      memberName: 'Lê Minh Tuấn',
-      memberCode: 'MBR-2025-089',
-      memberRole: 'GV Khoa CNTT',
-      phone: '0904 888 777',
-      email: 'tuan.lm@daihoctritue.edu.vn',
-      borrowDate: '2025-02-05',
-      dueDate: '2025-02-19',
-      borrowDays: 14,
-      totalBooks: 3,
-      returnedCount: 1,
-      librarianName: 'Nguyễn Thị Lan',
-    });
+  // ===== Helpers =====
+  private calculateOverdueDays(detail: BorrowDetail): number {
+    const record = this.currentRecord();
+    if (!record) return 0;
 
-    // Sample books
-    this.borrowedBooks.set([
-      {
-        id: '1',
-        number: 1,
-        title: 'Vũ Trụ Trong Vỏ Hạt Dẻ',
-        author: 'Stephen Hawking',
-        publisher: 'NXB Trẻ (2021)',
-        coverUrl: 'https://picsum.photos/seed/book1/96/128',
-        barcode: 'LIB-VL-0210',
-        price: 120000,
-        shelf: 'Kệ VL-A2-04',
-        status: 'overdue',
-        overdueDays: 5,
-        condition: 'damaged-light',
-        damageNote: 'Báo rách góc bìa sau',
-      },
-      {
-        id: '2',
-        number: 2,
-        title: 'Nhà Giả Kim',
-        author: 'Paulo Coelho',
-        publisher: 'NXB Hội Nhà Văn',
-        coverUrl: 'https://picsum.photos/seed/book2/96/128',
-        barcode: 'LIB-VH-0145',
-        price: 85000,
-        shelf: 'Kệ VH-B1-02',
-        status: 'overdue',
-        overdueDays: 5,
-      },
-      {
-        id: '3',
-        number: 3,
-        title: 'Kinh Tế Học Hài Hước',
-        author: 'Steven D. Levitt & Stephen J. Dubner',
-        publisher: 'NXB Kinh Tế',
-        coverUrl: 'https://picsum.photos/seed/book3/96/128',
-        barcode: 'LIB-KT-0921',
-        price: 150000,
-        shelf: 'Kệ KT-C3-01',
-        status: 'returned',
-        returnDate: '2025-02-18',
-        returnedBy: 'Nguyễn Thị Lan',
-        condition: 'good',
-      },
-    ]);
+    // If already returned, check if it was late
+    if (detail.returnDate) {
+      const diff = detail.returnDate.getTime() - record.dueDate.getTime();
+      return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+    }
+
+    // Not returned yet
+    const today = new Date();
+    if (detail.borrowStatus === 'OVERDUE' || today > record.dueDate) {
+      const diff = today.getTime() - record.dueDate.getTime();
+      return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+    }
+
+    return 0;
   }
 
-  // ===== Helpers =====
+  private getFineReason(condition: BookCondition): FineReason {
+    switch (condition) {
+      case 'damaged-light':
+        return FineReason.DAMAGED_LIGHT;
+      case 'damaged-heavy':
+        return FineReason.DAMAGED_HEAVY_REPAIRABLE;
+      case 'damaged-unusable':
+        return FineReason.DAMAGED_HEAVY_IRREPARABLE;
+      case 'lost':
+        return FineReason.LOST;
+      default:
+        return FineReason.DAMAGED_LIGHT;
+    }
+  }
+
   formatCurrency(amount: number): string {
     return new Intl.NumberFormat('vi-VN').format(amount) + ' VNĐ';
   }

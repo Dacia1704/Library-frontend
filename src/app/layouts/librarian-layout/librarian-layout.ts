@@ -42,6 +42,11 @@ export class LibrarianLayout {
       route: '/librarian/borrow-records',
     },
     {
+      icon: 'receipt_long',
+      label: 'Quản lý phí phạt',
+      route: '/librarian/fines/receive',
+    },
+    {
       icon: 'manage_search',
       label: 'Tra cứu sách',
       route: '/librarian/books',
@@ -51,11 +56,7 @@ export class LibrarianLayout {
       label: 'Danh mục sách',
       route: '/librarian/catalog',
     },
-    {
-      icon: 'receipt_long',
-      label: 'Quản lý phí phạt',
-      route: '/librarian/fines',
-    },
+
   ];
 
   logout(): void {

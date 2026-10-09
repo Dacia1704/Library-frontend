@@ -1,0 +1,50 @@
+<div class="setting-groups">
+  @for (group of groups; track group.id) {
+    <section class="setting-section">
+      <!-- Section Header -->
+      <div class="section-header">
+        <div class="section-title">
+          <div class="section-icon" [ngClass]="'icon-' + group.iconColor">
+            <span class="material-symbols-outlined">{{ group.icon }}</span>
+          </div>
+          <div class="section-info">
+            <h2 class="section-heading">{{ group.title }}</h2>
+            <p class="section-desc">{{ group.description }}</p>
+          </div>
+        </div>
+        <span class="section-count">{{ group.paramCount }} Tham số</span>
+      </div>
+
+      <!-- Settings Rows -->
+      <div class="settings-list">
+        @for (setting of group.settings; track setting.key) {
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-name">
+                <span>{{ setting.label }}</span>
+                <code class="setting-code">{{ setting.code }}</code>
+              </div>
+              <p class="setting-description">{{ setting.description }}</p>
+            </div>
+            <div class="setting-control">
+              <div class="input-wrapper">
+                <input 
+                  [type]="setting.type"
+                  class="setting-input"
+                  [(ngModel)]="setting.value"
+                  [min]="setting.min"
+                  [max]="setting.max"
+                />
+                <span class="input-unit">{{ setting.unit }}</span>
+              </div>
+              <button class="save-btn" (click)="saveSetting(group.id, setting.key, setting.value)">
+                <span class="material-symbols-outlined">check</span>
+                Lưu
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+  }
+</div>

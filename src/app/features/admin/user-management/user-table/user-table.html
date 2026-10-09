@@ -1,0 +1,139 @@
+<div class="user-table-container">
+  <div class="table-wrapper">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th class="col-checkbox">
+            <input type="checkbox" class="checkbox" />
+          </th>
+          <th class="col-name">Họ tên & Người dùng</th>
+          <th class="col-username">Tên đăng nhập</th>
+          <th class="col-email">Email</th>
+          <th class="col-cccd">Số CCCD</th>
+          <th class="col-card">Thẻ TV</th>
+          <th class="col-role">Vai trò</th>
+          <th class="col-status text-center">Trạng thái</th>
+          <th class="col-actions text-right">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of users; track user.id) {
+          <tr [class.row-locked]="user.isLocked">
+            <td class="col-checkbox">
+              <input type="checkbox" class="checkbox" />
+            </td>
+            <td class="col-name">
+              <div class="user-info">
+                <div class="avatar" [ngClass]="'avatar-' + user.avatarColor">
+                  {{ user.avatarInitials }}
+                </div>
+                <div class="user-details">
+                  <span class="user-name">{{ user.fullName }}</span>
+                  <span class="user-meta">{{ user.phone }} • Tạo {{ user.createdDate }}</span>
+                  @if (user.lockReason) {
+                    <span class="user-lock-reason">{{ user.lockReason }}</span>
+                  }
+                </div>
+              </div>
+            </td>
+            <td class="col-username">
+              <span class="username-badge">{{ user.username }}</span>
+            </td>
+            <td class="col-email">
+              <span class="email-text">{{ user.email }}</span>
+            </td>
+            <td class="col-cccd">
+              <span class="cccd-text">{{ user.citizenId }}</span>
+            </td>
+            <td class="col-card">
+              @if (user.memberCode) {
+                <span class="card-badge card-has" [class.card-locked]="user.isLocked">
+                  <span class="material-symbols-outlined">{{ user.isLocked ? 'lock' : 'badge' }}</span>
+                  {{ user.memberCode }}
+                </span>
+              } @else {
+                <span class="card-badge card-none">
+                  <span class="material-symbols-outlined">credit_card_off</span>
+                  Chưa làm thẻ
+                </span>
+              }
+            </td>
+            <td class="col-role">
+              <span class="role-badge" [ngClass]="'role-' + user.role">
+                @if (user.role === 'admin') {
+                  <span class="material-symbols-outlined">security</span>
+                } @else if (user.role === 'librarian') {
+                  <span class="material-symbols-outlined">menu_book</span>
+                }
+                {{ user.roleLabel }}
+              </span>
+            </td>
+            <td class="col-status text-center">
+              <div class="status-wrapper">
+                <label class="toggle-wrapper">
+                  <input type="checkbox" [checked]="user.isActive" (change)="toggleUserStatus(user)" class="toggle-input" />
+                  <span class="toggle-switch" [class.active]="user.isActive"></span>
+                </label>
+                <span class="status-text" [class.active]="user.isActive" [class.locked]="user.isLocked">
+                  {{ user.isActive ? 'Hoạt động' : (user.isLocked ? 'Đang khóa' : 'Vô hiệu hóa') }}
+                </span>
+              </div>
+            </td>
+            <td class="col-actions text-right">
+              <div class="action-buttons">
+                <button class="action-btn" title="Xem chi tiết" (click)="viewUser(user)">
+                  <span class="material-symbols-outlined">visibility</span>
+                </button>
+                <button class="action-btn" title="Chỉnh sửa" (click)="editUser(user)">
+                  <span class="material-symbols-outlined">edit</span>
+                </button>
+                <button class="action-btn action-btn-danger" title="Xóa tài khoản" (click)="deleteUser(user)">
+                  <span class="material-symbols-outlined">delete</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <div class="pagination-info">
+      <span>Hiển thị <strong>1 - 8</strong> của <strong>{{ totalUsers }}</strong> người dùng</span>
+      <div class="page-size-select">
+        <span>Số dòng:</span>
+        <select [(ngModel)]="pageSize" class="select-small">
+          @for (size of pageSizeOptions; track size) {
+            <option [value]="size">{{ size }} dòng / trang</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="pagination-controls">
+      <button class="page-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      
+      @for (page of getVisiblePages(); track page) {
+        @if (page === -1) {
+          <span class="page-ellipsis">...</span>
+        } @else {
+          <button 
+            class="page-btn" 
+            [class.active]="page === currentPage"
+            (click)="goToPage(page)"
+          >
+            {{ page }}
+          </button>
+        }
+      }
+      
+      <button class="page-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </div>
+</div>

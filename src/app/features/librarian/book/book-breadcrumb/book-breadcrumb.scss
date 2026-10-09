@@ -1,0 +1,41 @@
+:host {
+  display: block;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--on-surface-variant, #444653);
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    color: var(--on-surface-variant, #444653);
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: var(--primary, #1e40af);
+    }
+  }
+
+  &__icon {
+    font-size: 15px;
+  }
+
+  &__separator {
+    font-size: 14px;
+    color: var(--on-surface-variant, #444653);
+  }
+
+  &__text {
+    &--active {
+      font-weight: 600;
+      color: var(--on-surface, #0b1c30);
+    }
+  }
+}

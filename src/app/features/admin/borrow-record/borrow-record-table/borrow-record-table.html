@@ -1,0 +1,170 @@
+<div class="borrow-table-container">
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <span class="toolbar-title">
+        <span class="material-symbols-outlined">filter_alt</span>
+        Bộ lọc tìm kiếm nâng cao
+      </span>
+    </div>
+    <div class="toolbar-actions">
+      <button class="btn-action">
+        <span class="material-symbols-outlined">restart_alt</span>
+        Đặt lại bộ lọc
+      </button>
+      <button class="btn-action btn-primary">
+        <span class="material-symbols-outlined">download</span>
+        Xuất báo cáo (CSV/Excel)
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-bar">
+    <div class="filter-group">
+      <label class="filter-label">
+        <span class="material-symbols-outlined">person_search</span>
+        Thành viên / Độc giả
+      </label>
+      <input type="text" class="filter-input" placeholder="Tên hoặc mã thẻ (MBR-09...)" />
+    </div>
+    <div class="filter-group">
+      <label class="filter-label">
+        <span class="material-symbols-outlined">calendar_today</span>
+        Khoảng ngày mượn
+      </label>
+      <input type="text" class="filter-input" value="01/10/2025 - 31/10/2025" />
+    </div>
+    <div class="filter-group">
+      <label class="filter-label">
+        <span class="material-symbols-outlined">auto_stories</span>
+        Sách / Tên ấn phẩm
+      </label>
+      <input type="text" class="filter-input" placeholder="Nhập tên sách hoặc ISBN..." />
+    </div>
+    <div class="filter-group">
+      <label class="filter-label">
+        <span class="material-symbols-outlined">checklist</span>
+        Trạng thái phiếu
+      </label>
+      <select class="filter-select">
+        <option value="all">Tất cả trạng thái (1.250)</option>
+        <option value="borrowing">Đang mượn</option>
+        <option value="returned">Đã trả</option>
+        <option value="overdue">Quá hạn cảnh báo</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrapper">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Mã phiếu</th>
+          <th>Độc giả / Thành viên</th>
+          <th>Ấn phẩm mượn</th>
+          <th>Ngày mượn & Hạn trả</th>
+          <th>Thủ thư lập</th>
+          <th class="text-center">Trạng thái</th>
+          <th class="text-right">Thao tác Admin</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (record of records; track record.id) {
+          <tr>
+            <td>
+              <div class="slip-id">
+                <span class="slip-code">{{ record.id }}</span>
+                <span class="slip-location">Khu A - Tủ lưu 03</span>
+              </div>
+            </td>
+            <td>
+              <div class="patron-info">
+                <div class="patron-avatar">{{ record.patronName.charAt(0) }}</div>
+                <div class="patron-details">
+                  <span class="patron-name">{{ record.patronName }}</span>
+                  <span class="patron-meta">{{ record.patronCard }} • {{ record.patronType }}</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="book-info">
+                <span class="book-title">{{ record.bookTitle }}</span>
+                <span class="book-meta">3 tài liệu (1 giáo trình, 2 chuyên khảo)</span>
+              </div>
+            </td>
+            <td>
+              <div class="date-info">
+                <div class="date-row">
+                  <span>{{ record.borrowDate }}</span>
+                  <span class="arrow">→</span>
+                  <span [class.overdue]="record.status === 'overdue'">{{ record.dueDate }}</span>
+                </div>
+                @if (record.overdueDays) {
+                  <span class="overdue-badge">
+                    <span class="material-symbols-outlined">alarm</span>
+                    Quá hạn {{ record.overdueDays }} ngày
+                  </span>
+                }
+              </div>
+            </td>
+            <td>
+              <div class="librarian-info">
+                <span class="librarian-name">{{ record.librarian }}</span>
+                <span class="librarian-desk">{{ record.librarianDesk }}</span>
+              </div>
+            </td>
+            <td class="text-center">
+              <span class="status-badge" [ngClass]="'status-' + record.status">
+                <span class="status-dot"></span>
+                {{ record.statusText }}
+              </span>
+            </td>
+            <td class="text-right">
+              <div class="action-buttons">
+                <button class="action-btn" title="Xem chi tiết">
+                  <span class="material-symbols-outlined">visibility</span>
+                </button>
+                <button class="action-btn" title="In phiếu mượn">
+                  <span class="material-symbols-outlined">print</span>
+                </button>
+                <button class="action-btn action-btn-danger" title="Xóa phiếu (Admin)">
+                  <span class="material-symbols-outlined">delete_forever</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <div class="pagination-info">
+      <span>Hiển thị <strong>1 - 8</strong> của <strong>{{ totalRecords }}</strong> phiếu mượn</span>
+      <div class="page-size">
+        <span>Hiển thị mỗi trang:</span>
+        <select [(ngModel)]="pageSize" class="select-small">
+          @for (size of pageSizeOptions; track size) {
+            <option [value]="size">{{ size }}</option>
+          }
+        </select>
+      </div>
+    </div>
+    <div class="pagination-controls">
+      <button class="page-btn" disabled>
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <span class="page-ellipsis">...</span>
+      <button class="page-btn">157</button>
+      <button class="page-btn">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="tabs">
+  <div class="tabs__nav">
+    <!-- Categories Tab -->
+    <button
+      class="tabs__btn"
+      [class.tabs__btn--active]="activeTab === 'categories'"
+      (click)="onTabChange('categories')">
+      <span class="material-symbols-outlined">folder_open</span>
+      <span>Danh mục</span>
+      <span class="tabs__count">{{ tabCounts.categories }}</span>
+    </button>
+
+    <!-- Authors Tab -->
+    <button
+      class="tabs__btn"
+      [class.tabs__btn--active]="activeTab === 'authors'"
+      (click)="onTabChange('authors')">
+      <span class="material-symbols-outlined">person</span>
+      <span>Tác giả</span>
+      <span class="tabs__count tabs__count--secondary">{{ tabCounts.authors }}</span>
+    </button>
+
+    <!-- Publishers Tab -->
+    <button
+      class="tabs__btn"
+      [class.tabs__btn--active]="activeTab === 'publishers'"
+      (click)="onTabChange('publishers')">
+      <span class="material-symbols-outlined">apartment</span>
+      <span>Nhà xuất bản</span>
+      <span class="tabs__count tabs__count--secondary">{{ tabCounts.publishers }}</span>
+    </button>
+  </div>
+
+  <div class="tabs__info">
+    <span class="material-symbols-outlined">verified</span>
+    <span>Dữ liệu đã kiểm định kỳ tự động lúc 08:30 hôm nay</span>
+  </div>
+</div>

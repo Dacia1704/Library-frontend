@@ -1,0 +1,48 @@
+<section class="book-page">
+  <app-book-breadcrumb />
+  
+  <app-book-header
+    [shelfName]="'Kho lưu trữ số 1'"
+    [totalBooks]="stats().totalTitles"
+    [totalCopies]="stats().totalCopies"
+    [borrowedCopies]="stats().borrowedCopies"
+    [outOfStockCount]="stats().outOfStockTitles"
+    (onAddBook)="onAddBook()"
+    (onBarcodeScan)="onBarcodeScan()"
+    (onExportExcel)="onExportExcel()"
+    (onRefresh)="onReset()"
+  />
+
+  <app-book-stats [stats]="stats()" />
+
+  <app-book-search
+    [categories]="categories()"
+    [authors]="authors()"
+    [publishers]="publishers()"
+    [years]="years()"
+    (filterChange)="onFilterChange($event)"
+    (reset)="onReset()"
+  />
+
+  <app-book-table
+    [books]="books()"
+    [totalElements]="totalElements()"
+    [currentPage]="currentPage()"
+    [pageSize]="pageSize()"
+    (pageChange)="onPageChange($event)"
+    (pageSizeChange)="onPageSizeChange($event)"
+    (viewBook)="onView($event)"
+    (editBook)="onEdit($event)"
+    (deleteBook)="onDelete($event)"
+    (selectionChange)="onSelectionChange($event)"
+  />
+
+  <app-book-bulk-actions
+    [selectedCount]="selectedIds().length"
+    [visible]="selectedIds().length > 0"
+    (printBarcode)="onPrintBarcode()"
+    (moveShelf)="onMoveShelf()"
+    (exportList)="onExportList()"
+    (deselectAll)="onDeselectAll()"
+  />
+</section>

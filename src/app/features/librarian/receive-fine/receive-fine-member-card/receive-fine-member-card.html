@@ -1,0 +1,84 @@
+<div class="member-card">
+  <div class="member-card__accent"></div>
+
+  <div class="member-card__content">
+    <div class="member-card__info">
+      <div class="member-card__avatar">
+        <span class="material-symbols-outlined member-card__avatar-icon">account_circle</span>
+        @if (isLocked) {
+          <span class="member-card__lock-badge" title="Đang bị chặn mượn sách">
+            <span class="material-symbols-outlined">lock</span>
+          </span>
+        }
+      </div>
+
+      <div class="member-card__details">
+        <div class="member-card__name-row">
+          <h2 class="member-card__name">{{ member.user?.fullName || 'N/A' }}</h2>
+          @if (isLocked) {
+            <span class="member-card__status-badge">
+              <span class="material-symbols-outlined">lock_clock</span>
+              Thẻ bị tạm khóa mượn sách (do nợ phạt quá hạn)
+            </span>
+          }
+        </div>
+
+        <div class="member-card__meta">
+          <span class="member-card__meta-item">
+            <span class="material-symbols-outlined">credit_card</span>
+            Mã thẻ: <strong>{{ member.memberCode }}</strong>
+          </span> 
+          <span class="member-card__meta-item">
+            <span class="material-symbols-outlined">call</span>
+            {{ member.phone || 'N/A' }}
+          </span>
+          <span class="member-card__meta-item">
+            <span class="material-symbols-outlined">mail</span>
+            {{ member.user?.email || 'N/A' }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="member-card__metrics">
+      <div class="member-card__metric">
+        <div class="member-card__metric-header">
+          <span>Tổng tiền phạt</span>
+          <span class="material-symbols-outlined">receipt</span>
+        </div>
+        <div class="member-card__metric-value">
+          <span class="member-card__amount">{{ formatCurrency(totalFine) }}</span>
+          <span class="member-card__currency">VNĐ</span>
+        </div>
+        <p class="member-card__metric-sub">{{ unpaidCount }} khoản vi phạm</p>
+      </div>
+
+      <div class="member-card__metric">
+        <div class="member-card__metric-header">
+          <span>Đã thanh toán</span>
+          <span class="material-symbols-outlined member-card__check-icon">check_circle</span>
+        </div>
+        <div class="member-card__metric-value member-card__metric-value--paid">
+          <span class="member-card__amount">{{ formatCurrency(paidAmount) }}</span>
+          <span class="member-card__currency">VNĐ</span>
+        </div>
+      </div>
+
+      <div class="member-card__metric member-card__metric--danger">
+        <div class="member-card__metric-header">
+          <span class="member-card__metric-label--highlight">Còn phải nộp</span>
+          <span class="material-symbols-outlined member-card__warning-icon">warning</span>
+        </div>
+        <div class="member-card__metric-value member-card__metric-value--danger">
+          <span class="member-card__amount">{{ formatCurrency(unpaidAmount) }}</span>
+          <span class="member-card__currency">VNĐ</span>
+        </div>
+        @if (isLocked) {
+          <span class="member-card__alert-text">Cần thu trước khi mở khóa thẻ</span>
+        } @else {
+          <span class="member-card__alert-text">Thanh toán phạt để giảm công nợ</span>
+        }
+      </div>
+    </div>
+  </div>
+</div>

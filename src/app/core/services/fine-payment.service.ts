@@ -96,4 +96,16 @@ export class FinePaymentService {
       })
       .pipe(map((response) => response.data));
   }
+
+  /**
+   * Lấy tổng tiền đã thanh toán phạt theo memberId (cho librarian)
+   * GET /api/fine-payments/total
+   */
+  getTotalByMemberId(memberId: number): Observable<number> {
+    return this.http
+      .get<ApiResponse<number>>(`${this.api}/total`, {
+        params: new HttpParams().set('memberId', memberId.toString()),
+      })
+      .pipe(map((response) => response.data));
+  }
 }

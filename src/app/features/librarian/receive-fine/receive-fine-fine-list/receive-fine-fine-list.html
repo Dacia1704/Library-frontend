@@ -1,0 +1,92 @@
+<div class="fine-list">
+  <div class="fine-list__header">
+    <div class="fine-list__title-group">
+      <h3 class="fine-list__title">Danh sách các khoản phạt</h3>
+      <p class="fine-list__subtitle">Chi tiết các lần trễ hạn, hao mòn tài liệu gắn với phiếu mượn tương ứng</p>
+    </div>
+  </div>
+
+  <div class="fine-list__table-wrapper">
+    <table class="fine-list__table">
+      <thead>
+        <tr>
+          <th>Ngày lập</th>
+          <th>Phiếu mượn</th>
+          <th>Tên sách &amp; Mã cá biệt</th>
+          <th>Lý do</th>
+          <th class="fine-list__text-right">Trễ</th>
+          <th class="fine-list__text-right">Số tiền</th>
+          <th>Trạng thái / Ghi chú</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (fine of fines; track fine.id) {
+          <tr class="fine-list__row">
+            <td class="fine-list__cell">{{ formatDate(fine.createdAt) }}</td>
+            <td class="fine-list__cell fine-list__cell--code">{{ fine.borrowId }}</td>
+            <td class="fine-list__cell">
+              <div class="fine-list__book-info">
+                @if (fine.borrowDetail?.book) {
+                  <span class="fine-list__book-title">{{ fine.borrowDetail.book.title }}</span>
+                  <span class="fine-list__book-code">{{ fine.borrowDetail.book.isbn || 'N/A' }}</span>
+                } @else {
+                  <span class="fine-list__book-title">-</span>
+                  <span class="fine-list__book-code">-</span>
+                }
+              </div>
+            </td>
+            <td class="fine-list__cell">
+              <span class="fine-list__reason-badge" [ngClass]="getReasonClass(fine.reason)">
+                <span class="material-symbols-outlined fine-list__reason-icon">
+                  {{ fine.reason === 'OVERDUE' ? 'alarm' : fine.reason === 'LOST' ? 'search_off' : 'handyman' }}
+                </span>
+                {{ getReasonLabel(fine.reason) }}
+              </span>
+            </td>
+            <td class="fine-list__cell fine-list__cell--text-right">
+              @if (fine.overdueDays && fine.overdueDays > 0) {
+                <span class="fine-list__late">{{ fine.overdueDays }} ngày</span>
+              } @else {
+                <span class="fine-list__na">-</span>
+              }
+            </td>
+            <td class="fine-list__cell fine-list__cell--amount">{{ formatCurrency(fine.amount) }}</td>
+            <td class="fine-list__cell">
+              <div class="fine-list__status">
+                @if (fine.isDeleted) {
+                  <span class="fine-list__status-indicator fine-list__status-indicator--paid">
+                    <span class="material-symbols-outlined">check</span>
+                    {{ fine.note || 'Đã nộp' }}
+                  </span>
+                } @else {
+                  <span class="fine-list__status-indicator fine-list__status-indicator--unpaid">
+                    <span class="fine-list__dot"></span>
+                    {{ fine.note || 'Chưa nộp' }}
+                  </span>
+                }
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="7" class="fine-list__empty">
+              <span class="material-symbols-outlined fine-list__empty-icon">info</span>
+              <span>Không có khoản phạt nào</span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="fine-list__footer">
+    <div class="fine-list__footer-info">
+      <span class="material-symbols-outlined fine-list__footer-icon">info</span>
+      <span>Quy định thu: {{ fineOverduePerDay | number }}đ/cuốn/ngày trễ hạn • Bồi thường hư hỏng theo biên bản giám định.</span>
+    </div>
+    <div class="fine-list__footer-total">
+      <span class="fine-list__footer-label">Cộng chưa nộp:</span>
+      <span class="fine-list__footer-amount">{{ formatCurrency(unpaidTotal) }}</span>
+    </div>
+  </div>
+</div>

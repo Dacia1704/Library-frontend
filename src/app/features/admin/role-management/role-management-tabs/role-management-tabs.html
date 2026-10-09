@@ -1,0 +1,28 @@
+<div class="tabs-container">
+  <div class="tabs-wrapper">
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab === 'roles'"
+      (click)="switchTab('roles')"
+    >
+      <span class="material-symbols-outlined">verified_user</span>
+      <span>Vai trò người dùng</span>
+      <span class="tab-count">5</span>
+    </button>
+
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab === 'permissions'"
+      (click)="switchTab('permissions')"
+    >
+      <span class="material-symbols-outlined">vpn_key</span>
+      <span>Danh mục quyền</span>
+      <span class="tab-count">32</span>
+    </button>
+
+    <button class="tab-help">
+      <span class="material-symbols-outlined">help</span>
+      Quy ước phân quyền RBAC
+    </button>
+  </div>
+</div>

@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BorrowDetail } from '@model/borrow-record/borrow-record';
+import { ImageUtils } from '@shared/utils/image-utils';
 
 export interface BorrowedBook {
   id: string;
@@ -7,7 +9,7 @@ export interface BorrowedBook {
   title: string;
   author: string;
   publisher: string;
-  coverUrl: string;
+  cover: string;
   barcode: string;
   price: number;
   shelf: string;
@@ -18,6 +20,7 @@ export interface BorrowedBook {
   condition?: 'good' | 'damaged-light' | 'damaged-heavy' | 'damaged-unusable' | 'lost';
   damageNote?: string;
   damageImageUrl?: string;
+  detail: BorrowDetail;
 }
 
 @Component({
@@ -109,5 +112,9 @@ export class ReturnBookTableComponent {
       case 'lost': return 'mất sách';
       default: return 'hư hỏng';
     }
+  }
+
+  coverSrc(book: BorrowedBook): string {
+    return ImageUtils.toImageSrc(book?.cover);
   }
 }

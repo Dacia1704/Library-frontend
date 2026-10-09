@@ -1,0 +1,28 @@
+<header class="book-header">
+  <div class="book-header__info">
+    <!-- Title & Subtitle -->
+    <div class="book-header__title-row">
+      <h1 class="book-header__title">Kho sách</h1>
+      <span class="book-header__badge">{{ shelfName() }}</span>
+    </div>
+    <p class="book-header__subtitle">
+      Quản lý danh mục tài liệu lưu kho, kiểm soát số lượng bản in thực tế, theo dõi tình trạng mượn và bổ sung ấn phẩm mới.
+    </p>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="book-header__actions">
+    <button class="book-header__btn" type="button" (click)="onBarcodeScan.emit()">
+      <span class="material-symbols-outlined book-header__btn-icon">barcode_scanner</span>
+      <span>Kiểm kê mã vạch</span>
+    </button>
+    <button class="book-header__btn" type="button" (click)="onExportExcel.emit()">
+      <span class="material-symbols-outlined book-header__btn-icon">download</span>
+      <span>Xuất Excel</span>
+    </button>
+    <button class="book-header__btn book-header__btn--primary" type="button" (click)="onAddBook.emit()">
+      <span class="material-symbols-outlined book-header__btn-icon">add</span>
+      <span class="book-header__btn-text-bold">+ Nhập sách mới</span>
+    </button>
+  </div>
+</header>

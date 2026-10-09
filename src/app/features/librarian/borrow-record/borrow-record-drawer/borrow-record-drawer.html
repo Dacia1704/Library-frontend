@@ -68,8 +68,8 @@
                 </span>
               </div>
               <div class="drawer__book-details">
-                <h5 class="drawer__book-title">{{ detail.bookTitle }}</h5>
-                <p class="drawer__book-code">Mã cá biệt: <span class="drawer__book-code-value">{{ detail.bookCode }}</span></p>
+                <h5 class="drawer__book-title">{{ detail.book.title }}</h5>
+                <p class="drawer__book-code">Mã cá biệt: <span class="drawer__book-code-value">{{ detail.book.bookCode }}</span></p>
                 @if (!isBookReturned(detail)) {
                   @if (getBookOverdueDays(detail) > 0) {
                     <span class="drawer__book-status drawer__book-status--overdue">

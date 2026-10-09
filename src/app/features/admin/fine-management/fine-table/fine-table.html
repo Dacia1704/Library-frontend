@@ -1,0 +1,166 @@
+<div class="fine-table-container">
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active">
+      <span class="material-symbols-outlined">assignment_late</span>
+      Các khoản phạt
+      <span class="tab-count">124</span>
+    </button>
+    <button class="tab-btn">
+      <span class="material-symbols-outlined">receipt_long</span>
+      Thanh toán phạt
+      <span class="tab-count tab-count-secondary">380</span>
+    </button>
+    <div class="tab-actions">
+      <button class="btn-action">
+        <span class="material-symbols-outlined">receipt</span>
+        Lập biên phạt thủ công
+      </button>
+      <button class="btn-action btn-primary">
+        <span class="material-symbols-outlined">download</span>
+        Xuất sổ thu tiền phạt (Excel)
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-bar">
+    <div class="search-wrapper">
+      <span class="material-symbols-outlined">search</span>
+      <input type="text" class="search-input" placeholder="Tìm theo Mã thẻ, Họ tên, SĐT..." />
+    </div>
+    <div class="select-wrapper">
+      <span class="material-symbols-outlined">filter_list</span>
+      <select class="filter-select">
+        <option value="all">Tất cả trạng thái</option>
+        <option value="pending">Chờ thanh toán (Đang nợ)</option>
+        <option value="completed">Đã thanh toán (Hoàn tất)</option>
+        <option value="waived">Đã miễn giảm (Bởi Admin)</option>
+      </select>
+      <span class="material-symbols-outlined select-icon">expand_more</span>
+    </div>
+    <div class="date-wrapper">
+      <span class="material-symbols-outlined">date_range</span>
+      <input type="text" class="date-input" value="01/10/2025 - 31/10/2025" />
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrapper">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th class="col-checkbox">
+            <input type="checkbox" class="checkbox" />
+          </th>
+          <th class="col-code">Mã biên phạt</th>
+          <th class="col-patron">Thành viên / Thẻ</th>
+          <th class="col-book">Phiếu mượn & Sách</th>
+          <th class="col-reason">Lý do vi phạm</th>
+          <th class="col-amount text-right">Số tiền phạt</th>
+          <th class="col-date">Ngày lập</th>
+          <th class="col-status text-center">Trạng thái</th>
+          <th class="col-actions text-right">Thao tác Admin</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (fine of fines; track fine.id) {
+          <tr>
+            <td class="col-checkbox">
+              <input type="checkbox" class="checkbox" />
+            </td>
+            <td class="col-code">
+              <span class="fine-code">{{ fine.code }}</span>
+              <span class="fine-source">{{ fine.source }}</span>
+            </td>
+            <td class="col-patron">
+              <div class="patron-info">
+                <div class="patron-avatar">{{ fine.patronName.charAt(0) }}</div>
+                <div class="patron-details">
+                  <span class="patron-name">{{ fine.patronName }}</span>
+                  <span class="patron-card">{{ fine.patronCard }} • {{ fine.patronType }}</span>
+                </div>
+              </div>
+            </td>
+            <td class="col-book">
+              <div class="book-info">
+                <span class="book-title">{{ fine.bookTitle }}</span>
+                <span class="book-slip">Phiếu: {{ fine.slipCode }}</span>
+              </div>
+            </td>
+            <td class="col-reason">
+              <div class="reason-info">
+                <span class="reason-badge" [ngClass]="'reason-' + fine.reason">
+                  @if (fine.reason === 'overdue') {
+                    <span class="material-symbols-outlined">schedule</span>
+                  } @else if (fine.reason === 'damage') {
+                    <span class="material-symbols-outlined">menu_book</span>
+                  } @else {
+                    <span class="material-symbols-outlined">report_problem</span>
+                  }
+                  {{ fine.reasonDetail }}
+                </span>
+              </div>
+            </td>
+            <td class="col-amount text-right">
+              <span class="amount-value">{{ formatAmount(fine.amount) }} đ</span>
+            </td>
+            <td class="col-date">
+              <span class="date-text">{{ fine.createdDate }}</span>
+              <span class="date-time">{{ fine.createdTime }}</span>
+            </td>
+            <td class="col-status text-center">
+              <span class="status-badge" [ngClass]="'status-' + fine.status">
+                {{ fine.statusText }}
+              </span>
+            </td>
+            <td class="col-actions text-right">
+              <div class="action-buttons">
+                @if (fine.status === 'pending') {
+                  <button class="action-btn" title="Thu tiền">
+                    <span class="material-symbols-outlined">payments</span>
+                  </button>
+                  <button class="action-btn" title="Miễn giảm">
+                    <span class="material-symbols-outlined">price_change</span>
+                  </button>
+                }
+                <button class="action-btn" title="Chi tiết">
+                  <span class="material-symbols-outlined">visibility</span>
+                </button>
+                <button class="action-btn action-btn-danger" title="Xóa bản ghi">
+                  <span class="material-symbols-outlined">delete</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <div class="pagination-info">
+      <span>Hiển thị <strong>1 - 6</strong> của <strong>124</strong> khoản phạt</span>
+    </div>
+    <div class="pagination-controls">
+      <button class="page-btn" disabled>
+        <span class="material-symbols-outlined">first_page</span>
+      </button>
+      <button class="page-btn" disabled>
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <span class="page-ellipsis">...</span>
+      <button class="page-btn">21</button>
+      <button class="page-btn">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+      <button class="page-btn">
+        <span class="material-symbols-outlined">last_page</span>
+      </button>
+    </div>
+  </div>
+</div>

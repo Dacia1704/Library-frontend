@@ -1,0 +1,69 @@
+<div class="book-stats">
+  <!-- Stat 1: Total Book Titles -->
+  <div class="book-stats__card">
+    <div class="book-stats__card-header">
+      <div class="book-stats__card-info">
+        <span class="book-stats__card-label">Tổng đầu sách</span>
+        <span class="book-stats__card-value">{{ stats().totalTitles | number }}</span>
+      </div>
+      <div class="book-stats__card-icon book-stats__card-icon--primary">
+        <span class="material-symbols-outlined">auto_stories</span>
+      </div>
+    </div>
+    <div class="book-stats__card-footer">
+      <span class="material-symbols-outlined book-stats__trend-icon">trending_up</span>
+      <span class="book-stats__trend-desc">Đa dạng thể loại, tác giả, nhà xuất bản</span>
+    </div>
+  </div>
+
+  <!-- Stat 2: Total Copies in Stock -->
+  <div class="book-stats__card">
+    <div class="book-stats__card-header">
+      <div class="book-stats__card-info">
+        <span class="book-stats__card-label">Tổng bản in lưu kho</span>
+        <span class="book-stats__card-value">{{ stats().totalCopies | number }}</span>
+      </div>
+      <div class="book-stats__card-icon book-stats__card-icon--secondary">
+        <span class="material-symbols-outlined">layers</span>
+      </div>
+    </div>
+    <div class="book-stats__card-footer">
+      <span class="book-stats__dot"></span>
+      <span class="book-stats__footer-text">Sẵn sàng phục vụ đọc tại chỗ và mượn về</span>
+    </div>
+  </div>
+
+  <!-- Stat 3: Currently Borrowed -->
+  <div class="book-stats__card">
+    <div class="book-stats__card-header">
+      <div class="book-stats__card-info">
+        <span class="book-stats__card-label">Đang cho bạn đọc mượn</span>
+        <span class="book-stats__card-value book-stats__card-value--primary">{{ stats().borrowedCopies | number }}</span>
+      </div>
+      <div class="book-stats__card-icon book-stats__card-icon--borrow">
+        <span class="material-symbols-outlined">sync_alt</span>
+      </div>
+    </div>
+    <div class="book-stats__card-footer book-stats__card-footer--row">
+        <span class="book-stats__footer-text">Tỉ lệ luân chuyển kho:</span>
+        <span class="book-stats__rate">{{ (stats().borrowedCopies / stats().totalCopies * 100).toFixed(2) }}%</span>
+    </div>
+  </div>
+
+  <!-- Stat 4: Out of Stock Warning -->
+  <div class="book-stats__card book-stats__card--warning">
+    <div class="book-stats__card-header">
+      <div class="book-stats__card-info">
+        <span class="book-stats__card-label book-stats__card-label--error">Tình trạng hết sách</span>
+        <span class="book-stats__card-value book-stats__card-value--error">{{ stats().outOfStockTitles }}</span>
+      </div>
+      <div class="book-stats__card-icon book-stats__card-icon--error">
+        <span class="material-symbols-outlined">inventory_2</span>
+      </div>
+    </div>
+    <div class="book-stats__card-footer book-stats__card-footer--warning">
+      <span class="material-symbols-outlined book-stats__warning-icon">warning</span>
+      <span class="book-stats__warning-text">Cần nhập thêm bản in hoặc thu hồi</span>
+    </div>
+  </div>
+</div>

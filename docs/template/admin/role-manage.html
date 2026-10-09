@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"secondary-container":"#86f2e4","on-surface-variant":"#444653","tertiary-fixed-dim":"#ffb59a","surface":"#f8f9ff","on-secondary-fixed-variant":"#005049","tertiary":"#611e00","outline":"#757684","on-tertiary-container":"#ffa583","secondary":"#006a61","on-primary":"#ffffff","on-tertiary-fixed":"#380d00","inverse-on-surface":"#eaf1ff","error-container":"#ffdad6","on-secondary-fixed":"#00201d","surface-container-lowest":"#ffffff","inverse-surface":"#213145","on-secondary":"#ffffff","outline-variant":"#c4c5d5","on-background":"#0b1c30","surface-container-high":"#dce9ff","primary-fixed-dim":"#b8c4ff","surface-dim":"#cbdbf5","on-error":"#ffffff","on-tertiary-fixed-variant":"#802a00","secondary-fixed-dim":"#6bd8cb","primary-container":"#1e40af","on-primary-fixed-variant":"#173bab","surface-bright":"#f8f9ff","on-tertiary":"#ffffff","primary":"#00288e","surface-variant":"#d3e4fe","surface-container-low":"#eff4ff","secondary-fixed":"#89f5e7","surface-tint":"#3755c3","on-secondary-container":"#006f66","on-primary-container":"#a8b8ff","tertiary-fixed":"#ffdbce","primary-fixed":"#dde1ff","background":"#f8f9ff","on-primary-fixed":"#001453","on-error-container":"#93000a","error":"#ba1a1a","tertiary-container":"#872d00","on-surface":"#0b1c30","surface-container":"#e5eeff","surface-container-highest":"#d3e4fe","inverse-primary":"#b8c4ff"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"gutter-dense":"1rem","margin-compact":"1.5rem","space-lg":"1.5rem","margin":"2rem","space-xl":"2rem","space-sm":"0.5rem","space-xs":"0.25rem","space-md":"1rem","gutter":"1.5rem"},fontFamily:{"label-md":["Inter"],"body-lg":["Inter"],"headline-lg":["Inter"],"display":["Inter"],"headline-sm":["Inter"],"body-md":["Inter"],"body-sm":["Inter"],"headline-md":["Inter"],"label-lg":["Inter"],"label-sm":["Inter"]},fontSize:{"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"500"}],"body-lg":["16px",{"lineHeight":"24px","letterSpacing":"0","fontWeight":"400"}],"headline-lg":["24px",{"lineHeight":"32px","letterSpacing":"-0.015em","fontWeight":"600"}],"display":["32px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-sm":["16px",{"lineHeight":"24px","letterSpacing":"-0.005em","fontWeight":"600"}],"body-md":["14px",{"lineHeight":"20px","letterSpacing":"0","fontWeight":"400"}],"body-sm":["12px",{"lineHeight":"16px","letterSpacing":"0","fontWeight":"400"}],"headline-md":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}],"label-lg":["14px",{"lineHeight":"20px","letterSpacing":"0.01em","fontWeight":"500"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.03em","fontWeight":"600"}]}}}};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between overflow-y-auto"><div class="flex flex-col"><div class="h-16 px-space-lg flex items-center gap-space-sm bg-surface-container shrink-0"><div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[20px]">local_library</span></div><div class="flex flex-col overflow-hidden"><span class="font-headline-sm text-headline-sm text-on-surface truncate">Thư Viện Trí Tuệ</span><span class="font-label-sm text-label-sm text-on-surface-variant truncate uppercase tracking-wider">Hệ thống quản lý</span></div></div><nav class="flex flex-col gap-space-xs px-space-md py-space-md" data-active-classes="bg-primary-container text-on-primary font-semibold"><div class="px-space-sm pt-space-xs pb-space-xs"><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Tổng quan</span></div><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="dashboard-quan-tri-vien" href="#"><span>Bảng điều khiển hệ thống</span></a><div class="px-space-sm pt-space-sm pb-space-xs"><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Quản trị hệ thống</span></div><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="quan-ly-nguoi-dung" href="#"><span>Quản lý người dùng</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="phan-quyen-va-vai-tro" href="#"><span>Phân quyền và vai trò</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="cau-hinh-he-thong" href="#"><span>Cấu hình hệ thống</span></a><div class="px-space-sm pt-space-sm pb-space-xs"><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Nghiệp vụ thư viện</span></div><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="tra-cuu-sach" href="#"><span>Tra cứu sách</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="kho-sach" href="#"><span>Kho sách</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="danh-muc-sach" href="#"><span>Danh mục sách</span></a><div class="flex flex-col gap-space-xs"><div class="px-space-md pt-space-xs pb-0"><span class="font-label-sm text-label-sm text-on-surface-variant font-medium uppercase tracking-wider">Lưu thông</span></div><div class="flex flex-col gap-space-xs pl-space-sm"><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="quan-ly-phieu-muon" href="#"><span>Quản lý phiếu mượn</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="nhan-tra-sach" href="#"><span>Nhận trả sách</span></a></div></div><div class="px-space-sm pt-space-sm pb-space-xs"><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Độc giả &amp; Tài chính</span></div><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="quan-ly-doc-gia" href="#"><span>Quản lý độc giả</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="quan-ly-the-thanh-vien" href="#"><span>Quản lý thẻ thành viên</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="quan-ly-phi-phat" href="#"><span>Quản lý phí phạt</span></a></nav></div><div class="p-space-md m-space-md rounded-lg bg-surface-container flex items-start gap-space-sm shrink-0"><span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">info</span><div class="flex flex-col"><span class="font-label-md text-label-md text-on-surface font-medium">Phiên bản 2.4</span><span class="font-body-sm text-body-sm text-on-surface-variant">Cơ sở dữ liệu mở</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-lg"><div class="flex items-center gap-space-lg w-full max-w-2xl"><div class="relative w-full max-w-md flex items-center"><span class="material-symbols-outlined absolute left-space-md text-on-surface-variant text-[20px] pointer-events-none">search</span><input class="w-full h-10 pl-11 pr-space-md rounded-lg bg-surface-container-lowest text-on-surface placeholder:text-on-surface-variant font-body-md text-body-md outline-none shadow-[0_1px_4px_rgba(0,0,0,0.03)] focus:bg-surface-container-lowest transition-all" placeholder="Nhấn Ctrl + K để tìm kiếm nhanh..." type="text"/><span class="absolute right-space-sm px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm uppercase pointer-events-none">Ctrl K</span></div></div><div class="flex items-center gap-space-md"><button class="w-10 h-10 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors relative" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-error"></span></button><button class="w-10 h-10 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">help_outline</span></button><div class="h-8 w-px bg-surface-container-highest mx-space-xs"></div><div class="flex items-center gap-space-sm pl-space-xs"><div class="flex flex-col text-right hidden lg:flex"><span class="font-label-md text-label-md text-on-surface font-semibold">Lê Hoàng Long</span><span class="font-label-sm text-label-sm text-on-surface-variant">Thủ thư ca sáng • Quản trị viên</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<!-- Dynamic Notification Bar -->
+<div class="px-space-xl pt-space-lg pb-0">
+<div class="flex items-center justify-between p-space-md rounded-xl bg-surface-container-low shadow-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-[22px]">admin_panel_settings</span>
+</div>
+<div>
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-sm text-headline-sm text-on-surface">Kiểm soát truy cập phân tán (RBAC v2.4)</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm font-semibold">Bảo mật cao</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Tất cả thay đổi quyền hạn được ghi nhật ký tự động vào Audit Log. Quyền đặc quyền hệ thống yêu cầu xác thực 2 lớp.</p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="px-space-md py-1.5 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md flex items-center gap-1.5 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">history</span>
+          Nhật ký phân quyền
+        </button>
+</div>
+</div>
+</div>
+<!-- Breadcrumb & Header Section -->
+<div class="px-space-xl pt-space-md pb-space-sm">
+<nav class="flex items-center gap-space-xs font-label-md text-label-md text-on-surface-variant mb-space-xs">
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]">home</span>
+        Trang chủ
+      </a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span>Quản trị hệ thống</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-on-surface font-semibold">Phân quyền &amp; Vai trò</span>
+</nav>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Phân quyền &amp; Vai trò người dùng</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Quản lý các nhóm vai trò, định nghĩa quyền hạn chi tiết và kiểm soát truy cập hệ thống thư viện.</p>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="px-space-md py-2 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors font-label-lg text-label-lg flex items-center gap-2 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">file_download</span>
+          Xuất ma trận quyền
+        </button>
+<button class="px-space-md py-2 rounded-lg bg-primary-container text-on-primary hover:bg-primary transition-all font-label-lg text-label-lg flex items-center gap-2 shadow-sm" id="open-create-role-btn" type="button">
+<span class="material-symbols-outlined text-[18px]">add_moderator</span>
+          + Thêm vai trò mới
+        </button>
+</div>
+</div>
+</div>
+<!-- Summary KPI Counters -->
+<div class="px-space-xl py-space-sm">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-space-md">
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Tổng số vai trò</span>
+<span class="font-display text-display text-on-surface mt-1">5</span>
+<span class="font-body-sm text-body-sm text-secondary font-medium flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+            1 vai trò hệ thống mặc định
+          </span>
+</div>
+<div class="w-12 h-12 rounded-xl bg-primary-fixed text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">badge</span>
+</div>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Tổng quyền hệ thống</span>
+<span class="font-display text-display text-on-surface mt-1">32</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">folder_managed</span>
+            Phân bổ trên 7 phân hệ
+          </span>
+</div>
+<div class="w-12 h-12 rounded-xl bg-surface-container-high text-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">key</span>
+</div>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Người dùng đã gán quyền</span>
+<span class="font-display text-display text-on-surface mt-1">1.248</span>
+<span class="font-body-sm text-body-sm text-secondary font-medium flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+            100% tài khoản hoạt động
+          </span>
+</div>
+<div class="w-12 h-12 rounded-xl bg-secondary-fixed text-on-secondary-fixed-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">groups</span>
+</div>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Quyền hạn rủi ro cao</span>
+<span class="font-display text-display text-tertiary-container mt-1">6</span>
+<span class="font-body-sm text-body-sm text-tertiary-container flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">security</span>
+            Chỉ Super Admin &amp; Ca trưởng
+          </span>
+</div>
+<div class="w-12 h-12 rounded-xl bg-tertiary-fixed text-on-tertiary-fixed-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">shield_person</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Primary Tab Switcher -->
+<div class="px-space-xl pt-space-md">
+<div class="flex items-center gap-space-sm border-b-0 pb-1">
+<button class="px-space-lg py-2.5 rounded-lg bg-primary-container text-on-primary font-label-lg text-label-lg flex items-center gap-2 shadow-sm transition-all" id="tab-btn-roles" onclick="switchMainTab('roles')" type="button">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+<span>Vai trò người dùng</span>
+<span class="px-2 py-0.5 rounded-full bg-white/20 text-on-primary font-label-sm text-label-sm">5</span>
+</button>
+<button class="px-space-lg py-2.5 rounded-lg bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-lg text-label-lg flex items-center gap-2 transition-all shadow-sm" id="tab-btn-permissions" onclick="switchMainTab('permissions')" type="button">
+<span class="material-symbols-outlined text-[18px]">vpn_key</span>
+<span>Danh mục quyền</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm">32</span>
+</button>
+<button class="ml-auto px-space-md py-1.5 text-on-surface-variant hover:text-primary font-label-md text-label-md flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[18px]">help</span>
+        Quy ước phân quyền RBAC
+      </button>
+</div>
+</div>
+<!-- TAB 1: ROLES MANAGEMENT (ACTIVE BY DEFAULT) -->
+<div class="px-space-xl py-space-md flex flex-col gap-space-md" id="tab-content-roles">
+<!-- Filter and Search Toolbar -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="flex flex-1 items-center gap-space-sm">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full h-10 pl-10 pr-space-md rounded-lg bg-surface-container-low text-on-surface placeholder:text-on-surface-variant font-body-md text-body-md outline-none focus:bg-surface-container-lowest transition-all shadow-inner" placeholder="Tìm kiếm vai trò theo tên, mã hiệu hoặc mô tả..." type="text"/>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="h-10 px-space-md rounded-lg bg-surface-container-low text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+            Lọc loại vai trò
+            <span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+<button class="h-10 px-space-md rounded-lg bg-surface-container-low text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[18px]">sort</span>
+            Sắp xếp: Tài khoản giảm dần
+          </button>
+</div>
+</div>
+<div class="flex items-center gap-space-xs text-on-surface-variant font-body-sm text-body-sm">
+<span>Hiển thị 5 / 5 vai trò hệ thống</span>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-surface-container-high text-on-surface-variant" type="button">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+</button>
+</div>
+</div>
+<!-- Roles Table -->
+<div class="rounded-xl bg-surface-container-lowest shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-md text-label-md uppercase tracking-wider">
+<th class="py-3 px-4 w-12 text-center">
+<input class="w-4 h-4 rounded text-primary-container focus:ring-0 cursor-pointer" type="checkbox"/>
+</th>
+<th class="py-3 px-4">Tên vai trò &amp; Cấp bậc</th>
+<th class="py-3 px-4">Mã định danh</th>
+<th class="py-3 px-6 max-w-sm">Mô tả trách nhiệm</th>
+<th class="py-3 px-4">Độ bao phủ quyền hạn</th>
+<th class="py-3 px-4 text-center">Số tài khoản</th>
+<th class="py-3 px-6 text-right">Thao tác</th>
+</tr>
+</thead>
+<tbody class="divide-y-0 font-body-md text-body-md text-on-surface">
+<!-- Row 1: Super Admin -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-4 px-4 text-center">
+<input class="w-4 h-4 rounded text-on-surface-variant/40 cursor-not-allowed opacity-50" disabled="" type="checkbox"/>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-primary-container text-on-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">shield</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">Quản trị viên cấp cao</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-primary-fixed-variant font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">lock</span>
+                        Mặc định hệ thống
+                      </span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Super Administrator • Root Level</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="px-2.5 py-1 rounded bg-surface-container font-label-md text-label-md font-mono text-primary font-semibold">ROLE_SUPER_ADMIN</span>
+</td>
+<td class="py-4 px-6 max-w-sm">
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">Toàn quyền kiểm soát hệ sinh thái, cấu hình tham số cốt lõi, sao lưu CSDL và phân quyền quản trị.</p>
+</td>
+<td class="py-4 px-4">
+<div class="flex flex-col gap-1 w-44">
+<div class="flex items-center justify-between text-label-sm font-label-sm">
+<span class="font-semibold text-primary">32 / 32 quyền</span>
+<span class="text-secondary font-semibold">100%</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-primary rounded-full w-full"></div>
+</div>
+<span class="text-label-sm font-label-sm text-secondary">Toàn quyền hệ thống</span>
+</div>
+</td>
+<td class="py-4 px-4 text-center">
+<div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-on-surface font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-[16px] text-primary">person</span>
+                  2
+                </div>
+</td>
+<td class="py-4 px-6 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-2 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors" onclick="openPermissionModal('ROLE_SUPER_ADMIN', 'Quản trị viên cấp cao')" title="Xem chi tiết phân quyền" type="button">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-2 rounded-lg text-outline-variant cursor-not-allowed" disabled="" title="Vai trò mặc định không thể xóa" type="button">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Head Librarian (Role highlighted) -->
+<tr class="bg-surface-container-low/40 hover:bg-surface-container-low transition-colors">
+<td class="py-4 px-4 text-center">
+<input class="w-4 h-4 rounded text-primary-container focus:ring-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-secondary text-on-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">local_library</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">Thủ thư ca trưởng</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm font-semibold">Đang chỉnh sửa</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Trưởng ca vận hành lưu thông &amp; kho ấn phẩm</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="px-2.5 py-1 rounded bg-surface-container font-label-md text-label-md font-mono text-primary font-semibold">ROLE_HEAD_LIBRARIAN</span>
+</td>
+<td class="py-4 px-6 max-w-sm">
+<p class="font-body-sm text-body-sm text-on-surface line-clamp-2">Phụ trách điều phối ca trực, xử lý mượn trả đặc thù, duyệt miễn phạt và quản lý kho sách chuyên sâu.</p>
+</td>
+<td class="py-4 px-4">
+<div class="flex flex-col gap-1 w-44">
+<div class="flex items-center justify-between text-label-sm font-label-sm">
+<span class="font-semibold text-on-surface">24 / 32 quyền</span>
+<span class="text-primary font-semibold">75%</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-primary-container rounded-full w-3/4"></div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Không bao gồm Backup CSDL</span>
+</div>
+</td>
+<td class="py-4 px-4 text-center">
+<div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-on-surface font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-[16px] text-primary">person</span>
+                  4
+                </div>
+</td>
+<td class="py-4 px-6 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-2 rounded-lg text-primary hover:bg-primary/10 transition-colors" onclick="openPermissionModal('ROLE_HEAD_LIBRARIAN', 'Thủ thư ca trưởng')" title="Cấu hình ma trận quyền hạn" type="button">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" onclick="alert('Đã mở hộp thoại chỉnh sửa thông tin')" title="Sửa tên &amp; mô tả" type="button">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 rounded-lg text-error hover:bg-error-container hover:text-on-error-container transition-colors" title="Xóa vai trò" type="button">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Operational Librarian -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-4 px-4 text-center">
+<input class="w-4 h-4 rounded text-primary-container focus:ring-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">book</span>
+</div>
+<div>
+<span class="font-headline-sm text-headline-sm text-on-surface">Thủ thư nghiệp vụ</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Lễ tân quầy lưu thông, mượn trả &amp; xếp giá sách</p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="px-2.5 py-1 rounded bg-surface-container font-label-md text-label-md font-mono text-primary font-semibold">ROLE_LIBRARIAN</span>
+</td>
+<td class="py-4 px-6 max-w-sm">
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">Lập phiếu mượn, nhận trả sách thường nhật, thu tiền phạt theo quy định và kiểm kê ấn phẩm theo kệ.</p>
+</td>
+<td class="py-4 px-4">
+<div class="flex flex-col gap-1 w-44">
+<div class="flex items-center justify-between text-label-sm font-label-sm">
+<span class="font-semibold text-on-surface">18 / 32 quyền</span>
+<span class="text-on-surface-variant font-semibold">56.2%</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-secondary rounded-full w-[56.2%]"></div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Quyền nghiệp vụ quầy</span>
+</div>
+</td>
+<td class="py-4 px-4 text-center">
+<div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-on-surface font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-[16px] text-primary">person</span>
+                  8
+                </div>
+</td>
+<td class="py-4 px-6 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-2 rounded-lg text-primary hover:bg-primary/10 transition-colors" onclick="openPermissionModal('ROLE_LIBRARIAN', 'Thủ thư nghiệp vụ')" title="Cấu hình ma trận quyền hạn" type="button">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 rounded-lg text-error hover:bg-error-container hover:text-on-error-container transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4: Digital Staff -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-4 px-4 text-center">
+<input class="w-4 h-4 rounded text-primary-container focus:ring-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container text-on-surface-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">auto_stories</span>
+</div>
+<div>
+<span class="font-headline-sm text-headline-sm text-on-surface">Cộng tác viên số hóa</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Tổ biên mục, nhập liệu E-book &amp; chụp quét tài liệu</p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="px-2.5 py-1 rounded bg-surface-container font-label-md text-label-md font-mono text-primary font-semibold">ROLE_DIGITAL_STAFF</span>
+</td>
+<td class="py-4 px-6 max-w-sm">
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">Nhập mới siêu dữ liệu sách, bổ sung tác giả/NXB, tải lên tệp đính kèm và kiểm duyệt tài liệu số.</p>
+</td>
+<td class="py-4 px-4">
+<div class="flex flex-col gap-1 w-44">
+<div class="flex items-center justify-between text-label-sm font-label-sm">
+<span class="font-semibold text-on-surface">9 / 32 quyền</span>
+<span class="text-on-surface-variant font-semibold">28.1%</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-outline rounded-full w-[28.1%]"></div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Giới hạn trong phân hệ Sách</span>
+</div>
+</td>
+<td class="py-4 px-4 text-center">
+<div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-on-surface font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-[16px] text-primary">person</span>
+                  2
+                </div>
+</td>
+<td class="py-4 px-6 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-2 rounded-lg text-primary hover:bg-primary/10 transition-colors" onclick="openPermissionModal('ROLE_DIGITAL_STAFF', 'Cộng tác viên số hóa')" title="Cấu hình ma trận quyền hạn" type="button">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 rounded-lg text-error hover:bg-error-container hover:text-on-error-container transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 5: Reader / Patron -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-4 px-4 text-center">
+<input class="w-4 h-4 rounded text-primary-container focus:ring-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">school</span>
+</div>
+<div>
+<span class="font-headline-sm text-headline-sm text-on-surface">Độc giả tiêu chuẩn</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Sinh viên, giảng viên và bạn đọc có thẻ hợp lệ</p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="px-2.5 py-1 rounded bg-surface-container font-label-md text-label-md font-mono text-primary font-semibold">ROLE_READER</span>
+</td>
+<td class="py-4 px-6 max-w-sm">
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">Tra cứu tài liệu trực tuyến (OPAC), đặt mượn trước sách, xem lịch sử cá nhân và gia hạn sách tự động.</p>
+</td>
+<td class="py-4 px-4">
+<div class="flex flex-col gap-1 w-44">
+<div class="flex items-center justify-between text-label-sm font-label-sm">
+<span class="font-semibold text-on-surface">4 / 32 quyền</span>
+<span class="text-on-surface-variant font-semibold">12.5%</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-outline rounded-full w-[12.5%]"></div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Chỉ đọc &amp; tự phục vụ</span>
+</div>
+</td>
+<td class="py-4 px-4 text-center">
+<div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-on-surface font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-[16px] text-primary">person</span>
+                  1.232
+                </div>
+</td>
+<td class="py-4 px-6 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-2 rounded-lg text-primary hover:bg-primary/10 transition-colors" onclick="openPermissionModal('ROLE_READER', 'Độc giả tiêu chuẩn')" title="Cấu hình ma trận quyền hạn" type="button">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 rounded-lg text-outline-variant cursor-not-allowed" disabled="" title="Vai trò người dùng đại chúng" type="button">
+<span class="material-symbols-outlined text-[20px]">delete_outline</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination & Table Footer -->
+<div class="p-space-md bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-sm font-body-sm text-body-sm text-on-surface-variant">
+<span>Hành động hàng loạt:</span>
+<button class="px-space-sm py-1 rounded bg-surface-container-lowest text-on-surface hover:bg-surface-container-high text-label-sm font-label-sm shadow-sm" type="button">Khóa vai trò</button>
+<button class="px-space-sm py-1 rounded bg-surface-container-lowest text-on-surface hover:bg-surface-container-high text-label-sm font-label-sm shadow-sm" type="button">Sao chép phân quyền</button>
+</div>
+<div class="flex items-center gap-space-xs font-label-md text-label-md text-on-surface-variant">
+<button class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-surface-container-high text-on-surface-variant disabled:opacity-40" disabled="">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<span class="px-3 py-1 rounded-lg bg-primary-container text-on-primary font-semibold">1</span>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-surface-container-high text-on-surface-variant disabled:opacity-40" disabled="">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- TAB 2: SYSTEM PERMISSION DICTIONARY (PREVIEW VIEW) -->
+<div class="hidden px-space-xl py-space-md flex flex-col gap-space-md" id="tab-content-permissions">
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="flex flex-1 items-center gap-space-sm">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full h-10 pl-10 pr-space-md rounded-lg bg-surface-container-low text-on-surface placeholder:text-on-surface-variant font-body-md text-body-md outline-none" placeholder="Tìm mã quyền hạn e.g. BOOK_WRITE, BORROW_RETURN..." type="text"/>
+</div>
+<button class="h-10 px-space-md rounded-lg bg-surface-container-low text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[18px]">category</span>
+          Tất cả 7 nhóm chức năng
+        </button>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="px-space-md py-2 rounded-lg bg-primary-container text-on-primary hover:bg-primary transition-all font-label-lg text-label-lg flex items-center gap-1.5 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+          + Thêm quyền hệ thống mới
+        </button>
+</div>
+</div>
+<!-- Permission Table -->
+<div class="rounded-xl bg-surface-container-lowest shadow-sm overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-md text-label-md uppercase tracking-wider">
+<th class="py-3 px-4 w-12 text-center">#</th>
+<th class="py-3 px-4">Mã quyền hạn (Key)</th>
+<th class="py-3 px-4">Tên quyền hiển thị</th>
+<th class="py-3 px-4">Nhóm chức năng</th>
+<th class="py-3 px-6">Mô tả mục đích</th>
+<th class="py-3 px-4">Cấp độ rủi ro</th>
+<th class="py-3 px-6 text-right">Thao tác</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface divide-y-0">
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3 px-4 text-center text-on-surface-variant font-label-sm">01</td>
+<td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-surface-container font-mono text-primary font-semibold text-label-md">USER_LOCK</span></td>
+<td class="py-3 px-4 font-semibold text-on-surface">Khóa &amp; Kích hoạt tài khoản</td>
+<td class="py-3 px-4"><span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm">Người dùng &amp; Tài khoản</span></td>
+<td class="py-3 px-6 text-on-surface-variant">Cho phép đình chỉ quyền truy cập của người dùng hoặc mở khóa lại.</td>
+<td class="py-3 px-4"><span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm font-semibold">Cao / Nguy hiểm</span></td>
+<td class="py-3 px-6 text-right">
+<button class="p-1.5 text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3 px-4 text-center text-on-surface-variant font-label-sm">02</td>
+<td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-surface-container font-mono text-primary font-semibold text-label-md">BOOK_WRITE</span></td>
+<td class="py-3 px-4 font-semibold text-on-surface">Nhập &amp; Sửa dữ liệu ấn phẩm</td>
+<td class="py-3 px-4"><span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm">Sách &amp; Kho ấn phẩm</span></td>
+<td class="py-3 px-6 text-on-surface-variant">Tạo mới đầu sách, cấp số kiểm kê và cập nhật thông tin vị trí lưu trữ.</td>
+<td class="py-3 px-4"><span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm font-semibold">Trung bình</span></td>
+<td class="py-3 px-6 text-right">
+<button class="p-1.5 text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3 px-4 text-center text-on-surface-variant font-label-sm">03</td>
+<td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-surface-container font-mono text-primary font-semibold text-label-md">BORROW_RETURN</span></td>
+<td class="py-3 px-4 font-semibold text-on-surface">Nhận trả &amp; Hoàn tất mượn</td>
+<td class="py-3 px-4"><span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm">Mượn trả lưu thông</span></td>
+<td class="py-3 px-6 text-on-surface-variant">Quét mã vạch nhận trả sách, cập nhật số lượng tồn kho tự động.</td>
+<td class="py-3 px-4"><span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm font-semibold">Thấp / Thường nhật</span></td>
+<td class="py-3 px-6 text-right">
+<button class="p-1.5 text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3 px-4 text-center text-on-surface-variant font-label-sm">04</td>
+<td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-surface-container font-mono text-primary font-semibold text-label-md">SYSTEM_BACKUP</span></td>
+<td class="py-3 px-4 font-semibold text-on-surface">Sao lưu &amp; Phục hồi dữ liệu</td>
+<td class="py-3 px-4"><span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm">Cấu hình &amp; Hệ thống</span></td>
+<td class="py-3 px-6 text-on-surface-variant">Tải bản sao lưu CSDL SQL, kích hoạt quy trình rollback thảm họa.</td>
+<td class="py-3 px-4"><span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm font-semibold">Rất cao</span></td>
+<td class="py-3 px-6 text-right">
+<button class="p-1.5 text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="p-space-md bg-surface-container-low text-center font-body-sm text-on-surface-variant">
+        Hiển thị 4 trong tổng số 32 quyền hạn hệ thống định nghĩa trong cơ sở dữ liệu.
+      </div>
+</div>
+</div>
+<!-- SLIDE-OVER / MODAL: EDIT PERMISSIONS (ACTIVE FEATURE SHOWCASE) -->
+<div class="fixed inset-0 bg-inverse-surface/40 backdrop-blur-sm z-50 flex items-center justify-center p-space-md" id="permission-modal-backdrop">
+<div class="w-full max-w-5xl max-h-[942px] bg-surface-container-lowest rounded-2xl shadow-xl flex flex-col overflow-hidden">
+<!-- Modal Header -->
+<div class="p-space-lg bg-surface-container-low flex items-start justify-between">
+<div class="flex items-start gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-primary-container text-on-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[26px]">tune</span>
+</div>
+<div>
+<div class="flex items-center gap-space-sm flex-wrap">
+<h2 class="font-headline-md text-headline-md text-on-surface" id="modal-role-name">Cấu hình phân quyền: Thủ thư ca trưởng</h2>
+<span class="px-2.5 py-0.5 rounded bg-surface-container font-mono text-label-md text-primary font-semibold" id="modal-role-badge">ROLE_HEAD_LIBRARIAN</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Đánh dấu vào các hộp kiểm để kích hoạt các hành vi nghiệp vụ cho vai trò này trên hệ thống Thư Viện Trí Tuệ.</p>
+</div>
+</div>
+<button class="w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors" onclick="closePermissionModal()" type="button">
+<span class="material-symbols-outlined text-[22px]">close</span>
+</button>
+</div>
+<!-- Modal Role Basic Info Overview -->
+<div class="px-space-lg py-space-md bg-surface-container-lowest grid grid-cols-1 md:grid-cols-3 gap-space-md shadow-sm">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1">Tên vai trò (*)</label>
+<input class="w-full h-9 px-space-sm rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md outline-none focus:bg-surface-container-lowest transition-colors" type="text" value="Thủ thư ca trưởng"/>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1">Mã định danh (Bất biến)</label>
+<input class="w-full h-9 px-space-sm rounded-lg bg-surface-container-high text-on-surface-variant font-mono font-label-md text-label-md cursor-not-allowed opacity-80" disabled="" type="text" value="ROLE_HEAD_LIBRARIAN"/>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1">Mô tả vai trò</label>
+<input class="w-full h-9 px-space-sm rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md outline-none" type="text" value="Phụ trách điều phối ca trực, xử lý mượn trả, duyệt phạt và kho sách."/>
+</div>
+</div>
+<!-- Quick Search & Stats Bar inside Modal -->
+<div class="px-space-lg py-space-sm bg-surface-container flex items-center justify-between">
+<div class="flex items-center gap-space-md font-body-sm text-body-sm">
+<span class="text-on-surface font-medium">Hiện được cấp: <strong class="text-primary font-headline-sm" id="selected-perm-count">24</strong> / 32 quyền</span>
+<span class="h-4 w-px bg-outline-variant"></span>
+<span class="text-on-surface-variant">7 Phân hệ áp dụng</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="text-primary hover:underline font-label-md text-label-md" onclick="toggleAllGroups(true)" type="button">Chọn tất cả 32 quyền</button>
+<span class="text-outline-variant">•</span>
+<button class="text-on-surface-variant hover:text-error hover:underline font-label-md text-label-md" onclick="toggleAllGroups(false)" type="button">Bỏ chọn toàn bộ</button>
+</div>
+</div>
+<!-- Scrollable Permissions Matrix List -->
+<div class="flex-1 overflow-y-auto p-space-lg space-y-space-lg bg-surface">
+<!-- Group 1: Người dùng & Tài khoản -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">manage_accounts</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">1. Phân hệ Người dùng &amp; Tài khoản (4 quyền)</h3>
+</div>
+<label class="flex items-center gap-2 cursor-pointer font-label-md text-label-md text-primary">
+<input checked="" class="w-4 h-4 rounded text-primary-container focus:ring-0 cursor-pointer" onchange="toggleGroupCheckboxes(this, 'group-user')" type="checkbox"/>
+<span>Chọn cả nhóm</span>
+</label>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm group-user">
+<!-- USER_READ -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">USER_READ</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Xem danh sách cán bộ, thủ thư và tài khoản</span>
+</div>
+</label>
+<!-- USER_WRITE -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">USER_WRITE</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Thêm mới, cập nhật hồ sơ &amp; thay đổi mật khẩu</span>
+</div>
+</label>
+<!-- USER_LOCK -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-[14px] text-on-surface">USER_LOCK</span>
+<span class="px-1.5 py-0.2 rounded bg-error-container text-on-error-container font-label-sm text-[10px]">Rủi ro cao</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Khóa hoặc kích hoạt lại tài khoản nhân viên</span>
+</div>
+</label>
+<!-- USER_DELETE -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer opacity-70">
+<input class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-[14px] text-on-surface">USER_DELETE</span>
+<span class="px-1.5 py-0.2 rounded bg-error-container text-on-error-container font-label-sm text-[10px]">Nguy hiểm</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Xóa vĩnh viễn tài khoản người dùng khỏi hệ thống</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Group 2: Sách & Kho ấn phẩm -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">auto_stories</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">2. Sách &amp; Kho ấn phẩm (5 quyền)</h3>
+</div>
+<label class="flex items-center gap-2 cursor-pointer font-label-md text-label-md text-primary">
+<input checked="" class="w-4 h-4 rounded text-primary-container focus:ring-0 cursor-pointer" onchange="toggleGroupCheckboxes(this, 'group-books')" type="checkbox"/>
+<span>Chọn cả nhóm</span>
+</label>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm group-books">
+<!-- BOOK_READ -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">BOOK_READ</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Tra cứu, xem thông tin kho sách &amp; tài liệu số</span>
+</div>
+</label>
+<!-- BOOK_WRITE -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">BOOK_WRITE</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Nhập sách mới, sửa nhan đề, tác giả &amp; thông tin xuất bản</span>
+</div>
+</label>
+<!-- BOOK_INVENTORY -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">BOOK_INVENTORY</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Kiểm kê định kỳ, điều chuyển kệ sách &amp; dán nhãn RFID</span>
+</div>
+</label>
+<!-- BOOK_RESTORE -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">BOOK_RESTORE</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Khôi phục đầu sách đã xóa tạm khỏi kho lưu</span>
+</div>
+</label>
+<!-- BOOK_DELETE -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-[14px] text-on-surface">BOOK_DELETE</span>
+<span class="px-1.5 py-0.2 rounded bg-tertiary-fixed text-tertiary font-label-sm text-[10px]">Cảnh báo</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Thanh lý hoặc loại bỏ sách hỏng khỏi kho</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Group 3: Thành viên & Thẻ bạn đọc -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">badge</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">3. Thành viên &amp; Thẻ bạn đọc (4 quyền)</h3>
+</div>
+<label class="flex items-center gap-2 cursor-pointer font-label-md text-label-md text-primary">
+<input checked="" class="w-4 h-4 rounded text-primary-container focus:ring-0 cursor-pointer" onchange="toggleGroupCheckboxes(this, 'group-patrons')" type="checkbox"/>
+<span>Chọn cả nhóm</span>
+</label>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm group-patrons">
+<!-- MEMBER_READ -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">MEMBER_READ</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Tra cứu hồ sơ độc giả, lịch sử vi phạm &amp; hạn thẻ</span>
+</div>
+</label>
+<!-- MEMBER_WRITE -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">MEMBER_WRITE</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Cấp mới thẻ độc giả, chỉnh sửa thông tin &amp; gia hạn thẻ</span>
+</div>
+</label>
+<!-- MEMBER_FEE_COLLECT -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">MEMBER_FEE_COLLECT</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Thu lệ phí làm thẻ, cấp lại thẻ mất và in hóa đơn</span>
+</div>
+</label>
+<!-- MEMBER_DELETE -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer opacity-70">
+<input class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">MEMBER_DELETE</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Xóa hoàn toàn thẻ và hồ sơ độc giả khỏi CSDL</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Group 4: Mượn trả ấn phẩm -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">sync_alt</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">4. Quản lý Mượn trả ấn phẩm (5 quyền)</h3>
+</div>
+<label class="flex items-center gap-2 cursor-pointer font-label-md text-label-md text-primary">
+<input checked="" class="w-4 h-4 rounded text-primary-container focus:ring-0 cursor-pointer" onchange="toggleGroupCheckboxes(this, 'group-circulation')" type="checkbox"/>
+<span>Chọn cả nhóm</span>
+</label>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm group-circulation">
+<!-- BORROW_READ -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">BORROW_READ</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Tra cứu nhật ký mượn trả &amp; danh sách quá hạn</span>
+</div>
+</label>
+<!-- BORROW_CREATE -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">BORROW_CREATE</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Lập phiếu cho mượn sách mới tại quầy</span>
+</div>
+</label>
+<!-- BORROW_RETURN -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">BORROW_RETURN</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Xác nhận nhận trả ấn phẩm và hoàn kho tức thì</span>
+</div>
+</label>
+<!-- BORROW_RENEW -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">BORROW_RENEW</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Gia hạn thời gian mượn sách theo yêu cầu bạn đọc</span>
+</div>
+</label>
+<!-- BORROW_CANCEL -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">BORROW_CANCEL</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Hủy phiếu mượn thao tác sai trước khi lưu trữ</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Group 5: Xử lý vi phạm & Phạt -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">gavel</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">5. Tiền phạt &amp; Xử lý vi phạm (4 quyền)</h3>
+</div>
+<label class="flex items-center gap-2 cursor-pointer font-label-md text-label-md text-primary">
+<input checked="" class="w-4 h-4 rounded text-primary-container focus:ring-0 cursor-pointer" onchange="toggleGroupCheckboxes(this, 'group-fines')" type="checkbox"/>
+<span>Chọn cả nhóm</span>
+</label>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm group-fines">
+<!-- FINE_READ -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">FINE_READ</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Xem danh sách nợ phạt, biên lai và số liệu thu tiền</span>
+</div>
+</label>
+<!-- FINE_CREATE -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">FINE_CREATE</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Lập biên bản phạt trả trễ, làm bẩn hoặc hỏng sách</span>
+</div>
+</label>
+<!-- FINE_COLLECT -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">FINE_COLLECT</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Thu tiền phạt mặt/chuyển khoản &amp; cấp hóa đơn điện tử</span>
+</div>
+</label>
+<!-- FINE_WAIVE -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-[14px] text-on-surface">FINE_WAIVE</span>
+<span class="px-1.5 py-0.2 rounded bg-tertiary-fixed text-tertiary font-label-sm text-[10px]">Đặc quyền ca trưởng</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Miễn hoặc giảm tiền phạt do tình huống bất khả kháng</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Group 6: Danh mục & Siêu dữ liệu -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">dataset</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">6. Danh mục &amp; Siêu dữ liệu (4 quyền)</h3>
+</div>
+<label class="flex items-center gap-2 cursor-pointer font-label-md text-label-md text-primary">
+<input checked="" class="w-4 h-4 rounded text-primary-container focus:ring-0 cursor-pointer" onchange="toggleGroupCheckboxes(this, 'group-meta')" type="checkbox"/>
+<span>Chọn cả nhóm</span>
+</label>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm group-meta">
+<!-- CATEGORY_READ -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">CATEGORY_READ</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Xem danh mục DDC, tác giả, nhà xuất bản, thể loại</span>
+</div>
+</label>
+<!-- CATEGORY_WRITE -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">CATEGORY_WRITE</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Thêm mới &amp; cập nhật thông tin chuẩn hóa biên mục</span>
+</div>
+</label>
+<!-- CATEGORY_DELETE -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">CATEGORY_DELETE</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Xóa thể loại/tác giả rác chưa gán cho ấn phẩm</span>
+</div>
+</label>
+<!-- CATEGORY_RESTORE -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">CATEGORY_RESTORE</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Khôi phục danh mục tác giả/chuyên ngành đã gỡ bỏ</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Group 7: Cấu hình & Hệ thống (High Privileges) -->
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[20px]">terminal</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">7. Cấu hình &amp; Hệ thống đặc quyền (6 quyền)</h3>
+</div>
+<label class="flex items-center gap-2 cursor-pointer font-label-md text-label-md text-on-surface-variant">
+<input class="w-4 h-4 rounded text-primary-container focus:ring-0 cursor-pointer" onchange="toggleGroupCheckboxes(this, 'group-system')" type="checkbox"/>
+<span>Chọn cả nhóm</span>
+</label>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm group-system">
+<!-- SYSTEM_AUDIT -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[14px] text-on-surface">SYSTEM_AUDIT</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Xem nhật ký hoạt động (Audit Logs) của mọi nhân sự</span>
+</div>
+</label>
+<!-- SYSTEM_CONFIG -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer opacity-70">
+<input class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-[14px] text-on-surface">SYSTEM_CONFIG</span>
+<span class="px-1.5 py-0.2 rounded bg-error-container text-on-error-container font-label-sm text-[10px]">Chỉ Admin</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Thay đổi thời hạn mượn, hạn mức phạt &amp; SMTP gửi mail</span>
+</div>
+</label>
+<!-- SYSTEM_BACKUP -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer opacity-70">
+<input class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-[14px] text-on-surface">SYSTEM_BACKUP</span>
+<span class="px-1.5 py-0.2 rounded bg-error-container text-on-error-container font-label-sm text-[10px]">Nguy cơ rò rỉ</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Kết xuất và tải bản dump cơ sở dữ liệu thư viện</span>
+</div>
+</label>
+<!-- ROLE_MANAGE -->
+<label class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3 cursor-pointer opacity-70">
+<input class="mt-1 w-4 h-4 rounded text-primary-container focus:ring-0 perm-checkbox" type="checkbox"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-[14px] text-on-surface">ROLE_MANAGE</span>
+<span class="px-1.5 py-0.2 rounded bg-error-container text-on-error-container font-label-sm text-[10px]">Quản trị quyền</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Thêm, gán và thu hồi quyền hạn của các vai trò khác</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="p-space-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<button class="px-space-md py-2 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors font-label-lg text-label-lg flex items-center gap-1.5 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+            Sao chép từ vai trò khác...
+          </button>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="px-space-lg py-2 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" onclick="closePermissionModal()" type="button">
+            Hủy bỏ
+          </button>
+<button class="px-space-xl py-2 rounded-lg bg-primary-container text-on-primary hover:bg-primary transition-all font-label-lg text-label-lg flex items-center gap-2 shadow-md" onclick="savePermissions()" type="button">
+<span class="material-symbols-outlined text-[18px]">save</span>
+            Lưu thay đổi phân quyền
+          </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  function switchMainTab(tab) {
+    const rolesBtn = document.getElementById('tab-btn-roles');
+    const permBtn = document.getElementById('tab-btn-permissions');
+    const rolesContent = document.getElementById('tab-content-roles');
+    const permContent = document.getElementById('tab-content-permissions');
+
+    if (tab === 'roles') {
+      rolesBtn.className = 'px-space-lg py-2.5 rounded-lg bg-primary-container text-on-primary font-label-lg text-label-lg flex items-center gap-2 shadow-sm transition-all';
+      permBtn.className = 'px-space-lg py-2.5 rounded-lg bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-lg text-label-lg flex items-center gap-2 transition-all shadow-sm';
+      rolesContent.classList.remove('hidden');
+      permContent.classList.add('hidden');
+    } else {
+      permBtn.className = 'px-space-lg py-2.5 rounded-lg bg-primary-container text-on-primary font-label-lg text-label-lg flex items-center gap-2 shadow-sm transition-all';
+      rolesBtn.className = 'px-space-lg py-2.5 rounded-lg bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-label-lg text-label-lg flex items-center gap-2 transition-all shadow-sm';
+      permContent.classList.remove('hidden');
+      rolesContent.classList.add('hidden');
+    }
+  }
+
+  function openPermissionModal(roleCode, roleName) {
+    const backdrop = document.getElementById('permission-modal-backdrop');
+    const titleEl = document.getElementById('modal-role-name');
+    const badgeEl = document.getElementById('modal-role-badge');
+    
+    if (titleEl) titleEl.innerText = 'Cấu hình phân quyền: ' + roleName;
+    if (badgeEl) badgeEl.innerText = roleCode;
+    
+    backdrop.classList.remove('hidden');
+    backdrop.classList.add('flex');
+    updateSelectedCount();
+  }
+
+  function closePermissionModal() {
+    const backdrop = document.getElementById('permission-modal-backdrop');
+    backdrop.classList.add('hidden');
+    backdrop.classList.remove('flex');
+  }
+
+  function toggleGroupCheckboxes(headerCheckbox, groupClass) {
+    const group = document.querySelector('.' + groupClass);
+    if (!group) return;
+    const checkboxes = group.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => {
+      cb.checked = headerCheckbox.checked;
+    });
+    updateSelectedCount();
+  }
+
+  function toggleAllGroups(state) {
+    const allCheckboxes = document.querySelectorAll('.perm-checkbox');
+    allCheckboxes.forEach(cb => {
+      cb.checked = state;
+    });
+    const groupHeaders = document.querySelectorAll('#permission-modal-backdrop input[type="checkbox"]:not(.perm-checkbox)');
+    groupHeaders.forEach(cb => {
+      cb.checked = state;
+    });
+    updateSelectedCount();
+  }
+
+  function updateSelectedCount() {
+    const allChecked = document.querySelectorAll('.perm-checkbox:checked').length;
+    const countEl = document.getElementById('selected-perm-count');
+    if (countEl) countEl.innerText = allChecked;
+  }
+
+  function savePermissions() {
+    const count = document.querySelectorAll('.perm-checkbox:checked').length;
+    alert('Thành công: Đã lưu ' + count + ' quyền hạn cho vai trò được chọn.');
+    closePermissionModal();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.perm-checkbox').forEach(cb => {
+      cb.addEventListener('change', updateSelectedCount);
+    });
+
+    const createBtn = document.getElementById('open-create-role-btn');
+    if (createBtn) {
+      createBtn.addEventListener('click', () => {
+        openPermissionModal('ROLE_NEW_CUSTOM', 'Vai trò tùy chỉnh mới');
+      });
+    }
+  });
+</script></main></div></body></html>
