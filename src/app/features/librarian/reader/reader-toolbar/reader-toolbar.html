@@ -1,0 +1,31 @@
+<div class="reader-toolbar">
+  <div class="reader-toolbar__top">
+    <div class="reader-toolbar__search">
+      <span class="material-symbols-outlined reader-toolbar__search-icon">search</span>
+      <input
+        class="reader-toolbar__search-input"
+        type="text"
+        placeholder="Tìm theo họ tên, username hoặc mã độc giả..."
+        [value]="keyword()"
+        (input)="onKeywordChange($any($event.target).value)"
+      />
+    </div>
+    <div class="reader-toolbar__actions">
+      <button
+        class="reader-toolbar__btn reader-toolbar__btn--primary"
+        type="button"
+        (click)="onRegister()"
+      >
+        <span class="material-symbols-outlined">person_add</span>
+        <span>+ Đăng ký độc giả</span>
+      </button>
+      <button class="reader-toolbar__btn reader-toolbar__btn--ghost" type="button" title="Xuất file danh sách độc giả">
+        <span class="material-symbols-outlined">file_download</span>
+        <span class="reader-toolbar__btn-label">Xuất file Excel</span>
+      </button>
+      <button class="reader-toolbar__btn-icon" type="button" title="Làm mới dữ liệu">
+        <span class="material-symbols-outlined">sync</span>
+      </button>
+    </div>
+  </div>
+</div>

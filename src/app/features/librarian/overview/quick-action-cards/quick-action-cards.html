@@ -1,0 +1,25 @@
+<section class="quick-actions">
+  @for (card of cards; track card.title) {
+    <article class="quick-action-card">
+      <div class="quick-action-card__top">
+        <div class="quick-action-card__icon" [attr.data-tone]="card.iconTone">
+          <span class="material-symbols-outlined">{{ card.icon }}</span>
+        </div>
+        <div class="quick-action-card__info">
+          <h3 class="quick-action-card__title">{{ card.title }}</h3>
+          <p class="quick-action-card__desc">{{ card.description }}</p>
+        </div>
+      </div>
+      <div class="quick-action-card__cta-wrap">
+        <button
+          class="quick-action-card__cta"
+          [attr.data-tone]="card.ctaTone"
+          type="button"
+        >
+          <span>{{ card.ctaLabel }}</span>
+          <span class="material-symbols-outlined quick-action-card__cta-icon">arrow_forward</span>
+        </button>
+      </div>
+    </article>
+  }
+</section>

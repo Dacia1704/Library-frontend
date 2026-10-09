@@ -1,0 +1,24 @@
+<div class="librarian-layout">
+
+  <!-- Sidebar -->
+  <aside class="librarian-sidebar">
+    <app-sidebar [menu]="menu" />
+  </aside>
+
+  <!-- Main -->
+  <div class="librarian-main">
+
+    <!-- Topbar -->
+    <app-topbar
+      (logoutClick)="logout()"
+      (goToProfile)="goToProfile()"
+    />
+
+    <!-- Page content -->
+    <main class="librarian-content">
+      <router-outlet />
+    </main>
+
+  </div>
+
+</div>

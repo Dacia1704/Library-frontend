@@ -15,6 +15,15 @@ export class BorrowRecordMapper {
       borrowDate: new Date(res.borrowDate),
       dueDate: new Date(res.dueDate),
       note: res.note,
+      borrowDetails: res.borrowDetails.map(d => ({
+        id: d.id,
+        bookId: d.book.id,
+        bookTitle: d.book.title,
+        bookCode: d.book.bookCode,
+        returnDate: d.returnDate ? new Date(d.returnDate) : undefined,
+        fineAmount: d.fineAmount ?? 0,
+        borrowStatus: d.borrowStatus,
+      })),
     });
   }
 

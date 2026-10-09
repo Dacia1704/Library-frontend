@@ -1,0 +1,26 @@
+<section class="borrow-record">
+  <app-borrow-record-breadcrumb />
+  <app-borrow-record-header />
+  
+  <div class="borrow-record__workspace">
+    <div class="borrow-record__main">
+      <app-borrow-record-toolbar
+        (filterChange)="onFilterChange($event)"
+      />
+      <app-borrow-record-table
+        [records]="records()"
+        [totalElements]="totalElements()"
+        [currentPage]="currentPage()"
+        [pageSize]="pageSize()"
+        [isLoading]="isLoading()"
+        (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)"
+        (viewRecord)="onSelectRecord($event)"
+      />
+    </div>
+      <app-borrow-record-drawer
+        [record]="selectedRecord()"
+        (closed)="onCloseDrawer()"
+      />
+  </div>
+</section>

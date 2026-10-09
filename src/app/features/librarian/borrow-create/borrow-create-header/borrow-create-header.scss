@@ -1,0 +1,117 @@
+:host {
+  display: block;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: var(--space-md);
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__title-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-wrap: wrap;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+    }
+  }
+
+  &__title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.015em;
+    margin: 0;
+    line-height: 32px;
+  }
+
+  &__badges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+
+    &--shift {
+      background: var(--secondary-container, #86f2e4);
+      color: var(--on-secondary-container, #006f66);
+    }
+
+    &--code {
+      background: var(--surface-container-high, #dce9ff);
+      color: var(--primary, #1E40AF);
+    }
+  }
+
+  &__badge-icon {
+    font-size: 14px;
+  }
+
+  &__subtitle {
+    font-size: 14px;
+    color: var(--on-surface-variant, #444653);
+    margin: 0;
+    max-width: 600px;
+    line-height: 20px;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 16px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    background: var(--surface-container-lowest, #fff);
+    color: var(--on-surface-variant, #444653);
+    box-shadow: var(--shadow-card);
+
+    &:hover {
+      background: var(--surface-container-high, #dce9ff);
+      color: var(--text-primary);
+    }
+  }
+
+  &__btn-icon {
+    font-size: 18px;
+  }
+}

@@ -1,0 +1,118 @@
+<div class="table">
+  <!-- Table Header & Actions -->
+  <div class="table__header">
+    <div class="table__title-group">
+      <span class="material-symbols-outlined table__icon">menu_book</span>
+      <h2 class="table__title">Danh sách ấn phẩm mượn</h2>
+      <span class="table__count">{{ totalBooks }} mục</span>
+    </div>
+  </div>
+
+  <!-- Table Content -->
+  <div class="table__content">
+    <table class="table__data">
+      <thead>
+        <tr>
+          <th class="table__th table__th--center">#</th>
+          <th class="table__th">Ấn phẩm & Tác giả</th>
+          <th class="table__th">Mã Barcode</th>
+          <th class="table__th table__th--right">Giá bìa</th>
+          <th class="table__th table__th--center">Hiện trạng</th>
+          <th class="table__th table__th--center">Trạng thái</th>
+          <th class="table__th table__th--center">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (book of sortedBooks; track book.id) {
+          <tr 
+            class="table__row"
+            [class.table__row--returned]="book.status === 'returned'"
+          >
+            <td class="table__td table__td--center">
+              <span class="table__number">{{ book.number | number:'2.0' }}</span>
+            </td>
+            <td class="table__td">
+              <div class="table__book-info">
+                <img 
+                  class="table__cover" 
+                  [src]="book.coverUrl" 
+                  [alt]="'Bìa sách ' + book.title"
+                />
+                <div class="table__book-details">
+                  <span class="table__book-title">{{ book.title }}</span>
+                  <span class="table__book-author">{{ book.author }} • {{ book.publisher }}</span>
+                  @if (book.condition && book.condition !== 'good') {
+                    <div class="table__book-damage">
+                      <span class="material-symbols-outlined">report</span>
+                      <span>Báo {{ getDamageLabel(book.condition) }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            </td>
+            <td class="table__td">
+              <span class="table__barcode">{{ book.barcode }}</span>
+            </td>
+            <td class="table__td table__td--right">
+              <span class="table__price">{{ formatCurrency(book.price) }}</span>
+            </td>
+            <td class="table__td table__td--center">
+              @if (book.status === 'returned') {
+                <span class="table__condition-badge table__condition-badge--ok">
+                  <span class="material-symbols-outlined">check</span>
+                  Nguyên vẹn
+                </span>
+              } @else if (book.overdueDays && book.overdueDays > 0) {
+                <span class="table__condition-badge table__condition-badge--overdue">
+                  <span class="material-symbols-outlined">schedule</span>
+                  Quá hạn {{ book.overdueDays }} ngày
+                </span>
+              } @else {
+                <span class="table__condition-badge table__condition-badge--pending">
+                  Đúng hạn
+                </span>
+              }
+            </td>
+            <td class="table__td table__td--center">
+              @if (book.status === 'returned') {
+                <span class="table__status-badge table__status-badge--returned">
+                  <span class="material-symbols-outlined">check_circle</span>
+                  Đã trả
+                </span>
+              } @else {
+                <span class="table__status-badge table__status-badge--pending">
+                  Chưa trả
+                </span>
+              }
+            </td>
+            <td class="table__td table__td--center">
+              @if (book.status === 'returned') {
+                <button class="table__action-btn table__action-btn--disabled" disabled type="button">
+                  <span>Đã hoàn tất</span>
+                </button>
+              } @else {
+                <button class="table__action-btn table__action-btn--process" type="button" (click)="onProcessReturn(book)">
+                  <span class="material-symbols-outlined">assignment_turned_in</span>
+                  <span>Xử lý trả</span>
+                </button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Table Footer -->
+  <div class="table__footer">
+    <div class="table__footer-info">
+      <span class="material-symbols-outlined">info</span>
+      <span>Độc giả cần thanh toán toàn bộ phí phạt trước khi mượn ấn phẩm mới.</span>
+    </div>
+    @if (selectedCount > 0) {
+      <div class="table__footer-selection">
+        <span>Đang xử lý: <strong>{{ selectedCount }} mục được chọn</strong></span>
+      </div>
+    }
+  </div>
+</div>

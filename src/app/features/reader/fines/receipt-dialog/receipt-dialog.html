@@ -32,12 +32,6 @@
         <span class="receipt-dialog__value receipt-dialog__value--amount">{{ formattedAmount }}</span>
       </div>
       <div class="receipt-dialog__row">
-        <span class="receipt-dialog__key">Phương thức:</span>
-        <span class="receipt-dialog__value">
-          {{ payment?.paymentMethod === 'TRANSFER' ? 'Chuyển khoản' : 'Tiền mặt' }}
-        </span>
-      </div>
-      <div class="receipt-dialog__row">
         <span class="receipt-dialog__key">Thủ thư xác nhận:</span>
         <span class="receipt-dialog__value">{{ payment?.receivedByUsername || '-' }}</span>
       </div>

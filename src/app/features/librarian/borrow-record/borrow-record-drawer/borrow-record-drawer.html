@@ -1,0 +1,161 @@
+<aside class="drawer" [class.drawer--open]="isOpen()">
+  @if (record()) {
+    <!-- Drawer Header -->
+    <header class="drawer__header" [attr.data-status]="status()">
+      <div class="drawer__header-left">
+        <div class="drawer__status-dot" [attr.data-status]="status()"></div>
+        <div class="drawer__header-info">
+          <div class="drawer__header-title">
+            <h3 class="drawer__record-code">#{{ record()!.id }}</h3>
+            @if (status() === 'overdue') {
+              <span class="drawer__overdue-badge">Quá hạn {{ overdueDays() }} ngày</span>
+            }
+          </div>
+          <span class="drawer__created-time">Lập lúc {{ formatDateTime(record()!.borrowDate) }}</span>
+        </div>
+      </div>
+      <button class="drawer__close-btn" title="Đóng panel" type="button" (click)="close()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </header>
+
+    <!-- Drawer Content -->
+    <div class="drawer__content">
+      <!-- Member Info -->
+      <section class="drawer__section">
+        <span class="drawer__section-label">Thông tin độc giả & Mượn</span>
+        <div class="drawer__member-card">
+          <div class="drawer__member-info">
+            <h4 class="drawer__member-name">{{ member()!.user.fullName }}</h4>
+            <p class="drawer__member-meta">
+              Thẻ: <strong class="drawer__member-code">{{ member()!.memberCode }}</strong> • {{ member()!.user.roleName }}
+            </p>
+            <p class="drawer__member-meta">
+              SĐT: <span class="drawer__member-phone">{{ member()!.phone }}</span>
+            </p>
+          </div>
+          <div class="drawer__member-avatar">{{ getAvatarLetter(member()!.user.fullName) }}</div>
+        </div>
+        <div class="drawer__meta-grid">
+          <div class="drawer__meta-item">
+            <span class="drawer__meta-label">Thủ thư tạo:</span>
+            <span class="drawer__meta-value">{{ librarian()!.fullName }}</span>
+          </div>
+          <div class="drawer__meta-item">
+            <span class="drawer__meta-label">Hạn trả gốc:</span>
+            <span class="drawer__meta-value" [class.drawer__meta-value--error]="status() === 'overdue'">{{ formatDate(record()!.dueDate) }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Books List -->
+      <section class="drawer__section">
+        <div class="drawer__books-header">
+          <span class="drawer__section-label">Ấn phẩm mượn ({{ totalBooks() }} cuốn)</span>
+          <span class="drawer__return-rate">Tỷ lệ trả: {{ returnedCount() }}/{{ totalBooks() }}</span>
+        </div>
+
+        @for (detail of borrowDetails(); track detail.id) {
+          <div class="drawer__book-card" [class.drawer__book-card--returned]="isBookReturned(detail)">
+            <div class="drawer__book-info">
+              <div class="drawer__book-icon" [class.drawer__book-icon--returned]="isBookReturned(detail)">
+                <span class="material-symbols-outlined">
+                  @if (isBookReturned(detail)) {
+                    menu_book
+                  } @else {
+                    book
+                  }
+                </span>
+              </div>
+              <div class="drawer__book-details">
+                <h5 class="drawer__book-title">{{ detail.bookTitle }}</h5>
+                <p class="drawer__book-code">Mã cá biệt: <span class="drawer__book-code-value">{{ detail.bookCode }}</span></p>
+                @if (!isBookReturned(detail)) {
+                  @if (getBookOverdueDays(detail) > 0) {
+                    <span class="drawer__book-status drawer__book-status--overdue">
+                      Chưa trả (Trễ {{ getBookOverdueDays(detail) }} ngày)
+                    </span>
+                  } @else {
+                    <span class="drawer__book-status drawer__book-status--returned">
+                      Chưa trả (Đúng hạn)
+                    </span>
+                  }
+                } @else {
+                  <span class="drawer__book-status drawer__book-status--returned">
+                    Đã trả {{ formatDate(detail.returnDate!) }}
+                  </span>
+                }
+              </div>
+            </div>
+            <div class="drawer__fine-row" [class.drawer__fine-row--returned]="isBookReturned(detail)">
+              <span class="drawer__fine-label">
+                @if (isBookReturned(detail)) {
+                  Phí trễ hạn:
+                } @else {
+                  Phạt trễ ({{ formatCurrency(getFineRatePerDay()) }}đ x {{ getBookOverdueDays(detail) }} ngày):
+                }
+              </span>
+              <span class="drawer__fine-value" [class.drawer__fine-value--returned]="isBookReturned(detail)">
+                @if (isBookReturned(detail)) {
+                  0 VNĐ
+                } @else {
+                  {{ formatCurrency(detail.fineAmount) }} VNĐ
+                }
+              </span>
+            </div>
+          </div>
+        }
+      </section>
+
+      <!-- Total Fine -->
+      @if (totalFine() > 0) {
+        <section class="drawer__total-fine">
+          <div class="drawer__total-fine-info">
+            <span class="material-symbols-outlined drawer__total-fine-icon">payments</span>
+            <div>
+              <span class="drawer__total-fine-label">Tổng tiền phạt phát sinh</span>
+              <p class="drawer__total-fine-sub">Tính đến ngày hôm nay</p>
+            </div>
+          </div>
+          <span class="drawer__total-fine-value">{{ formatCurrency(totalFine()) }} đ</span>
+        </section>
+      }
+
+      <!-- Notes -->
+      @if (record()!.note) {
+        <section class="drawer__section">
+          <span class="drawer__section-label">Ghi chú & Biên bản tình trạng</span>
+          <div class="drawer__notes">
+            <p class="drawer__note">{{ record()!.note }}</p>
+          </div>
+        </section>
+      }
+    </div>
+
+    <!-- Drawer Actions -->
+    <footer class="drawer__footer">
+      @if (status() === 'overdue' || status() === 'borrowing') {
+        <button class="drawer__action-btn drawer__action-btn--primary" type="button" (click)="navigateToReturnBook()">
+          <span class="material-symbols-outlined">assignment_turned_in</span>
+          <span>Nhận trả sách & Thu tiền phạt ({{ formatCurrency(totalFine()) }}đ)</span>
+        </button>
+      }
+      @if (status() === 'returned') {
+        <button class="drawer__action-btn drawer__action-btn--disabled" type="button" disabled>
+          <span class="material-symbols-outlined">assignment_turned_in</span>
+          <span>Hoàn tất phiếu mượn</span>
+        </button>
+      }
+      <div class="drawer__action-secondary">
+        <button class="drawer__action-btn drawer__action-btn--secondary" type="button">
+          <span class="material-symbols-outlined drawer__btn-icon--primary">chat</span>
+          <span>Nhắc SMS / Zalo</span>
+        </button>
+        <button class="drawer__action-btn drawer__action-btn--secondary" type="button">
+          <span class="material-symbols-outlined">print</span>
+          <span>In phiếu / Biên lai</span>
+        </button>
+      </div>
+    </footer>
+  }
+</aside>

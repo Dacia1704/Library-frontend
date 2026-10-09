@@ -1,0 +1,46 @@
+<div class="fine-schedule">
+  <!-- Header -->
+  <div class="fine-schedule__header">
+    <div class="fine-schedule__title-group">
+      <span class="material-symbols-outlined fine-schedule__icon">gavel</span>
+      <h3 class="fine-schedule__title">Bảng mức phạt quy định</h3>
+    </div>
+    <span class="fine-schedule__regulation">{{ regulationCode }}</span>
+  </div>
+
+  <p class="fine-schedule__desc">
+    Mức phạt được áp dụng tự động theo quy chế lưu thông. Thủ thư có thể linh hoạt điều chỉnh tỷ lệ theo kết luận giám định thực tế.
+  </p>
+
+  <!-- Fine Tiers List -->
+  <div class="fine-schedule__tiers">
+    @for (tier of fineTiers; track tier.number) {
+      <div class="tier" [class.tier--highlight]="tier.isHighlight">
+        <div class="tier__number">{{ tier.number }}</div>
+        <div class="tier__info">
+          <span class="tier__title">{{ tier.title }}</span>
+          <span class="tier__desc">{{ tier.description }}</span>
+        </div>
+        <div class="tier__rate">
+          <span class="tier__rate-value" [class.tier__rate-value--error]="tier.number >= 4">
+            {{ tier.rate }}
+          </span>
+          @if (tier.additionalInfo) {
+            <span class="tier__rate-additional">{{ tier.additionalInfo }}</span>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Payment Methods -->
+  <div class="fine-schedule__payment">
+    <span class="material-symbols-outlined fine-schedule__payment-icon">payments</span>
+    <div class="fine-schedule__payment-info">
+      <span class="fine-schedule__payment-title">Phương thức xử lý tiền phạt</span>
+      <span class="fine-schedule__payment-desc">
+        Tiền phạt sẽ tự động ghi nợ vào tài khoản độc giả và thu trực tiếp tại quầy bằng tiền mặt.
+      </span>
+    </div>
+  </div>
+</div>

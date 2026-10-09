@@ -59,7 +59,7 @@ export class BookDetail implements OnInit {
   private loadBook(id: number): void {
     this.isLoading.set(true);
 
-    this.bookService.getById(id).subscribe({
+    this.bookService.getById(String(id)).subscribe({
       next: response => {
         this.book.set(response.data);
 

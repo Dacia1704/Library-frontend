@@ -1,0 +1,49 @@
+<div class="return-book">
+  <!-- Header & Breadcrumb -->
+  <app-return-book-header
+    [librarianName]="currentLibrarian.name"
+    [librarianRole]="currentLibrarian.role"
+    [shiftDesk]="'01'"
+    (onRefresh)="onRefreshHeader()"
+    (onHistory)="onHistory()">
+  </app-return-book-header>
+
+  <!-- Main Content -->
+  <div class="return-book__content">
+    <!-- LEFT SECTION -->
+    <div class="return-book__left">
+      <!-- Record Card -->
+      <app-return-book-record-card
+        [data]="currentRecord()">
+      </app-return-book-record-card>
+
+      <!-- Books Table -->
+      <app-return-book-table
+        [books]="borrowedBooks()"
+        [totalBooks]="totalBooks"
+        (processReturn)="onProcessReturn($event)"
+        (quickReturnAll)="onQuickReturnAll()"
+        (selectAll)="onSelectAll()">
+      </app-return-book-table>
+    </div>
+
+    <!-- RIGHT SECTION -->
+    <div class="return-book__right">
+      <!-- Fine Schedule -->
+      <app-return-book-fine-schedule
+        [regulationCode]="'QĐ-TV 14/2024'">
+      </app-return-book-fine-schedule>
+
+      <!-- Tips -->
+      <app-return-book-tips></app-return-book-tips>
+    </div>
+  </div>
+
+  <!-- Return Modal -->
+  <app-return-book-modal
+    [isOpen]="isModalOpen()"
+    [data]="selectedBook()"
+    (close)="onModalClose()"
+    (confirm)="onModalConfirm($event)">
+  </app-return-book-modal>
+</div>

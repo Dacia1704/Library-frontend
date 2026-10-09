@@ -1,0 +1,23 @@
+<header class="header">
+  <div class="header__info">
+    <h1 class="header__title">Quản lý phiếu mượn</h1>
+    <p class="header__subtitle">
+      Theo dõi luân chuyển sách, kiểm soát thời hạn hoàn trả và thu hồi tài liệu lưu thông.
+    </p>
+  </div>
+
+  <div class="header__actions">
+    <button class="header__btn header__btn--secondary" type="button">
+      <span class="material-symbols-outlined header__btn-icon">qr_code_scanner</span>
+      <span>Quét mã vạch / QR</span>
+    </button>
+    <button class="header__btn header__btn--secondary" type="button">
+      <span class="material-symbols-outlined header__btn-icon">file_download</span>
+      <span>Xuất Excel</span>
+    </button>
+    <button class="header__btn header__btn--primary" type="button" (click)="navigateToCreate()">
+      <span class="material-symbols-outlined header__btn-icon">add_circle</span>
+      <span>+ Lập phiếu mượn mới</span>
+    </button>
+  </div>
+</header>

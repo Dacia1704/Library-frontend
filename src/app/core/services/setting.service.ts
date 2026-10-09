@@ -110,7 +110,7 @@ export class SettingService {
   }
 
   static getMemberPaymentMonth(): number {
-    return Number(this.getLocalSettingValue('MEMBER_PAYMENT_MONTH')) || 0;
+    return Number(this.getLocalSettingValue('MEMBERSHIP_FEE')) || 0;
   }
 
   static getCardMakerFee(): number {

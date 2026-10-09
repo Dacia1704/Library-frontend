@@ -1,0 +1,220 @@
+<div class="flow">
+  <!-- STEP 1: CHỌN ĐỘC GIẢ THỤ HƯỞNG -->
+  <section class="flow__step">
+    <div class="step__header">
+      <div class="step__title-group">
+        <span class="step__number">1</span>
+        <h2 class="step__title">Chọn độc giả thụ hưởng</h2>
+      </div>
+      <span class="step__badge">Xác minh định danh</span>
+    </div>
+
+    <!-- Patron Search Bar -->
+    <div class="patron-search">
+      <span class="material-symbols-outlined patron-search__icon">badge</span>
+      <input
+        class="patron-search__input"
+        type="text"
+        placeholder="Tìm theo mã thẻ (MBR-...), họ tên hoặc CCCD..."
+        [(ngModel)]="patronKeyword"
+        (ngModelChange)="onPatronKeywordInput($event)"
+        (focus)="onPatronFocus()"
+        (blur)="onPatronBlur()"
+        autocomplete="off"
+      />
+      <button class="patron-search__btn" type="button">
+        <span class="material-symbols-outlined">qr_code_scanner</span>
+        <span>Quét thẻ [F2]</span>
+      </button>
+
+      <!-- Dropdown -->
+      @if (patronOpen()) {
+        <div class="patron-dropdown" (mousedown)="$event.preventDefault()">
+          @if (isPatronLoading()) {
+            <div class="patron-dropdown__loading">Đang tải...</div>
+          } @else if (patronResults().length === 0) {
+            <div class="patron-dropdown__empty">Không tìm thấy độc giả phù hợp</div>
+          } @else {
+            @for (member of patronResults(); track member.id) {
+              <div
+                class="patron-dropdown__item"
+                (click)="selectPatron(member)"
+              >
+                <img
+                  class="patron-dropdown__avatar"
+                  [src]="patronAvatarSrc(member)"
+                  [alt]="member.user.fullName + ' avatar'"
+                />
+                <div class="patron-dropdown__info">
+                  <span class="patron-dropdown__name">{{ member.user.fullName }}</span>
+                  <span class="patron-dropdown__meta">
+                    {{ member.memberCode }} • {{ member.user.email }}
+                  </span>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Selected Patron Info Card -->
+    @if (selectedPatron) {
+      <div class="patron-card" [class.patron-card--violation]="patronCardStatus(selectedPatron) === 'violation'">
+        <div class="patron-card__avatar">
+          <img
+            class="patron-card__avatar-img"
+            [src]="patronAvatarSrc(selectedPatron)"
+            [alt]="selectedPatron.user.fullName + ' avatar'"
+          />
+          <span
+            class="patron-card__avatar-badge"
+            [class.patron-card__avatar-badge--valid]="patronCardStatus(selectedPatron) === 'valid'"
+            [class.patron-card__avatar-badge--violation]="patronCardStatus(selectedPatron) === 'violation'"
+          ></span>
+        </div>
+
+        <div class="patron-card__info">
+          <div class="patron-card__name-row">
+            <span class="patron-card__name">{{ selectedPatron.user.fullName }}</span>
+            <span class="patron-card__type">{{ selectedPatron.user.roleName }}</span>
+          </div>
+          <div class="patron-card__details">
+            <span>Mã thẻ: <strong>{{ selectedPatron.memberCode }}</strong></span>
+            <span>•</span>
+            <span>SĐT: {{ selectedPatron.phone || '—' }}</span>
+          </div>
+          <div class="patron-card__status">
+            @if (patronCardStatus(selectedPatron) === 'valid') {
+              <span class="patron-card__status-badge patron-card__status-badge--valid">
+                <span class="material-symbols-outlined">verified</span>
+                {{ patronStatusLabel(selectedPatron) }}
+              </span>
+            } @else {
+              <span class="patron-card__status-badge patron-card__status-badge--violation">
+                <span class="material-symbols-outlined">warning</span>
+                {{ patronStatusLabel(selectedPatron) }}
+              </span>
+            }
+          </div>
+        </div>
+
+        <div class="patron-card__metrics">
+          <div class="patron-card__metric">
+            <span class="patron-card__metric-label">Sách đang mượn</span>
+            <span class="patron-card__metric-value patron-card__metric-value--primary">
+              {{ booksHeld() }}/{{ maxQuota }} cuốn
+            </span>
+          </div>
+          <div class="patron-card__divider"></div>
+          <div class="patron-card__metric">
+            <span class="patron-card__metric-label">Tiền phạt chưa nộp</span>
+            <span
+              class="patron-card__metric-value patron-card__metric-value--secondary"
+              [class.patron-card__metric-value--error]="fineAmount() > 0"
+            >
+              {{ formatCurrency(fineAmount()) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    } @else {
+      <div class="patron-card patron-card--empty">
+        <span class="material-symbols-outlined patron-card--empty-icon">person_search</span>
+        <span>Chưa có độc giả nào được chọn. Hãy tìm kiếm theo mã thẻ, họ tên hoặc CCCD.</span>
+      </div>
+    }
+
+    <!-- Safety Notice -->
+    <div class="safety-notice">
+      <div class="safety-notice__content">
+        <span class="material-symbols-outlined safety-notice__icon">shield</span>
+        <div class="safety-notice__text">
+          <span class="safety-notice__title">Cơ chế kiểm soát an toàn mượn - trả tự động</span>
+          <span class="safety-notice__desc">
+            Nếu thẻ hết hạn hoặc nợ phạt quá mức quy định (≥ 50.000 VNĐ), hệ thống sẽ lập tức cảnh báo đỏ và tự động khóa biểu mẫu lập phiếu để bảo toàn tài sản thư viện.
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2: CHỌN SÁCH MƯỢN -->
+  <section class="flow__step" [class.flow__step--disabled]="selectedPatron && patronCardStatus(selectedPatron) === 'violation'">
+    <div class="step__header">
+      <div class="step__title-group">
+        <span class="step__number">2</span>
+        <div class="step__title-content">
+          <h2 class="step__title">Chọn sách mượn</h2>
+          <span class="step__subtitle">Tra cứu ấn phẩm lưu kho và bổ sung vào danh mục phiếu</span>
+        </div>
+      </div>  
+      <div class="step__quota">
+        <span class="material-symbols-outlined step__quota-icon">menu_book</span>
+        <span>Hạn mức mượn: Tối đa {{ maxQuota }} cuốn / lần (Đã chọn: <strong>{{ booksHeld() + selectedBooks.length }}/{{ maxQuota }}</strong>)</span>
+      </div>
+    </div>
+
+    <!-- Book Search Bar -->
+    <div class="book-search">
+      <span class="material-symbols-outlined book-search__icon">search</span>
+      <input
+        class="book-search__input"
+        type="text"
+        placeholder="Tìm tên sách, tác giả hoặc quét mã vạch (Barcode/ISBN)..."
+        [(ngModel)]="bookKeyword"
+        (ngModelChange)="onBookKeywordInput($event)"
+        autocomplete="off"
+      />
+    </div>
+
+    <!-- Books List -->
+    <div class="book-list">
+      <span class="book-list__label">Ấn phẩm đề xuất & tìm thấy gần đây</span>
+
+      @if (isBookLoading()) {
+        <div class="book-list__loading">Đang tải...</div>
+      } @else if (books().length === 0) {
+        <div class="book-list__empty">Không tìm thấy sách phù hợp</div>
+      } @else {
+        @for (book of books(); track book.id) {
+          <div class="book-item">
+            <div class="book-item__cover">
+              <img
+                class="book-item__cover-img"
+                [src]="coverSrc(book)"
+                [alt]="'Bìa sách ' + book.title"
+              />
+            </div>
+            <div class="book-item__info">
+              <span class="book-item__title">{{ book.title }}</span>
+              <span class="book-item__author">
+                Tác giả: {{ authorsDisplay(book) }} • Thể loại: {{ categoryDisplay(book) }}
+              </span>
+              <div class="book-item__meta">
+                <span class="book-item__shelf">Kệ: {{ shelfDisplay(book) }}</span>
+                <span class="book-item__available">Còn {{ book.available }}/{{ book.quantity }} cuốn</span>
+                <span class="book-item__isbn">ISBN: {{ book.isbn }}</span>
+              </div>
+            </div>
+            @if (isBookSelected(book.id)) {
+              <button class="book-item__btn book-item__btn--added" disabled type="button">
+                <span class="material-symbols-outlined">check</span>
+                <span>Đã thêm</span>
+              </button>
+            } @else {
+              <button
+                class="book-item__btn book-item__btn--add"
+                type="button"
+                (click)="addBook(book)"
+              >
+                <span class="material-symbols-outlined">add</span>
+                <span>Thêm</span>
+              </button>
+            }
+          </div>
+        }
+      }
+    </div>
+  </section>
+</div>

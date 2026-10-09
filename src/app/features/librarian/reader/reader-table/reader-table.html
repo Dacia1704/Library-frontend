@@ -1,0 +1,206 @@
+<div class="reader-table">
+  <div class="reader-table__scroll">
+    <table class="reader-table__table">
+      <thead>
+        <tr>
+          <th class="reader-table__th-avatar">Ảnh</th>
+          <th>Họ tên & Mã độc giả</th>
+          <th>Tên đăng nhập</th>
+          <th>Email & Điện thoại</th>
+          <th>Số CCCD</th>
+          <th>Mã thẻ thư viện</th>
+          <th class="reader-table__th-center">Trạng thái</th>
+          <th class="reader-table__th-center">Trạng thái thẻ</th>
+          <th class="reader-table__th-actions">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (member of members(); track member.id) {
+          <tr
+            class="reader-table__row"
+            [class.reader-table__row--locked]="!member.user.isActive"
+          >
+            <!-- Avatar -->
+            <td class="reader-table__td-avatar">
+              <img
+                class="reader-table__avatar"
+                [class.reader-table__avatar--locked]="!member.user.isActive"
+                [src]="avatarSrc(member)"
+                [alt]="member.user.fullName + ' avatar'"
+              />
+            </td>
+
+            <!-- Name -->
+            <td>
+              <div class="reader-table__name-block">
+                <span class="reader-table__name">{{ member.user.fullName }}</span>
+                <div class="reader-table__name-meta">
+                  <span class="reader-table__code">{{ member.memberCode }}</span>
+                </div>
+              </div>
+            </td>
+
+            <!-- Username -->
+            <td>
+              <span class="reader-table__username-pill">{{ member.user.username }}</span>
+            </td>
+
+            <!-- Email & Phone -->
+            <td>
+              <div class="reader-table__contact">
+                <span>{{ member.user.email }}</span>
+                <span class="reader-table__phone">{{ member.phone }}</span>
+              </div>
+            </td>
+
+            <!-- CCCD -->
+            <td>
+              <span class="reader-table__mono">{{ member.identityNumber }}</span>
+            </td>
+
+            <!-- Card -->
+            <td>
+              @if (member.cardStatus === 'ISSUED') {
+                <div class="reader-table__card reader-table__card--issued">
+                  <span class="material-symbols-outlined">verified</span>
+                  <span>{{ member.memberCode }}</span>
+                </div>
+              } @else {
+                <div class="reader-table__card-row">
+                  <span class="reader-table__card reader-table__card--none">
+                    <span class="reader-table__card-dot"></span>
+                    <span>Chờ cấp thẻ. Đã tạo: {{getCreatedAt(member)}}</span>
+                  </span>
+                </div>
+              }
+            </td>
+
+            <!-- Status -->
+            <td class="reader-table__td-center">
+              @if (member.user.isActive) {
+                <div class="reader-table__status reader-table__status--active">
+                  <span class="reader-table__status-dot"></span>
+                  <span>Hoạt động</span>
+                </div>
+              } @else {
+                <div class="reader-table__status reader-table__status--locked">
+                  <span class="material-symbols-outlined">lock</span>
+                  <span>Đang khóa</span>
+                </div>
+              }
+            </td>
+            <td class="reader-table__td-center">
+              @if (!isCardExpired(member)) {
+                <div class="reader-table__status reader-table__status--active">
+                  <span class="reader-table__status-dot"></span>
+                  <span>Còn hạn</span>
+                </div>
+              } @else {
+                <div class="reader-table__status reader-table__status--locked">
+                  <span class="material-symbols-outlined">lock</span>
+                  <span>Hết hạn</span>
+                </div>
+              }
+            </td>
+
+            <!-- Actions -->
+            <td>
+              <div class="reader-table__actions">
+                @if (!member.user.isActive) {
+                  <button
+                    class="reader-table__btn reader-table__btn--secondary-sm"
+                    type="button"
+                    (click)="onAction(member, 'unlock')"
+                  >
+                    <span class="material-symbols-outlined">lock_open</span>
+                    <span>Mở khóa</span>
+                  </button>
+                }
+                @if (isCardExpired(member)) {
+                  <button
+                    class="reader-table__btn reader-table__btn--secondary-sm"
+                    type="button"
+                    (click)="onAction(member, 'renew-card')"
+                  >
+                    <span class="material-symbols-outlined">refresh</span>
+                    <span>Gia hạn</span>
+                  </button>
+                }
+                <button
+                  class="reader-table__icon-btn"
+                  type="button"
+                  title="Xem chi tiết"
+                  (click)="onAction(member, 'view')"
+                >
+                  <span class="material-symbols-outlined">visibility</span>
+                </button>
+                @if (member.user.isActive) {
+                  <button
+                    class="reader-table__icon-btn"
+                    type="button"
+                    title="Chỉnh sửa hồ sơ"
+                    (click)="onAction(member, 'edit')"
+                  >
+                    <span class="material-symbols-outlined">edit_square</span>
+                  </button>
+                }
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer pagination -->
+  <footer class="reader-table__footer">
+    <div class="reader-table__page-size">
+      <span>Hiển thị</span>
+      <select [value]="pageSize()" (change)="onPageSizeChange(+$any($event.target).value)">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select>
+      <span>của <strong>{{ totalElements() }}</strong> độc giả • Trang <strong>{{ currentPage() + 1 }}</strong>/<strong>{{ totalPages }}</strong></span>
+    </div>
+    <div class="reader-table__pagination">
+      <button
+        class="reader-table__page-btn"
+        type="button"
+        [disabled]="currentPage() === 0"
+        (click)="onPageChange(0)"
+      >
+        <span class="material-symbols-outlined">first_page</span>
+      </button>
+      <button
+        class="reader-table__page-btn"
+        type="button"
+        [disabled]="currentPage() === 0"
+        (click)="onPageChange(currentPage() - 1)"
+      >
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <button
+        class="reader-table__page-btn reader-table__page-btn--active"
+        type="button"
+      >{{ currentPage() + 1 }}</button>
+      <button
+        class="reader-table__page-btn"
+        type="button"
+        [disabled]="currentPage() >= totalPages - 1"
+        (click)="onPageChange(currentPage() + 1)"
+      >
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+      <button
+        class="reader-table__page-btn"
+        type="button"
+        [disabled]="currentPage() >= totalPages - 1"
+        (click)="onPageChange(totalPages - 1)"
+      >
+        <span class="material-symbols-outlined">last_page</span>
+      </button>
+    </div>
+  </footer>
+</div>

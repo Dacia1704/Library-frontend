@@ -1,0 +1,75 @@
+@if (hasRecord && record) {
+  <div class="record-card">
+    <!-- Left: Borrower & Ticket Meta -->
+    <div class="record-card__left">
+      <div class="record-card__icon">
+        <span class="material-symbols-outlined">assignment</span>
+      </div>
+      <div class="record-card__info">
+        <div class="record-card__title-row">
+          <span class="record-card__code">Phiếu #{{ record.recordCode }}</span>
+          <span class="record-card__created">Lập lúc {{ formatDate(record.createdAt) }}</span>
+        </div>
+
+        <div class="record-card__meta-grid">
+          <!-- Member Info -->
+          <div class="record-card__meta-item">
+            <span class="record-card__meta-label">Độc giả</span>
+            <span class="record-card__meta-value">{{ record.memberName }}</span>
+            <span class="record-card__meta-sub">Thẻ: <strong>{{ record.memberCode }}</strong></span>
+          </div>
+
+          <!-- Contact -->
+          <div class="record-card__meta-item">
+            <span class="record-card__meta-label">Liên hệ</span>
+            <span class="record-card__meta-value">{{ record.phone }}</span>
+            <span class="record-card__meta-sub">{{ record.email }}</span>
+          </div>
+
+          <!-- Due Date -->
+          <div class="record-card__meta-item">
+            <span class="record-card__meta-label">Thời hạn</span>
+            <div class="record-card__meta-dates">
+              <span class="material-symbols-outlined">event</span>
+              <span>Mượn: <strong>{{ formatDate(record.borrowDate) }}</strong></span>
+              <span class="record-card__meta-arrow">→</span>
+              <span>Hạn: <strong [class.record-card__due-error]="isOverdue">{{ formatDate(record.dueDate) }}</strong></span>
+            </div>
+            <span class="record-card__meta-sub">Thời hạn quy định: {{ record.borrowDays }} ngày</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Overdue Warning & Progress -->
+    <div class="record-card__right">
+      <!-- Overdue Alert -->
+      @if (isOverdue) {
+        <div class="record-card__overdue-alert">
+          <span class="material-symbols-outlined">warning</span>
+          <div class="record-card__overdue-info">
+            <span class="record-card__overdue-title">Quá hạn {{ record.overdueDays }} ngày</span>
+            <span class="record-card__overdue-desc">Tính đến hôm nay {{ today }}. Bắt đầu áp dụng biểu phí phạt lưu thông quá hạn.</span>
+          </div>
+        </div>
+      }
+
+      <!-- Progress Summary -->
+      <div class="record-card__progress">
+        <div class="record-card__progress-info">
+          <span class="record-card__progress-label">Tiến độ hoàn trả</span>
+          <span class="record-card__progress-total">Tổng: {{ record.totalBooks }} cuốn</span>
+        </div>
+        <div class="record-card__progress-stats">
+          <div class="record-card__progress-detail">
+            <span class="record-card__progress-returned">{{ record.returnedCount }} Đã trả</span>
+            <span class="record-card__progress-pending">{{ record.totalBooks - record.returnedCount }} Chưa trả</span>
+          </div>
+          <div class="record-card__progress-circle">
+            {{ progressPercent }}%
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

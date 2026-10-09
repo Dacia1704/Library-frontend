@@ -1,0 +1,158 @@
+<div class="summary">
+  <div class="summary__header">
+    <div class="summary__header-info">
+      <span class="summary__header-label">Tóm tắt giao dịch lưu hành</span>
+      <h2 class="summary__header-title">Thông tin phiếu mượn</h2>
+    </div>
+  </div>
+
+  <div class="summary__form">
+    <!-- Librarian Field -->
+    <div class="form-field">
+      <label class="form-field__label">Thủ thư lập phiếu</label>
+      <div class="form-field__display">
+        <span class="material-symbols-outlined form-field__icon">badge</span>
+        <span>{{ librarian.name }} ({{ librarian.id }})</span>
+      </div>
+    </div>
+
+    <!-- Borrow Date & Duration -->
+    <div class="form-grid">
+      <div class="form-field">
+        <label class="form-field__label">Ngày mượn</label>
+        <div class="form-field__input-wrapper">
+          <span class="material-symbols-outlined form-field__input-icon">calendar_today</span>
+          <span class="form-field__date">{{ today }}</span>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <div class="form-field__header">
+          <label class="form-field__label">Số ngày mượn</label>
+          <span class="form-field__hint">Tối đa 14 ngày</span>
+        </div>
+        <div class="days-selector">
+          <input
+            class="days-selector__input"
+            type="number"
+            [value]="borrowDays"
+            min="1"
+            max="14"
+            (input)="onDaysChange($event)"
+          />
+          <button
+            class="days-selector__btn"
+            [class.days-selector__btn--active]="borrowDays === 7"
+            type="button"
+            (click)="onDaysSet(7)">
+            7 ngày
+          </button>
+          <button
+            class="days-selector__btn days-selector__btn--primary"
+            [class.days-selector__btn--active]="borrowDays === 14"
+            type="button"
+            (click)="onDaysSet(14)">
+            14 ngày
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Due Date Banner -->
+    <div class="due-banner">
+      <div class="due-banner__left">
+        <span class="material-symbols-outlined due-banner__icon">event_upcoming</span>
+        <span class="due-banner__label">Hạn trả ấn phẩm:</span>
+      </div>
+      <div class="due-banner__right">
+        <span class="due-banner__date">{{ dueDate }}</span>
+        <span class="due-banner__badge">{{ borrowDays }} ngày lưu hành</span>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="form-field">
+      <label class="form-field__label">Ghi chú phiếu mượn</label>
+      <textarea
+        class="form-field__textarea"
+        rows="2"
+        [value]="notes"
+        (input)="onNotesChange($event)"
+        placeholder="Tình trạng sách, bìa hoặc yêu cầu kiểm tra...">
+      </textarea>
+    </div>
+  </div>
+
+  <!-- Selected Books Manifest -->
+  <div class="manifest">
+    <div class="manifest__header">
+      <span class="manifest__label">Danh sách ấn phẩm mượn</span>
+      <span class="manifest__count">{{ selectedBooks.length }} cuốn được chọn</span>
+    </div>
+
+    <div class="manifest__list">
+      @for (book of selectedBooks; track book.id) {
+        <div class="manifest__item">
+          <div class="manifest__item-info">
+            <span class="material-symbols-outlined manifest__item-icon">book_2</span>
+            <div class="manifest__item-details">
+              <span class="manifest__item-title">{{ book.title }}</span>
+              <div class="manifest__item-meta">
+                <span>Mã: <code>{{ bookCode(book) }}</code></span>
+                <span>•</span>
+                <span>Kệ: {{ bookShelf(book) }}</span>
+              </div>
+            </div>
+          </div>
+          <button
+            class="manifest__item-remove"
+            type="button"
+            (click)="onBookRemove(book.id)"
+            title="Gỡ khỏi phiếu mượn">
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+        </div>
+      } @empty {
+        <div class="manifest__empty">
+          <span class="material-symbols-outlined manifest__empty-icon">library_books</span>
+          <span>Chưa có sách nào được chọn</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Summary Stats -->
+  <div class="stats">
+    <div class="stats__info">
+      <span class="stats__label">Tổng số lượng ấn phẩm</span>
+      <span class="stats__value">{{ selectedBooks.length }} cuốn / {{ maxQuota }} cuốn cho phép</span>
+    </div>
+    <div class="stats__status" [class.stats__status--valid]="canCreate" [class.stats__status--invalid]="!canCreate">
+      <span class="material-symbols-outlined">{{ canCreate ? 'check_circle' : 'warning' }}</span>
+      <span>{{ canCreate ? 'Hợp lệ lập phiếu' : 'Chưa hợp lệ' }}</span>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="actions">
+    <button
+      class="actions__btn actions__btn--primary"
+      type="button"
+      [disabled]="!canCreate"
+      (click)="onSubmit()">
+      <span class="material-symbols-outlined">post_add</span>
+      <span>Tạo phiếu mượn</span>
+    </button>
+
+    <div class="actions__secondary">
+      <button class="actions__btn actions__btn--secondary" type="button" (click)="onPrint()">
+        <span class="material-symbols-outlined">print</span>
+        <span>In phiếu & Lưu</span>
+      </button>
+      <button class="actions__btn actions__btn--danger" type="button" (click)="onCancel()">
+        <span class="material-symbols-outlined">cancel</span>
+        <span>Hủy bỏ</span>
+      </button>
+    </div>
+  </div>
+</div>

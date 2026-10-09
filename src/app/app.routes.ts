@@ -19,4 +19,12 @@ export const routes: Routes = [
       { path: '', loadChildren: () => import('./features/reader/reader.routes').then(m => m.READER_ROUTES) },
     ],
   },
+  {
+    path: 'librarian',
+    canActivate: [roleGuard(['LIBRARIAN'])],
+    loadComponent: () => import('./layouts/librarian-layout/librarian-layout').then(m => m.LibrarianLayout),
+    children: [
+      { path: '', loadChildren: () => import('./features/librarian/librarian.routes').then(m => m.LIBRARIAN_ROUTES) },
+    ],
+  },
 ];

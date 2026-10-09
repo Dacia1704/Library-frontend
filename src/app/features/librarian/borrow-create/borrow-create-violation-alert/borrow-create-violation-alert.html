@@ -1,0 +1,14 @@
+<div class="violation-alert" [class.violation-alert--hidden]="!hasViolation">
+  <div class="violation-alert__content">
+    <div class="violation-alert__icon">
+      <span class="material-symbols-outlined">block</span>
+    </div>
+    <div class="violation-alert__text">
+      <span class="violation-alert__title">Không thể mượn: Thẻ vi phạm nợ phạt hoặc hết hạn sử dụng!</span>
+      <span class="violation-alert__message">{{ violationMessage }}</span>
+    </div>
+  </div>
+  <button class="violation-alert__close" type="button" (click)="onDismiss()">
+    <span class="material-symbols-outlined">close</span>
+  </button>
+</div>

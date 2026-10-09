@@ -1,0 +1,118 @@
+:host {
+  display: block;
+}
+
+.reader-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (min-width: 1280px) {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  &__title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 768px;
+  }
+
+  &__title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__title {
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: -0.015em;
+    font-weight: 600;
+    color: var(--on-surface, #0b1c30);
+    margin: 0;
+  }
+
+  &__badge {
+    padding: 2px 8px;
+    border-radius: 9999px;
+    background: var(--primary-fixed, #dde1ff);
+    color: var(--on-primary-fixed-variant, #173bab);
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  &__desc {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--on-surface-variant, #444653);
+    margin: 0;
+  }
+
+  &__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  &__chip {
+    padding: 6px 14px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--on-surface, #0b1c30);
+
+    strong {
+      font-weight: 600;
+    }
+
+    &--primary {
+      background: var(--surface-container, #e5eeff);
+      .reader-header__chip-icon {
+        color: var(--primary, #00288e);
+      }
+      strong {
+        color: var(--primary, #00288e);
+      }
+    }
+
+    &--secondary {
+      background: var(--surface-container-low, #eff4ff);
+      .reader-header__chip-icon {
+        color: var(--secondary, #006a61);
+      }
+      strong {
+        color: var(--secondary, #006a61);
+      }
+    }
+
+    &--tertiary {
+      background: rgba(255, 181, 154, 0.3);
+      .reader-header__chip-icon {
+        color: var(--tertiary-container, #872d00);
+      }
+      strong {
+        color: var(--tertiary-container, #872d00);
+      }
+    }
+
+    &--error {
+      background: rgba(255, 218, 214, 0.4);
+      .reader-header__chip-icon {
+        color: var(--error, #ba1a1a);
+      }
+      strong {
+        color: var(--error, #ba1a1a);
+      }
+    }
+  }
+
+  &__chip-icon {
+    font-size: 18px;
+  }
+}

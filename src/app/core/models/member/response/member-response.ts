@@ -11,4 +11,5 @@ export interface MemberResponse {
   cardExpiry: string; // ISO date string (LocalDate)
   cardStatus: CardStatus;
   isDeleted: boolean;
+  createdAt: string; // ISO date string (LocalDateTime)
 }

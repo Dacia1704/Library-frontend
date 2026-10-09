@@ -1,0 +1,24 @@
+@if (visible()) {
+  <div class="success-toast__wrap">
+    <div class="success-toast__icon">
+      <span class="material-symbols-outlined">check_circle</span>
+    </div>
+    <div class="success-toast__body">
+      <div class="success-toast__header">
+        <h4 class="success-toast__title">Tạo tài khoản độc giả thành công!</h4>
+        <button class="success-toast__close" type="button" (click)="close()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <p class="success-toast__msg">
+        Độc giả <strong>{{ readerName() }}</strong> đã được ghi nhận vào CSDL.
+        Bạn hãy nhắc độc giả đến lấy thẻ sau 1 ngày nhé!
+      </p>
+      <div class="success-toast__actions">
+        <button class="success-toast__btn success-toast__btn--ghost" type="button" (click)="close()">
+          OK
+        </button> 
+      </div>
+    </div>
+  </div>
+}

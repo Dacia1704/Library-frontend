@@ -1,0 +1,29 @@
+<div class="search">
+  <div class="search__container">
+    <!-- Search Input -->
+    <div class="search__input-wrapper">
+      <span class="material-symbols-outlined search__icon">qr_code_scanner</span>
+      <input
+        class="search__input"
+        type="text"
+        placeholder="Tìm kiếm phiếu mượn (Nhập mã phiếu PM-..., tên bạn đọc, mã thẻ MBR-... hoặc số CCCD)"
+        [value]="keyword"
+        (input)="onKeywordInput($any($event.target).value)"
+      />
+      <div class="search__scan-btn">
+        <span>F2 Quét mã</span>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="search__actions">
+      <button class="search__btn search__btn--primary" type="button" (click)="onLoadRecord()">
+        <span class="material-symbols-outlined">search</span>
+        <span>Tải phiếu mượn</span>
+      </button>
+      <button class="search__btn search__btn--refresh" type="button" (click)="onRefresh()" title="Làm mới phiếu">
+        <span class="material-symbols-outlined">refresh</span>
+      </button>
+    </div>
+  </div>
+</div>
