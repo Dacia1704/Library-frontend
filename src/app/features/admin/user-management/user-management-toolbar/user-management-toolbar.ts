@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MemberFilter } from '@model/member/request/member-filter';
 
 @Component({
   selector: 'app-user-management-toolbar',
@@ -8,7 +9,10 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './user-management-toolbar.html',
   styleUrl: './user-management-toolbar.scss',
 })
-export class UserManagementToolbarComponent {
+export class UserManagementToolbarComponent implements OnInit {
+
+  @Output() filterChanged = new EventEmitter<MemberFilter>();
+  @Output() resetFiltersEvent = new EventEmitter<void>();
 
   searchName = '';
   searchEmail = '';
@@ -30,6 +34,41 @@ export class UserManagementToolbarComponent {
     { value: 'no_card', label: 'Chưa làm thẻ (Không)' },
   ];
 
+  ngOnInit(): void {
+    // Emit initial filter on component init
+    this.emitFilter();
+  }
+
+  onFilterChange(): void {
+    this.emitFilter();
+  }
+
+  private emitFilter(): void {
+    const filter: MemberFilter = {};
+    
+    // Combine searchName into keyword for full-text search
+    if (this.searchName.trim()) {
+      filter.keyword = this.searchName.trim();
+    }
+    if (this.searchEmail.trim()) {
+      filter.email = this.searchEmail.trim();
+    }
+    if (this.selectedRole) {
+      filter.role = this.selectedRole;
+    }
+    if (this.selectedCardStatus) {
+      filter.cardStatus = this.selectedCardStatus;
+    }
+    if (this.searchPhone.trim()) {
+      filter.phone = this.searchPhone.trim();
+    }
+    if (this.showDeleted) {
+      filter.showDeleted = true;
+    }
+
+    this.filterChanged.emit(filter);
+  }
+
   resetFilters(): void {
     this.searchName = '';
     this.searchEmail = '';
@@ -37,5 +76,7 @@ export class UserManagementToolbarComponent {
     this.selectedCardStatus = '';
     this.searchPhone = '';
     this.showDeleted = false;
+    this.emitFilter();
+    this.resetFiltersEvent.emit();
   }
 }

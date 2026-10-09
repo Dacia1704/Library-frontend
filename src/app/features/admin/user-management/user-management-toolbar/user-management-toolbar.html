@@ -10,6 +10,7 @@
           class="filter-input"
           placeholder="Tìm họ tên, username..."
           [(ngModel)]="searchName"
+          (ngModelChange)="onFilterChange()"
         />
       </div>
     </div>
@@ -24,6 +25,7 @@
           class="filter-input"
           placeholder="Tìm theo email..."
           [(ngModel)]="searchEmail"
+          (ngModelChange)="onFilterChange()"
         />
       </div>
     </div>
@@ -32,7 +34,7 @@
     <div class="filter-item">
       <label class="filter-label">Vai trò</label>
       <div class="select-wrapper">
-        <select class="filter-select" [(ngModel)]="selectedRole">
+        <select class="filter-select" [(ngModel)]="selectedRole" (ngModelChange)="onFilterChange()">
           @for (role of roles; track role.value) {
             <option [value]="role.value">{{ role.label }}</option>
           }
@@ -45,7 +47,7 @@
     <div class="filter-item">
       <label class="filter-label">Thẻ thành viên</label>
       <div class="select-wrapper">
-        <select class="filter-select" [(ngModel)]="selectedCardStatus">
+        <select class="filter-select" [(ngModel)]="selectedCardStatus" (ngModelChange)="onFilterChange()">
           @for (status of cardStatuses; track status.value) {
             <option [value]="status.value">{{ status.label }}</option>
           }
@@ -64,6 +66,7 @@
           class="filter-input"
           placeholder="Tìm theo SĐT..."
           [(ngModel)]="searchPhone"
+          (ngModelChange)="onFilterChange()"
         />
       </div>
     </div>
@@ -71,15 +74,6 @@
 
   <!-- Action Strip -->
   <div class="action-strip">
-    <div class="left-actions">
-      <label class="toggle-wrapper">
-        <input type="checkbox" [(ngModel)]="showDeleted" class="toggle-input" />
-        <span class="toggle-switch"></span>
-        <span class="toggle-label">Hiện người dùng đã xóa</span>
-      </label>
-      <span class="deleted-count">Đã xóa 3</span>
-    </div>
-
     <div class="right-actions">
       <button class="btn-reset" (click)="resetFilters()">
         <span class="material-symbols-outlined">restart_alt</span>

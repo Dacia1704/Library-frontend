@@ -1,4 +1,11 @@
 <div class="user-table-container">
+  <!-- Loading overlay -->
+  @if (isLoading) {
+    <div class="loading-overlay">
+      <div class="spinner"></div>
+    </div>
+  }
+
   <div class="table-wrapper">
     <table class="data-table">
       <thead>
@@ -17,39 +24,53 @@
         </tr>
       </thead>
       <tbody>
-        @for (user of users; track user.id) {
-          <tr [class.row-locked]="user.isLocked">
+        @if (members.length === 0 && !isLoading) {
+          <tr>
+            <td colspan="9" class="empty-state">
+              <span class="material-symbols-outlined">search_off</span>
+              <p>Không tìm thấy người dùng nào</p>
+            </td>
+          </tr>
+        }
+        @for (member of members; track member.user.id) {
+          <tr>
             <td class="col-checkbox">
               <input type="checkbox" class="checkbox" />
             </td>
             <td class="col-name">
               <div class="user-info">
-                <div class="avatar" [ngClass]="'avatar-' + user.avatarColor">
-                  {{ user.avatarInitials }}
-                </div>
+                @if (getUserAvatarSrc(member)) {
+                  <img 
+                    [src]="getUserAvatarSrc(member)" 
+                    [alt]="member.user.fullName"
+                    class="avatar avatar-img"
+                    (error)="$event.target.style.display='none'"
+                  />
+                } @else {
+                  <div class="avatar" [ngClass]="'avatar-' + getUserAvatarColor(member)">
+                    {{ getUserAvatarInitials(member) }}
+                  </div>
+                }
                 <div class="user-details">
-                  <span class="user-name">{{ user.fullName }}</span>
-                  <span class="user-meta">{{ user.phone }} • Tạo {{ user.createdDate }}</span>
-                  @if (user.lockReason) {
-                    <span class="user-lock-reason">{{ user.lockReason }}</span>
-                  }
+                  <span class="user-name">{{ member.user.fullName }}</span>
+                  <span class="user-meta">{{ member.phone }} • Tạo {{ formatDate(member.createdAt) }}</span>
                 </div>
               </div>
             </td>
             <td class="col-username">
-              <span class="username-badge">{{ user.username }}</span>
+              <span class="username-badge">{{ member.user.username }}</span>
             </td>
             <td class="col-email">
-              <span class="email-text">{{ user.email }}</span>
+              <span class="email-text">{{ member.user.email }}</span>
             </td>
             <td class="col-cccd">
-              <span class="cccd-text">{{ user.citizenId }}</span>
+              <span class="cccd-text">{{ member.identityNumber }}</span>
             </td>
             <td class="col-card">
-              @if (user.memberCode) {
-                <span class="card-badge card-has" [class.card-locked]="user.isLocked">
-                  <span class="material-symbols-outlined">{{ user.isLocked ? 'lock' : 'badge' }}</span>
-                  {{ user.memberCode }}
+              @if (hasMemberCard(member)) {
+                <span class="card-badge card-has">
+                  <span class="material-symbols-outlined">badge</span>
+                  {{ getMemberCode(member) }}
                 </span>
               } @else {
                 <span class="card-badge card-none">
@@ -59,35 +80,36 @@
               }
             </td>
             <td class="col-role">
-              <span class="role-badge" [ngClass]="'role-' + user.role">
-                @if (user.role === 'admin') {
-                  <span class="material-symbols-outlined">security</span>
-                } @else if (user.role === 'librarian') {
-                  <span class="material-symbols-outlined">menu_book</span>
-                }
-                {{ user.roleLabel }}
+              <span class="role-badge" [ngClass]="'role-' + member.user.roleName?.toLowerCase()">
+                <span class="material-symbols-outlined">{{ getRoleIcon(member.user.roleName) }}</span>
+                {{ getRoleLabel(member.user.roleName) }}
               </span>
             </td>
             <td class="col-status text-center">
               <div class="status-wrapper">
                 <label class="toggle-wrapper">
-                  <input type="checkbox" [checked]="user.isActive" (change)="toggleUserStatus(user)" class="toggle-input" />
-                  <span class="toggle-switch" [class.active]="user.isActive"></span>
+                  <input 
+                    type="checkbox" 
+                    [checked]="member.user.isActive" 
+                    (change)="onToggleStatus(member)" 
+                    class="toggle-input" 
+                  />
+                  <span class="toggle-switch" [class.active]="member.user.isActive"></span>
                 </label>
-                <span class="status-text" [class.active]="user.isActive" [class.locked]="user.isLocked">
-                  {{ user.isActive ? 'Hoạt động' : (user.isLocked ? 'Đang khóa' : 'Vô hiệu hóa') }}
+                <span class="status-text" [class.active]="member.user.isActive">
+                  {{ member.user.isActive ? 'Hoạt động' : 'Vô hiệu hóa' }}
                 </span>
               </div>
             </td>
             <td class="col-actions text-right">
               <div class="action-buttons">
-                <button class="action-btn" title="Xem chi tiết" (click)="viewUser(user)">
+                <button class="action-btn" title="Xem chi tiết" (click)="onView(member)">
                   <span class="material-symbols-outlined">visibility</span>
                 </button>
-                <button class="action-btn" title="Chỉnh sửa" (click)="editUser(user)">
+                <button class="action-btn" title="Chỉnh sửa" (click)="onEdit(member)">
                   <span class="material-symbols-outlined">edit</span>
                 </button>
-                <button class="action-btn action-btn-danger" title="Xóa tài khoản" (click)="deleteUser(user)">
+                <button class="action-btn action-btn-danger" title="Xóa tài khoản" (click)="onDelete(member)">
                   <span class="material-symbols-outlined">delete</span>
                 </button>
               </div>
@@ -99,41 +121,43 @@
   </div>
 
   <!-- Pagination -->
-  <div class="pagination">
-    <div class="pagination-info">
-      <span>Hiển thị <strong>1 - 8</strong> của <strong>{{ totalUsers }}</strong> người dùng</span>
-      <div class="page-size-select">
-        <span>Số dòng:</span>
-        <select [(ngModel)]="pageSize" class="select-small">
-          @for (size of pageSizeOptions; track size) {
-            <option [value]="size">{{ size }} dòng / trang</option>
+  @if (totalElements > 0) {
+    <div class="pagination">
+      <div class="pagination-info">
+        <span>Hiển thị <strong>{{ displayedRange.start }} - {{ displayedRange.end }}</strong> của <strong>{{ totalElements }}</strong> người dùng</span>
+        <div class="page-size-select">
+          <span>Số dòng:</span>
+          <select [ngModel]="pageSize" (ngModelChange)="onPageSizeChange()" class="select-small">
+            @for (size of pageSizeOptions; track size) {
+              <option [value]="size">{{ size }} dòng / trang</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="pagination-controls">
+        <button class="page-btn" [disabled]="currentPage === 0" (click)="goToPage(currentPage - 1)">
+          <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+        
+        @for (page of visiblePages; track page) {
+          @if (page === -1) {
+            <span class="page-ellipsis">...</span>
+          } @else {
+            <button 
+              class="page-btn" 
+              [class.active]="page === currentPage"
+              (click)="goToPage(page)"
+            >
+              {{ page + 1 }}
+            </button>
           }
-        </select>
+        }
+        
+        <button class="page-btn" [disabled]="currentPage >= totalPages - 1" (click)="goToPage(currentPage + 1)">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </button>
       </div>
     </div>
-
-    <div class="pagination-controls">
-      <button class="page-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
-        <span class="material-symbols-outlined">chevron_left</span>
-      </button>
-      
-      @for (page of getVisiblePages(); track page) {
-        @if (page === -1) {
-          <span class="page-ellipsis">...</span>
-        } @else {
-          <button 
-            class="page-btn" 
-            [class.active]="page === currentPage"
-            (click)="goToPage(page)"
-          >
-            {{ page }}
-          </button>
-        }
-      }
-      
-      <button class="page-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
-        <span class="material-symbols-outlined">chevron_right</span>
-      </button>
-    </div>
-  </div>
+  }
 </div>

@@ -67,8 +67,24 @@ export class MemberService {
       page: page.toString(),
       size: size.toString(),
     });
+
     if (filter.keyword) {
       params.append('keyword', filter.keyword);
+    }
+    if (filter.role) {
+      params.append('role', filter.role);
+    }
+    if (filter.cardStatus) {
+      params.append('hasCard', filter.cardStatus === 'has_card' ? 'true' : 'false');
+    }
+    if (filter.email) {
+      params.append('email', filter.email);
+    }
+    if (filter.phone) {
+      params.append('phone', filter.phone);
+    }
+    if (filter.showDeleted) {
+      params.append('showDeleted', 'true');
     }
 
     return this.http

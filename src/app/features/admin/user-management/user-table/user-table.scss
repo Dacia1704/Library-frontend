@@ -5,6 +5,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .table-wrapper {
@@ -110,6 +111,11 @@
   font-size: 14px;
   font-weight: 600;
   flex-shrink: 0;
+  overflow: hidden;
+
+  &.avatar-img {
+    object-fit: cover;
+  }
 
   &.avatar-primary {
     background: var(--primary-fixed);
@@ -437,4 +443,51 @@
 
 .text-right {
   text-align: right;
+}
+
+// Loading overlay
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--surface-container);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Empty state
+.empty-state {
+  text-align: center;
+  padding: 48px 16px !important;
+  color: var(--on-surface-variant);
+
+  .material-symbols-outlined {
+    font-size: 48px;
+    color: var(--surface-container-highest);
+    margin-bottom: 16px;
+  }
+
+  p {
+    font-size: 14px;
+    margin: 0;
+  }
 }

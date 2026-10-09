@@ -4,9 +4,24 @@
   <app-user-management-header />
 
   <!-- Toolbar with Filters -->
-  <app-user-management-toolbar />
+  <app-user-management-toolbar 
+    (filterChanged)="onFilterChanged($event)"
+    (resetFiltersEvent)="onResetFilters()"
+  />
 
   <!-- User Table -->
-  <app-user-table />
+  <app-user-table 
+    [membersInput]="members()"
+    [totalElementsInput]="totalElements()"
+    [totalPagesInput]="totalPages()"
+    [currentPageInput]="currentPage()"
+    [pageSizeInput]="pageSize()"
+    [isLoadingInput]="isLoading()"
+    (pageChanged)="onPageChanged($event)"
+    (toggleUserStatus)="onToggleUserStatus($event.userId, $event.isActive)"
+    (deleteUser)="onDeleteUser($event)"
+    (viewUser)="onViewUser($event)"
+    (editUser)="onEditUser($event)"
+  />
 
 </div>

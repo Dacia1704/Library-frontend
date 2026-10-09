@@ -1,25 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-interface UserItem {
-  id: number;
-  fullName: string;
-  username: string;
-  email: string;
-  citizenId: string;
-  memberCode: string | null;
-  role: 'admin' | 'librarian' | 'reader';
-  roleLabel: string;
-  isActive: boolean;
-  isLocked?: boolean;
-  lockReason?: string;
-  hasCard?: boolean;
-  avatarInitials: string;
-  avatarColor: 'primary' | 'secondary' | 'default' | 'error';
-  phone: string;
-  createdDate: string;
-}
+import { Member } from '@model/member/member.model';
+import { ImageUtils } from '@shared/utils/image-utils';
 
 @Component({
   selector: 'app-user-table',
@@ -28,140 +11,188 @@ interface UserItem {
   templateUrl: './user-table.html',
   styleUrl: './user-table.scss',
 })
-export class UserTableComponent {
+export class UserTableComponent implements OnChanges {
 
-  readonly users: UserItem[] = [
-    {
-      id: 1,
-      fullName: 'Lê Hoàng Long',
-      username: '@long.le',
-      email: 'hoanglong.le@thuvientritue.vn',
-      citizenId: '001200004921',
-      memberCode: 'MBR-ADM-001',
-      role: 'admin',
-      roleLabel: 'Quản trị viên',
-      isActive: true,
-      avatarInitials: 'HL',
-      avatarColor: 'primary',
-      phone: '0912 888 999',
-      createdDate: '12/01/2024',
-    },
-    {
-      id: 2,
-      fullName: 'Trần Thị Hương',
-      username: '@huong.tran',
-      email: 'huong.tran@thuvientritue.vn',
-      citizenId: '031195008732',
-      memberCode: 'MBR-LIB-012',
-      role: 'librarian',
-      roleLabel: 'Thủ thư',
-      isActive: true,
-      avatarInitials: 'TH',
-      avatarColor: 'secondary',
-      phone: '0987 654 321',
-      createdDate: '04/02/2024',
-    },
-    {
-      id: 3,
-      fullName: 'Nguyễn Văn An',
-      username: '@an.nguyen',
-      email: 'an.nguyen@email.vn',
-      citizenId: '001201019823',
-      memberCode: 'MBR-2025-012',
-      role: 'reader',
-      roleLabel: 'Độc giả',
-      isActive: true,
-      avatarInitials: 'NA',
-      avatarColor: 'default',
-      phone: '0903 112 233',
-      createdDate: '15/03/2024',
-    },
-    {
-      id: 4,
-      fullName: 'Vũ Minh Tuấn',
-      username: '@tuan.vm',
-      email: 'tuan.vu@domain.com',
-      citizenId: '026099001423',
-      memberCode: 'MBR-2024-889',
-      role: 'reader',
-      roleLabel: 'Độc giả',
-      isActive: false,
-      isLocked: true,
-      lockReason: 'Khóa vi phạm: Mượn quá hạn 60 ngày',
-      avatarInitials: 'VT',
-      avatarColor: 'error',
-      phone: '0901 234 567',
-      createdDate: '20/01/2024',
-    },
-    {
-      id: 5,
-      fullName: 'Phạm Khánh Linh',
-      username: '@linh.pk',
-      email: 'khanhlinh.pham@gmail.com',
-      citizenId: '038202009118',
-      memberCode: null,
-      role: 'reader',
-      roleLabel: 'Độc giả',
-      isActive: true,
-      hasCard: false,
-      avatarInitials: 'PL',
-      avatarColor: 'default',
-      phone: '0945 999 111',
-      createdDate: '22/03/2024',
-    },
-  ];
+  @Input() membersInput: Member[] = [];
+  @Input() totalElementsInput = 0;
+  @Input() totalPagesInput = 0;
+  @Input() currentPageInput = 0;
+  @Input() pageSizeInput = 20;
+  @Input() isLoadingInput = false;
+
+  @Output() pageChanged = new EventEmitter<number>();
+  @Output() toggleUserStatus = new EventEmitter<{ userId: number; isActive: boolean }>();
+  @Output() deleteUser = new EventEmitter<number>();
+  @Output() viewUser = new EventEmitter<Member>();
+  @Output() editUser = new EventEmitter<Member>();
 
   readonly pageSizeOptions = [10, 20, 50, 100];
-  currentPage = 1;
-  pageSize = 20;
-  totalUsers = 1248;
 
-  get totalPages(): number {
-    return Math.ceil(this.totalUsers / this.pageSize);
+  // Internal state for template
+  _members: Member[] = [];
+  _totalElements = 0;
+  _totalPages = 0;
+  _currentPage = 0;
+  _pageSize = 20;
+  _isLoading = false;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['membersInput']) {
+      this._members = this.membersInput;
+    }
+    if (changes['totalElementsInput']) {
+      this._totalElements = this.totalElementsInput;
+    }
+    if (changes['totalPagesInput']) {
+      this._totalPages = this.totalPagesInput;
+    }
+    if (changes['currentPageInput']) {
+      this._currentPage = this.currentPageInput;
+    }
+    if (changes['pageSizeInput']) {
+      this._pageSize = this.pageSizeInput;
+    }
+    if (changes['isLoadingInput']) {
+      this._isLoading = this.isLoadingInput;
+    }
   }
 
-  getVisiblePages(): number[] {
+  get members(): Member[] {
+    return this._members;
+  }
+
+  get totalElements(): number {
+    return this._totalElements;
+  }
+
+  get totalPages(): number {
+    return this._totalPages;
+  }
+
+  get currentPage(): number {
+    return this._currentPage;
+  }
+
+  get pageSize(): number {
+    return this._pageSize;
+  }
+
+  get isLoading(): boolean {
+    return this._isLoading;
+  }
+
+  get visiblePages(): number[] {
     const pages: number[] = [];
     const total = this.totalPages;
     const current = this.currentPage;
 
     if (total <= 7) {
-      for (let i = 1; i <= total; i++) pages.push(i);
+      for (let i = 0; i < total; i++) pages.push(i);
     } else {
-      pages.push(1);
+      pages.push(0);
       if (current > 3) pages.push(-1);
       
-      const start = Math.max(2, current - 1);
-      const end = Math.min(total - 1, current + 1);
+      const start = Math.max(1, current - 1);
+      const end = Math.min(total - 2, current + 1);
       
       for (let i = start; i <= end; i++) pages.push(i);
       
-      if (current < total - 2) pages.push(-1);
-      pages.push(total);
+      if (current < total - 3) pages.push(-1);
+      pages.push(total - 1);
     }
     
     return pages;
   }
 
+  get displayedRange(): { start: number; end: number } {
+    if (this.totalElements === 0) {
+      return { start: 0, end: 0 };
+    }
+    const start = this.currentPage * this.pageSize + 1;
+    const end = Math.min(start + this.pageSize - 1, this.totalElements);
+    return { start, end };
+  }
+
   goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
+    if (page >= 0 && page < this.totalPages) {
+      this.pageChanged.emit(page);
     }
   }
 
-  viewUser(user: UserItem): void {
-    console.log('View user:', user);
+  onPageSizeChange(): void {
+    this.pageChanged.emit(0);
   }
 
-  editUser(user: UserItem): void {
-    console.log('Edit user:', user);
+  resetPagination(): void {
+    this.pageChanged.emit(0);
   }
 
-  deleteUser(user: UserItem): void {
-    console.log('Delete user:', user);
+  getUserAvatarSrc(member: Member): string {
+    return ImageUtils.toImageSrc(member.user.avatar);
   }
 
-  toggleUserStatus(user: UserItem): void {
-    user.isActive = !user.isActive;
+  getUserAvatarInitials(member: Member): string {
+    const name = member.user.fullName || member.user.username;
+    const parts = name.split(' ');
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
+  }
+
+  getUserAvatarColor(member: Member): 'primary' | 'secondary' | 'default' | 'error' {
+    const role = member.user.roleName?.toLowerCase() || '';
+    if (role.includes('admin')) return 'primary';
+    if (role.includes('thủ thư') || role.includes('librarian')) return 'secondary';
+    if (!member.user.isActive) return 'error';
+    return 'default';
+  }
+
+  getRoleLabel(roleName: string): string {
+    const role = roleName?.toLowerCase() || '';
+    if (role.includes('admin')) return 'Quản trị viên';
+    if (role.includes('thủ thư') || role.includes('librarian')) return 'Thủ thư';
+    if (role.includes('độc giả') || role.includes('reader') || role.includes('member')) return 'Độc giả';
+    return roleName;
+  }
+
+  getRoleIcon(roleName: string): string {
+    const role = roleName?.toLowerCase() || '';
+    if (role.includes('admin')) return 'security';
+    if (role.includes('thủ thư') || role.includes('librarian')) return 'menu_book';
+    return 'person';
+  }
+
+  getMemberCode(member: Member): string | null {
+    return member.memberCode || null;
+  }
+
+  hasMemberCard(member: Member): boolean {
+    return !!member.memberCode;
+  }
+
+  formatDate(date: Date | string): string {
+    if (!date) return '';
+    const d = new Date(date);
+    return d.toLocaleDateString('vi-VN');
+  }
+
+  onToggleStatus(member: Member): void {
+    this.toggleUserStatus.emit({
+      userId: member.user.id,
+      isActive: !member.user.isActive,
+    });
+  }
+
+  onView(member: Member): void {
+    this.viewUser.emit(member);
+  }
+
+  onEdit(member: Member): void {
+    this.editUser.emit(member);
+  }
+
+  onDelete(member: Member): void {
+    this.deleteUser.emit(member.user.id);
   }
 }
