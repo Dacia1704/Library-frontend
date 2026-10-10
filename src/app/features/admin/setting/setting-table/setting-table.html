@@ -8,9 +8,9 @@
       <div class="title-content">
         <div class="title-row">
           <h2 class="title">Tất cả cấu hình hệ thống</h2>
-          <span class="count-badge">14 tham số</span>
+          <span class="count-badge">{{ filteredConfigs().length }} tham số</span>
         </div>
-        <p class="subtitle">Bảng dữ liệu Key-Value trung tâm cho các dịch vụ Backend & Microservices</p>
+        <p class="subtitle">Bảng dữ liệu cài đặt trung tâm cho hệ thống</p>
       </div>
     </div>
     <div class="header-actions">
@@ -20,77 +20,74 @@
           type="text" 
           class="search-input" 
           placeholder="Lọc theo Key hoặc Mô tả..." 
-          [(ngModel)]="searchTerm"
+          [ngModel]="searchTerm()"
+          (ngModelChange)="searchTerm.set($event)"
         />
       </div>
-      <button class="btn-add">
-        <span class="material-symbols-outlined">add_circle</span>
-        + Thêm cấu hình
-      </button>
     </div>
   </div>
+
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="loading-state">
+      <span class="material-symbols-outlined spinning">progress_activity</span>
+      <span>Đang tải dữ liệu...</span>
+    </div>
+  }
 
   <!-- Table -->
-  <div class="table-wrapper">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Khóa định danh (Key)</th>
-          <th>Giá trị (Value)</th>
-          <th>Mô tả nghiệp vụ</th>
-          <th>Cập nhật gần nhất</th>
-          <th class="text-center">Thao tác</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (config of filteredConfigs; track config.key) {
+  @if (!isLoading()) {
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead>
           <tr>
-            <td>
-              <div class="key-cell">
-                <span class="material-symbols-outlined key-icon" [ngClass]="'icon-' + config.iconColor">{{ config.icon }}</span>
-                <span class="key-text">{{ config.key }}</span>
-              </div>
-            </td>
-            <td>
-              <span class="value-badge">{{ config.value }}</span>
-            </td>
-            <td>
-              <span class="desc-text">{{ config.description }}</span>
-            </td>
-            <td>
-              <div class="update-info">
-                <span>{{ config.updatedAt }}</span>
-                <span class="update-by">{{ config.updatedBy }}</span>
-              </div>
-            </td>
-            <td class="text-center">
-              <div class="action-buttons">
-                <button class="action-btn" title="Sửa tham số">
-                  <span class="material-symbols-outlined">edit</span>
-                </button>
-                <button class="action-btn action-btn-danger" title="Xóa tham số">
-                  <span class="material-symbols-outlined">delete</span>
-                </button>
-              </div>
-            </td>
+            <th>Khóa định danh (Key)</th>
+            <th>Giá trị (Value)</th>
+            <th>Mô tả nghiệp vụ</th>
+            <th>Cập nhật gần nhất</th>
+            <th class="text-center">Thao tác</th>
           </tr>
-        }
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Footer -->
-  <div class="table-footer">
-    <span>Hiển thị {{ filteredConfigs.length }} trên tổng số 14 tham số đã nạp</span>
-    <div class="pagination">
-      <button class="page-btn" disabled>
-        <span class="material-symbols-outlined">chevron_left</span>
-      </button>
-      <button class="page-btn active">1</button>
-      <button class="page-btn">2</button>
-      <button class="page-btn">
-        <span class="material-symbols-outlined">chevron_right</span>
-      </button>
+        </thead>
+        <tbody>
+          @for (config of filteredConfigs(); track config.key) {
+            <tr>
+              <td>
+                <div class="key-cell">
+                  <span class="material-symbols-outlined key-icon" [ngClass]="'icon-' + config.iconColor">{{ config.icon }}</span>
+                  <span class="key-text">{{ config.key }}</span>
+                </div>
+              </td>
+              <td>
+                <span class="value-badge">{{ config.value }}</span>
+              </td>
+              <td>
+                <span class="desc-text">{{ config.description }}</span>
+              </td>
+              <td>
+                <div class="update-info">
+                  <span>{{ config.updatedAt }}</span>
+                  <span class="update-by">{{ config.updatedBy }}</span>
+                </div>
+              </td>
+              <td class="text-center">
+                <div class="action-buttons">
+                  <button class="action-btn" title="Sửa tham số">
+                    <span class="material-symbols-outlined">edit</span>
+                  </button>
+                  <button class="action-btn action-btn-danger" title="Xóa tham số">
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
     </div>
-  </div>
+
+    <!-- Footer -->
+    <div class="table-footer">
+          <span>Hiển thị {{ filteredConfigs().length }} tham số</span>
+    </div>
+  }
 </div>

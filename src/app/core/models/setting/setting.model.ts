@@ -4,4 +4,5 @@ export interface Setting {
   settingValue: string;
   description: string;
   updatedAt: string;
+  updatedBy: string;
 }

@@ -8,7 +8,8 @@ export class SettingMapper {
       settingKey: response.settingKey,
       settingValue: response.settingValue,
       description: response.description,
-      updatedAt: response.updatedAt
+      updatedAt: response.updatedAt,
+      updatedBy: response.updatedBy || 'System Admin'
     };
   }
 

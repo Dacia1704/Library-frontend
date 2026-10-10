@@ -1,125 +1,167 @@
 <div class="role-table-container">
+
   <!-- Toolbar -->
   <div class="toolbar">
     <div class="toolbar-left">
       <div class="search-wrapper">
         <span class="material-symbols-outlined">search</span>
-        <input type="text" class="search-input" placeholder="Tìm kiếm vai trò theo tên, mã hiệu hoặc mô tả..." />
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Tìm kiếm vai trò hoặc quyền hạn..."
+          [ngModel]="searchKeyword()"
+          (ngModelChange)="searchKeyword.set($event)"
+        />
       </div>
-      <button class="btn-toolbar">
-        <span class="material-symbols-outlined">filter_list</span>
-        Lọc loại vai trò
-        <span class="material-symbols-outlined">expand_more</span>
-      </button>
-      <button class="btn-toolbar">
-        <span class="material-symbols-outlined">sort</span>
-        Sắp xếp: Tài khoản giảm dần
-      </button>
+      <span class="toolbar-hint">
+        <span class="material-symbols-outlined">info</span>
+        Nhấn vào ô checkbox để gán / gỡ quyền hạn cho vai trò
+      </span>
     </div>
     <div class="toolbar-right">
-      <span>Hiển thị 5 / 5 vai trò hệ thống</span>
-      <button class="btn-icon">
+      @if (isLoading()) {
+        <span class="loading-text">
+          <span class="material-symbols-outlined spin">progress_activity</span>
+          Đang tải...
+        </span>
+      } @else {
+        <span class="toolbar-count">
+          {{ filteredPermissions().length }} quyền / {{ roles().length }} vai trò
+        </span>
+      }
+      <button class="btn-icon" title="Tải lại dữ liệu" (click)="loadData()">
         <span class="material-symbols-outlined">refresh</span>
       </button>
     </div>
   </div>
 
-  <!-- Table -->
-  <div class="table-wrapper">
-    <table class="data-table">
+  <!-- Dirty Banner -->
+  @if (hasChanges()) {
+    <div class="dirty-banner">
+      <div class="dirty-info">
+        <span class="material-symbols-outlined">edit_note</span>
+        <span>
+          Đã thay đổi {{ dirty().size }} vai trò
+          ({{ dirtyPermissionCount() }} quyền) — nhấn "Lưu thay đổi" để áp dụng
+        </span>
+      </div>
+      <div class="dirty-actions">
+        <button class="btn-discard" (click)="discardAll()">
+          <span class="material-symbols-outlined">undo</span>
+          Hủy bỏ
+        </button>
+        <button class="btn-save" (click)="saveAll()">
+          <span class="material-symbols-outlined">save</span>
+          Lưu thay đổi
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Matrix Table: permissions = rows, roles = columns -->
+  <div class="table-wrapper matrix-wrapper">
+    <table class="data-table matrix-table">
       <thead>
         <tr>
-          <th class="col-checkbox">
-            <input type="checkbox" class="checkbox" />
+          <!-- First cell: permission info column (sticky left) -->
+          <th class="col-perm-info">
+            <div class="th-inner">
+              <span class="th-label">Quyền hạn</span>
+              <span class="th-sub">{{ filteredPermissions().length }} quyền / {{ roles().length }} vai trò</span>
+            </div>
           </th>
-          <th class="col-name">Tên vai trò & Cấp bậc</th>
-          <th class="col-code">Mã định danh</th>
-          <th class="col-desc">Mô tả trách nhiệm</th>
-          <th class="col-permission">Độ bao phủ quyền hạn</th>
-          <th class="col-users text-center">Số tài khoản</th>
-          <th class="col-actions text-right">Thao tác</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (role of roles; track role.id) {
-          <tr [class.row-editing]="role.isEditing">
-            <td class="col-checkbox">
-              <input type="checkbox" class="checkbox" [disabled]="role.isSystem || role.isDefault" />
-            </td>
-            <td class="col-name">
-              <div class="role-info">
-                <div class="role-icon" [ngClass]="'icon-' + role.iconColor">
-                  <span class="material-symbols-outlined">{{ role.icon }}</span>
+
+          <!-- One header column per role -->
+          @for (role of roles(); track role.id) {
+            <th
+              class="col-role text-center"
+              [class.col-hidden]="!filteredRoleIds().has(role.id)"
+            >
+              <div class="role-th">
+                <div
+                  class="role-th-icon"
+                  [ngClass]="role.isSystem ? 'icon-primary' : 'icon-secondary'"
+                >
+                  <span class="material-symbols-outlined">
+                    {{ role.isSystem ? 'shield' : 'badge' }}
+                  </span>
                 </div>
-                <div class="role-details">
-                  <div class="role-name-row">
-                    <span class="role-name">{{ role.name }}</span>
+                <div class="role-th-info">
+                  <div class="role-th-name-row">
+                    <span class="role-th-name">{{ role.name }}</span>
                     @if (role.isSystem) {
                       <span class="role-badge system-badge">
                         <span class="material-symbols-outlined">lock</span>
-                        Mặc định hệ thống
                       </span>
                     }
-                    @if (role.isEditing) {
-                      <span class="role-badge editing-badge">Đang chỉnh sửa</span>
+                  </div>
+                  <span
+                    class="role-th-count"
+                    [class.dirty-count]="isRoleDirty(role.id)"
+                  >
+                    {{ getGrantedCount(role.id) }} / {{ permissions().length }}
+                  </span>
+                </div>
+                @if (role.isDirty || role.isSaving) {
+                  <div class="role-th-status">
+                    @if (role.isSaving) {
+                      <span class="status-badge saving-badge">
+                        <span class="material-symbols-outlined spin">progress_activity</span>
+                      </span>
+                    } @else {
+                      <span class="status-badge dirty-badge">
+                        <span class="material-symbols-outlined">edit</span>
+                      </span>
                     }
                   </div>
-                  <span class="role-sub">{{ role.nameSub }}</span>
-                </div>
-              </div>
-            </td>
-            <td class="col-code">
-              <span class="code-badge">{{ role.code }}</span>
-            </td>
-            <td class="col-desc">
-              <p class="desc-text">{{ role.description }}</p>
-            </td>
-            <td class="col-permission">
-              <div class="permission-bar">
-                <div class="permission-header">
-                  <span class="permission-count">{{ role.permissionCount }} / 32 quyền</span>
-                  <span class="permission-percent">{{ role.permissionPercent }}%</span>
-                </div>
-                <div class="progress-track">
-                  <div class="progress-fill" [style.width.%]="role.permissionPercent"></div>
-                </div>
-                <span class="permission-note">@if (role.permissionPercent === 100) {
-                  Toàn quyền hệ thống
-                } @else if (role.permissionPercent === 75) {
-                  Không bao gồm Backup CSDL
-                } @else if (role.permissionPercent === 56.2) {
-                  Quyền nghiệp vụ quầy
-                } @else if (role.permissionPercent === 28.1) {
-                  Giới hạn trong phân hệ Sách
-                } @else {
-                  Chỉ đọc & tự phục vụ
-                }</span>
-              </div>
-            </td>
-            <td class="col-users text-center">
-              <span class="user-count">
-                <span class="material-symbols-outlined">person</span>
-                {{ role.userCount }}
-              </span>
-            </td>
-            <td class="col-actions text-right">
-              <div class="action-buttons">
-                <button class="action-btn" title="Xem chi tiết phân quyền" (click)="viewPermissions(role)">
-                  <span class="material-symbols-outlined">{{ role.isEditing ? 'tune' : 'visibility' }}</span>
-                </button>
-                @if (role.isSystem || role.isDefault) {
-                  <button class="action-btn action-btn-disabled" disabled title="Không thể chỉnh sửa">
-                    <span class="material-symbols-outlined">{{ role.isDefault ? 'delete_outline' : 'lock' }}</span>
-                  </button>
-                } @else {
-                  <button class="action-btn" title="Sửa tên & mô tả" (click)="editRole(role)">
-                    <span class="material-symbols-outlined">edit</span>
-                  </button>
-                  <button class="action-btn action-btn-danger" title="Xóa vai trò" (click)="deleteRole(role)">
-                    <span class="material-symbols-outlined">delete</span>
-                  </button>
                 }
               </div>
+            </th>
+          }
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (perm of filteredPermissions(); track perm.id) {
+          <tr class="perm-row">
+            <!-- Permission info (sticky left) -->
+            <td class="col-perm-info">
+              <div class="perm-info">
+                <span class="perm-code-badge">{{ perm.code }}</span>
+                <div class="perm-desc-group">
+                  <span class="perm-desc" [title]="perm.description">
+                    {{ perm.description }}
+                  </span>
+                </div>
+              </div>
+            </td>
+
+            <!-- Checkbox per role column -->
+            @for (role of roles(); track role.id) {
+              <td
+                class="col-role text-center"
+                [class.col-hidden]="!filteredRoleIds().has(role.id)"
+              >
+                <input
+                  type="checkbox"
+                  class="perm-checkbox"
+                  [checked]="isChecked(role.id, perm.id)"
+                  [disabled]="role.isSystem"
+                  [title]="role.isSystem
+                    ? 'Vai trò hệ thống, không thể thay đổi'
+                    : (perm.description + ' — ' + (isChecked(role.id, perm.id) ? 'Đã gán' : 'Chưa gán'))"
+                  (change)="togglePermission(role.id, perm.id)"
+                />
+              </td>
+            }
+          </tr>
+        }
+
+        @if (!isLoading() && filteredPermissions().length === 0) {
+          <tr class="empty-row">
+            <td [attr.colspan]="roles().length + 1" class="text-center empty-cell">
+              <span class="material-symbols-outlined">search_off</span>
+              <p>Không tìm thấy quyền hạn nào</p>
             </td>
           </tr>
         }
@@ -129,19 +171,11 @@
 
   <!-- Footer -->
   <div class="table-footer">
-    <div class="bulk-actions">
-      <span>Hành động hàng loạt:</span>
-      <button class="bulk-btn">Khóa vai trò</button>
-      <button class="bulk-btn">Sao chép phân quyền</button>
-    </div>
-    <div class="pagination">
-      <button class="page-btn" disabled>
-        <span class="material-symbols-outlined">chevron_left</span>
-      </button>
-      <button class="page-btn active">1</button>
-      <button class="page-btn" disabled>
-        <span class="material-symbols-outlined">chevron_right</span>
-      </button>
+    <div class="footer-info">
+      <span class="material-symbols-outlined">info</span>
+      Thay đổi quyền hạn được ghi nhật ký tự động vào Audit Log.
+      Vai trò hệ thống không thể chỉnh sửa.
     </div>
   </div>
+
 </div>

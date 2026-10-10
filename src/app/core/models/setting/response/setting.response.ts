@@ -4,5 +4,6 @@ export interface SettingResponse {
   settingValue: string;
   description: string;
   updatedAt: string;
+  updatedBy?: string;
   isDeleted: boolean;
 }
