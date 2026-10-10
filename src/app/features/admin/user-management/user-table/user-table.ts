@@ -1,7 +1,9 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { User } from '@model/user/user.model';
 import { Member } from '@model/member/member.model';
+import { CardStatus } from '@model/enum/card-status.enum';
 import { ImageUtils } from '@shared/utils/image-utils';
 
 @Component({
@@ -13,7 +15,7 @@ import { ImageUtils } from '@shared/utils/image-utils';
 })
 export class UserTableComponent implements OnChanges {
 
-  @Input() membersInput: Member[] = [];
+  @Input() usersInput: User[] = [];
   @Input() totalElementsInput = 0;
   @Input() totalPagesInput = 0;
   @Input() currentPageInput = 0;
@@ -22,14 +24,14 @@ export class UserTableComponent implements OnChanges {
 
   @Output() pageChanged = new EventEmitter<number>();
   @Output() toggleUserStatus = new EventEmitter<{ userId: number; isActive: boolean }>();
-  @Output() deleteUser = new EventEmitter<number>();
-  @Output() viewUser = new EventEmitter<Member>();
-  @Output() editUser = new EventEmitter<Member>();
+  @Output() deleteUser = new EventEmitter<User>();
+  @Output() viewUser = new EventEmitter<User>();
+  @Output() editUser = new EventEmitter<User>();
 
   readonly pageSizeOptions = [10, 20, 50, 100];
 
   // Internal state for template
-  _members: Member[] = [];
+  _users: User[] = [];
   _totalElements = 0;
   _totalPages = 0;
   _currentPage = 0;
@@ -37,8 +39,8 @@ export class UserTableComponent implements OnChanges {
   _isLoading = false;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['membersInput']) {
-      this._members = this.membersInput;
+    if (changes['usersInput']) {
+      this._users = this.usersInput;
     }
     if (changes['totalElementsInput']) {
       this._totalElements = this.totalElementsInput;
@@ -57,8 +59,8 @@ export class UserTableComponent implements OnChanges {
     }
   }
 
-  get members(): Member[] {
-    return this._members;
+  get users(): User[] {
+    return this._users;
   }
 
   get totalElements(): number {
@@ -127,12 +129,12 @@ export class UserTableComponent implements OnChanges {
     this.pageChanged.emit(0);
   }
 
-  getUserAvatarSrc(member: Member): string {
-    return ImageUtils.toImageSrc(member.user.avatar);
+  getUserAvatarSrc(user: User): string {
+    return ImageUtils.toImageSrc(user.avatar);
   }
 
-  getUserAvatarInitials(member: Member): string {
-    const name = member.user.fullName || member.user.username;
+  getUserAvatarInitials(user: User): string {
+    const name = user.fullName || user.username;
     const parts = name.split(' ');
     if (parts.length >= 2) {
       return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
@@ -140,35 +142,47 @@ export class UserTableComponent implements OnChanges {
     return name.substring(0, 2).toUpperCase();
   }
 
-  getUserAvatarColor(member: Member): 'primary' | 'secondary' | 'default' | 'error' {
-    const role = member.user.roleName?.toLowerCase() || '';
+  getUserAvatarColor(user: User): 'primary' | 'secondary' | 'default' | 'error' {
+    const role = user.roleName?.toLowerCase() || '';
     if (role.includes('admin')) return 'primary';
     if (role.includes('thủ thư') || role.includes('librarian')) return 'secondary';
-    if (!member.user.isActive) return 'error';
+    if (!user.isActive) return 'error';
     return 'default';
   }
 
   getRoleLabel(roleName: string): string {
     const role = roleName?.toLowerCase() || '';
     if (role.includes('admin')) return 'Quản trị viên';
-    if (role.includes('thủ thư') || role.includes('librarian')) return 'Thủ thư';
-    if (role.includes('độc giả') || role.includes('reader') || role.includes('member')) return 'Độc giả';
+    if (role.includes('librarian')) return 'Thủ thư';
+    if (role.includes('reader')) return 'Độc giả';
+    if (role.includes('member')) return 'Thành viên';
     return roleName;
   }
 
   getRoleIcon(roleName: string): string {
     const role = roleName?.toLowerCase() || '';
     if (role.includes('admin')) return 'security';
-    if (role.includes('thủ thư') || role.includes('librarian')) return 'menu_book';
+    if (role.includes('librarian')) return 'menu_book';
+    if (role.includes('reader')) return 'person';
+    if (role.includes('member')) return 'badge';
     return 'person';
   }
 
-  getMemberCode(member: Member): string | null {
-    return member.memberCode || null;
+  // Card Status methods
+  getCardStatusLabel(cardStatus: CardStatus): string {
+    return cardStatus === CardStatus.ISSUED ? 'Đã cấp' : 'Chờ cấp';
   }
 
-  hasMemberCard(member: Member): boolean {
-    return !!member.memberCode;
+  getCardStatusIcon(cardStatus: CardStatus): string {
+    return cardStatus === CardStatus.ISSUED ? 'verified_user' : 'hourglass_empty';
+  }
+
+  getCardStatusClass(cardStatus: CardStatus): string {
+    return cardStatus === CardStatus.ISSUED ? 'card-issued' : 'card-pending';
+  }
+
+  isCardExpired(member: Member): boolean {
+    return member.cardExpiry < new Date();
   }
 
   formatDate(date: Date | string): string {
@@ -177,22 +191,22 @@ export class UserTableComponent implements OnChanges {
     return d.toLocaleDateString('vi-VN');
   }
 
-  onToggleStatus(member: Member): void {
+  onToggleStatus(user: User): void {
     this.toggleUserStatus.emit({
-      userId: member.user.id,
-      isActive: !member.user.isActive,
+      userId: user.id,
+      isActive: !user.isActive,
     });
   }
 
-  onView(member: Member): void {
-    this.viewUser.emit(member);
+  onView(user: User): void {
+    this.viewUser.emit(user);
   }
 
-  onEdit(member: Member): void {
-    this.editUser.emit(member);
+  onEdit(user: User): void {
+    this.editUser.emit(user);
   }
 
-  onDelete(member: Member): void {
-    this.deleteUser.emit(member.user.id);
+  onDelete(user: User): void {
+    this.deleteUser.emit(user);
   }
 }

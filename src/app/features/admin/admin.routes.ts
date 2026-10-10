@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 export const ADMIN_ROUTES: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
+  { path: '', pathMatch: 'full', redirectTo: 'users' },
   {
     path: 'users',
     data: { title: 'Quản lý người dùng' },

@@ -76,6 +76,10 @@
   min-width: 170px;
 }
 
+.col-expiry {
+  min-width: 130px;
+}
+
 .col-role {
   min-width: 130px;
 }
@@ -206,6 +210,21 @@
     font-size: 14px;
   }
 
+  &.card-issued {
+    background: rgba(76, 175, 80, 0.12);
+    color: #2e7d32;
+
+    &.card-locked {
+      background: var(--error-container);
+      color: var(--error);
+    }
+  }
+
+  &.card-pending {
+    background: rgba(255, 152, 0, 0.12);
+    color: #e65100;
+  }
+
   &.card-has {
     background: var(--surface-container-high);
     color: var(--primary);
@@ -219,6 +238,16 @@
   &.card-none {
     background: var(--surface-container);
     color: var(--on-surface-variant);
+  }
+}
+
+.expiry-text {
+  font-size: 12px;
+  color: var(--on-surface-variant);
+
+  &.expiry-expired {
+    color: var(--error);
+    font-weight: 500;
   }
 }
 
@@ -248,6 +277,11 @@
   &.role-reader {
     background: var(--surface-container);
     color: var(--on-surface);
+  }
+
+  &.role-member {
+    background: rgba(76, 175, 80, 0.15);
+    color: #2e7d32;
   }
 }
 

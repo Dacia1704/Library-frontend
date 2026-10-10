@@ -1,3 +1,5 @@
+import { MemberResponse } from "@model/member/response/member-response";
+
 export interface UserResponse {
   id: number;
   username: string;
@@ -8,4 +10,5 @@ export interface UserResponse {
   roleName: string;
   isActive: boolean;
   createdAt: string; // ISO datetime string (LocalDateTime)
+  member: MemberResponse;
 }

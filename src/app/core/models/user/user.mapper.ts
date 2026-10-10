@@ -19,6 +19,7 @@ export class UserMapper {
       roleName: res.roleName,
       isActive: res.isActive,
       createdAt: new Date(res.createdAt),
+      member: MemberMapper.fromResponseForUser(res.member),
     });
   }
 

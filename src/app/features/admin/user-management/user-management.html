@@ -11,7 +11,7 @@
 
   <!-- User Table -->
   <app-user-table 
-    [membersInput]="members()"
+    [usersInput]="users()"
     [totalElementsInput]="totalElements()"
     [totalPagesInput]="totalPages()"
     [currentPageInput]="currentPage()"
@@ -19,9 +19,33 @@
     [isLoadingInput]="isLoading()"
     (pageChanged)="onPageChanged($event)"
     (toggleUserStatus)="onToggleUserStatus($event.userId, $event.isActive)"
-    (deleteUser)="onDeleteUser($event)"
+    (deleteUser)="openDeleteModal($event)"
     (viewUser)="onViewUser($event)"
     (editUser)="onEditUser($event)"
+  />
+
+  <!-- View User Modal -->
+  <app-view-user-modal
+    [isOpen]="!!viewModalUser()"
+    [user]="viewModalUser()"
+    (closed)="closeViewModal()"
+    (editUser)="openEditFromView()"
+  />
+
+  <!-- Edit User Modal -->
+  <app-edit-user-modal
+    [isOpen]="!!editModalUser()"
+    [user]="editModalUser()"
+    (closed)="closeEditModal()"
+    (updated)="onUserUpdated($event)"
+  />
+
+  <!-- Delete User Modal -->
+  <app-delete-user-modal
+    [isOpen]="!!deleteModalUser()"
+    [user]="deleteModalUser()"
+    (closed)="closeDeleteModal()"
+    (confirmed)="onDeleteUser($event)"
   />
 
 </div>

@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MemberFilter } from '@model/member/request/member-filter';
+import { UserFilter } from '@model/user/request/user-filter';
 
 @Component({
   selector: 'app-user-management-toolbar',
@@ -11,31 +11,30 @@ import { MemberFilter } from '@model/member/request/member-filter';
 })
 export class UserManagementToolbarComponent implements OnInit {
 
-  @Output() filterChanged = new EventEmitter<MemberFilter>();
+  @Output() filterChanged = new EventEmitter<UserFilter>();
   @Output() resetFiltersEvent = new EventEmitter<void>();
 
-  searchName = '';
+  searchKeyword = '';
   searchEmail = '';
-  selectedRole = '';
-  selectedCardStatus = '';
+  selectedRoleId: number | null = null;
+  isMember: boolean | null = null;
   searchPhone = '';
-  showDeleted = false;
 
   readonly roles = [
-    { value: '', label: 'Tất cả vai trò' },
-    { value: 'admin', label: 'Quản trị viên (Admin)' },
-    { value: 'librarian', label: 'Thủ thư' },
-    { value: 'reader', label: 'Độc giả' },
+    { value: null, label: 'Tất cả vai trò' },
+    { value: 1, label: 'Quản trị viên (Admin)' },
+    { value: 2, label: 'Thủ thư' },
+    { value: 3, label: 'Thành viên' },
+    { value: 4, label: 'Độc giả' },
   ];
 
-  readonly cardStatuses = [
-    { value: '', label: 'Tất cả trạng thái' },
-    { value: 'has_card', label: 'Đã có thẻ (Có)' },
-    { value: 'no_card', label: 'Chưa làm thẻ (Không)' },
+  readonly memberStatuses = [
+    { value: null, label: 'Tất cả' },
+    { value: true, label: 'Có thẻ thành viên' },
+    { value: false, label: 'Không có thẻ' },
   ];
 
   ngOnInit(): void {
-    // Emit initial filter on component init
     this.emitFilter();
   }
 
@@ -44,38 +43,33 @@ export class UserManagementToolbarComponent implements OnInit {
   }
 
   private emitFilter(): void {
-    const filter: MemberFilter = {};
+    const filter: UserFilter = {};
     
-    // Combine searchName into keyword for full-text search
-    if (this.searchName.trim()) {
-      filter.keyword = this.searchName.trim();
+    if (this.searchKeyword.trim()) {
+      filter.keyword = this.searchKeyword.trim();
     }
     if (this.searchEmail.trim()) {
       filter.email = this.searchEmail.trim();
     }
-    if (this.selectedRole) {
-      filter.role = this.selectedRole;
+    if (this.selectedRoleId !== null) {
+      filter.roleId = this.selectedRoleId;
     }
-    if (this.selectedCardStatus) {
-      filter.cardStatus = this.selectedCardStatus;
+    if (this.isMember !== null) {
+      filter.isMember = this.isMember;
     }
     if (this.searchPhone.trim()) {
       filter.phone = this.searchPhone.trim();
-    }
-    if (this.showDeleted) {
-      filter.showDeleted = true;
     }
 
     this.filterChanged.emit(filter);
   }
 
   resetFilters(): void {
-    this.searchName = '';
+    this.searchKeyword = '';
     this.searchEmail = '';
-    this.selectedRole = '';
-    this.selectedCardStatus = '';
+    this.selectedRoleId = null;
+    this.isMember = null;
     this.searchPhone = '';
-    this.showDeleted = false;
     this.emitFilter();
     this.resetFiltersEvent.emit();
   }

@@ -7,6 +7,7 @@ import { Member } from '@model/member/member.model';
 import { MemberResponse } from '@model/member/response/member-response';
 import { MemberMapper } from '@model/member/member.mapper';
 import { MemberRequest } from '@model/member/request/member-request';
+import { MemberUpdateRequest } from '@model/member/request/member-update-request';
 import { MemberCreateRequest } from '@model/member/request/member-create-request';
 import { MemberRenewRequest } from '@model/member/request/member-renew-request';
 import { CreateUserMemberRequest } from '@model/member/request/create-user-member-request';
@@ -184,9 +185,10 @@ export class MemberService {
   }
 
   /**
-   * Update member info (phone, address, identity number, card status...)
+   * Update member info (phone, address, identity number, card status...) + user fields
+   * Accepts both MemberRequest (backward compatible) and MemberUpdateRequest (new API)
    */
-  updateMember(id: number, data: MemberRequest): Observable<ApiResponse<Member>> {
+  updateMember(id: number, data: MemberRequest | MemberUpdateRequest): Observable<ApiResponse<Member>> {
     return this.http
       .put<ApiResponse<MemberResponse>>(`${this.api}/${id}`, data)
       .pipe(

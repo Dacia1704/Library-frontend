@@ -1,11 +1,14 @@
-import { Component, OnInit, ViewChild, signal, computed } from '@angular/core';
+import { Component, OnInit, ViewChild, signal } from '@angular/core';
 import { ApiResponse, PageResponse } from '@model/api-response';
-import { Member } from '@model/member/member.model';
-import { MemberFilter } from '@model/member/request/member-filter';
-import { MemberService } from '@core/services/member.service';
+import { User } from '@model/user/user.model';
+import { UserFilter } from '@model/user/request/user-filter';
+import { UserService } from '@core/services/user.service';
 import { UserManagementHeaderComponent } from './user-management-header/user-management-header';
 import { UserManagementToolbarComponent } from './user-management-toolbar/user-management-toolbar';
 import { UserTableComponent } from './user-table/user-table';
+import { ViewUserModalComponent } from './view-user-modal/view-user-modal';
+import { EditUserModalComponent } from './edit-user-modal/edit-user-modal';
+import { DeleteUserModalComponent } from './delete-user-modal/delete-user-modal';
 
 @Component({
   selector: 'app-user-management',
@@ -14,6 +17,9 @@ import { UserTableComponent } from './user-table/user-table';
     UserManagementHeaderComponent,
     UserManagementToolbarComponent,
     UserTableComponent,
+    ViewUserModalComponent,
+    EditUserModalComponent,
+    DeleteUserModalComponent,
   ],
   templateUrl: './user-management.html',
   styleUrls: ['./user-management.scss'],
@@ -21,24 +27,29 @@ import { UserTableComponent } from './user-table/user-table';
 export class UserManagement implements OnInit {
   @ViewChild(UserTableComponent) userTable!: UserTableComponent;
 
-  members = signal<Member[]>([]);
+  users = signal<User[]>([]);
   totalElements = signal(0);
   totalPages = signal(0);
   currentPage = signal(0);
   pageSize = signal(20);
   isLoading = signal(false);
-  filter = signal<MemberFilter>({});
+  filter = signal<UserFilter>({});
 
-  constructor(private memberService: MemberService) {}
+  // Modal states
+  viewModalUser = signal<User | null>(null);
+  editModalUser = signal<User | null>(null);
+  deleteModalUser = signal<User | null>(null);
+
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.loadMembers();
+    this.loadUsers();
   }
 
-  onFilterChanged(filter: MemberFilter): void {
+  onFilterChanged(filter: UserFilter): void {
     this.filter.set(filter);
     this.currentPage.set(0);
-    this.loadMembers();
+    this.loadUsers();
   }
 
   onResetFilters(): void {
@@ -47,11 +58,12 @@ export class UserManagement implements OnInit {
     }
   }
 
-  loadMembers(page: number = 0): void {
+  loadUsers(page: number = 0): void {
     this.isLoading.set(true);
-    this.memberService.getPagination(this.filter(), page, this.pageSize()).subscribe({
-      next: (response: ApiResponse<PageResponse<Member>>) => {
-        this.members.set(response.data.data);
+    this.userService.getUsers(this.filter(), page, this.pageSize()).subscribe({
+      next: (response: ApiResponse<PageResponse<User>>) => {
+        console.log(response.data.data);
+        this.users.set(response.data.data);
         this.totalElements.set(response.data.totalElements);
         this.totalPages.set(response.data.totalPages);
         this.currentPage.set(response.data.currentPage);
@@ -59,25 +71,25 @@ export class UserManagement implements OnInit {
         this.isLoading.set(false);
       },
       error: (error) => {
-        console.error('Error loading members:', error);
+        console.error('Error loading users:', error);
         this.isLoading.set(false);
       },
     });
   }
 
   onPageChanged(page: number): void {
-    this.loadMembers(page);
+    this.loadUsers(page);
   }
 
   onToggleUserStatus(userId: number, isActive: boolean): void {
-    this.memberService.setUserActive(userId, isActive).subscribe({
+    this.userService.setUserActive(userId, isActive).subscribe({
       next: () => {
-        this.members.update(members =>
-          members.map(m => {
-            if (m.user.id === userId) {
-              m.user.isActive = isActive;
+        this.users.update(users =>
+          users.map(u => {
+            if (u.id === userId) {
+              u.isActive = isActive;
             }
-            return m;
+            return u;
           })
         );
       },
@@ -88,24 +100,65 @@ export class UserManagement implements OnInit {
   }
 
   onDeleteUser(userId: number): void {
-    if (confirm('Bạn có chắc chắn muốn xóa người dùng này?')) {
-      this.memberService.deleteMember(userId).subscribe({
-        next: () => {
-          this.members.update(members => members.filter(m => m.user.id !== userId));
-          this.totalElements.update(count => count - 1);
-        },
-        error: (error) => {
-          console.error('Error deleting user:', error);
-        },
-      });
+    this.userService.deleteUser(userId).subscribe({
+      next: () => {
+        this.users.update(users => users.filter(u => u.id !== userId));
+        this.totalElements.update(count => count - 1);
+        this.deleteModalUser.set(null);
+      },
+      error: (error) => {
+        console.error('Error deleting user:', error);
+        this.deleteModalUser.set(null);
+      },
+    });
+  }
+
+  // View Modal handlers
+  onViewUser(user: User): void {
+    this.viewModalUser.set(user);
+  }
+
+  closeViewModal(): void {
+    this.viewModalUser.set(null);
+  }
+
+  openEditFromView(): void {
+    const user = this.viewModalUser();
+    if (user) {
+      this.viewModalUser.set(null);
+      this.editModalUser.set(user);
     }
   }
 
-  onViewUser(member: Member): void {
-    console.log('View user:', member);
+  // Edit Modal handlers
+  onEditUser(user: User): void {
+    this.editModalUser.set(user);
   }
 
-  onEditUser(member: Member): void {
-    console.log('Edit user:', member);
+  closeEditModal(): void {
+    this.editModalUser.set(null);
+  }
+
+  onUserUpdated(updatedUser: User): void {
+    this.users.update(users =>
+      users.map(u => u.id === updatedUser.id ? updatedUser : u)
+    );
+    this.editModalUser.set(null);
+  }
+
+  // Delete Modal handlers
+  openDeleteModal(user: User): void {
+    this.deleteModalUser.set(user);
+  }
+
+  closeDeleteModal(): void {
+    this.deleteModalUser.set(null);
+  }
+
+  confirmDelete(): void {
+    const user = this.deleteModalUser();
+    if (user) {
+      this.onDeleteUser(user.id);
+    }
   }
 }

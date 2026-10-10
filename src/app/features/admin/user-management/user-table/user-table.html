@@ -16,73 +16,84 @@
           <th class="col-name">Họ tên & Người dùng</th>
           <th class="col-username">Tên đăng nhập</th>
           <th class="col-email">Email</th>
-          <th class="col-cccd">Số CCCD</th>
-          <th class="col-card">Thẻ TV</th>
+          <th class="col-cccd">CCCD</th>
+          <th class="col-card">Trạng thái thẻ</th>
+          <th class="col-expiry">Hạn thành viên</th>
           <th class="col-role">Vai trò</th>
           <th class="col-status text-center">Trạng thái</th>
+          <th class="col-created">Ngày tạo</th>
           <th class="col-actions text-right">Thao tác</th>
         </tr>
       </thead>
       <tbody>
-        @if (members.length === 0 && !isLoading) {
+        @if (users.length === 0 && !isLoading) {
           <tr>
-            <td colspan="9" class="empty-state">
+            <td colspan="10" class="empty-state">
               <span class="material-symbols-outlined">search_off</span>
               <p>Không tìm thấy người dùng nào</p>
             </td>
           </tr>
         }
-        @for (member of members; track member.user.id) {
+        @for (user of users; track user.id) {
           <tr>
             <td class="col-checkbox">
               <input type="checkbox" class="checkbox" />
             </td>
             <td class="col-name">
               <div class="user-info">
-                @if (getUserAvatarSrc(member)) {
+                @if (getUserAvatarSrc(user)) {
                   <img 
-                    [src]="getUserAvatarSrc(member)" 
-                    [alt]="member.user.fullName"
+                    [src]="getUserAvatarSrc(user)" 
+                    [alt]="user.fullName"
                     class="avatar avatar-img"
                     (error)="$event.target.style.display='none'"
                   />
                 } @else {
-                  <div class="avatar" [ngClass]="'avatar-' + getUserAvatarColor(member)">
-                    {{ getUserAvatarInitials(member) }}
+                  <div class="avatar" [ngClass]="'avatar-' + getUserAvatarColor(user)">
+                    {{ getUserAvatarInitials(user) }}
                   </div>
                 }
                 <div class="user-details">
-                  <span class="user-name">{{ member.user.fullName }}</span>
-                  <span class="user-meta">{{ member.phone }} • Tạo {{ formatDate(member.createdAt) }}</span>
+                  <span class="user-name">{{ user.fullName }}</span>
+                  <span class="user-meta">ID: {{ user.id }}</span>
                 </div>
               </div>
             </td>
             <td class="col-username">
-              <span class="username-badge">{{ member.user.username }}</span>
+              <span class="username-badge">{{ user.username }}</span>
             </td>
             <td class="col-email">
-              <span class="email-text">{{ member.user.email }}</span>
+              <span class="email-text">{{ user.email }}</span>
             </td>
             <td class="col-cccd">
-              <span class="cccd-text">{{ member.identityNumber }}</span>
+              <span class="cccd-text">{{ user.member?.identityNumber || '—' }}</span>
             </td>
             <td class="col-card">
-              @if (hasMemberCard(member)) {
-                <span class="card-badge card-has">
-                  <span class="material-symbols-outlined">badge</span>
-                  {{ getMemberCode(member) }}
+              @if (user.member) {
+                <span class="card-badge" [ngClass]="getCardStatusClass(user.member.cardStatus)">
+                  <span class="material-symbols-outlined">{{ getCardStatusIcon(user.member.cardStatus) }}</span>
+                  {{ getCardStatusLabel(user.member.cardStatus) }}
                 </span>
               } @else {
                 <span class="card-badge card-none">
                   <span class="material-symbols-outlined">credit_card_off</span>
-                  Chưa làm thẻ
+                  Không có
                 </span>
               }
             </td>
+            <td class="col-expiry">
+              @if (user.member) {
+                <span class="expiry-text" [class.expiry-expired]="isCardExpired(user.member)">
+                  {{ formatDate(user.member.cardExpiry) }}
+                </span>
+              } @else {
+                <span class="expiry-text">—</span>
+              }
+            </td>
             <td class="col-role">
-              <span class="role-badge" [ngClass]="'role-' + member.user.roleName?.toLowerCase()">
-                <span class="material-symbols-outlined">{{ getRoleIcon(member.user.roleName) }}</span>
-                {{ getRoleLabel(member.user.roleName) }}
+              <span class="role-badge" [ngClass]="'role-' + user.roleName?.toLowerCase()">
+                <span class="material-symbols-outlined">{{ getRoleIcon(user.roleName) }}</span>
+                {{ getRoleLabel(user.roleName) }}
               </span>
             </td>
             <td class="col-status text-center">
@@ -90,28 +101,31 @@
                 <label class="toggle-wrapper">
                   <input 
                     type="checkbox" 
-                    [checked]="member.user.isActive" 
-                    (change)="onToggleStatus(member)" 
+                    [checked]="user.isActive" 
+                    (change)="onToggleStatus(user)" 
                     class="toggle-input" 
                   />
-                  <span class="toggle-switch" [class.active]="member.user.isActive"></span>
+                  <span class="toggle-switch" [class.active]="user.isActive"></span>
                 </label>
-                <span class="status-text" [class.active]="member.user.isActive">
-                  {{ member.user.isActive ? 'Hoạt động' : 'Vô hiệu hóa' }}
+                <span class="status-text" [class.active]="user.isActive">
+                  {{ user.isActive ? 'Hoạt động' : 'Vô hiệu hóa' }}
                 </span>
               </div>
             </td>
+            <td class="col-created">
+              <span class="date-text">{{ formatDate(user.createdAt) }}</span>
+            </td>
             <td class="col-actions text-right">
               <div class="action-buttons">
-                <button class="action-btn" title="Xem chi tiết" (click)="onView(member)">
+                <button class="action-btn" title="Xem chi tiết" (click)="onView(user)">
                   <span class="material-symbols-outlined">visibility</span>
                 </button>
-                <button class="action-btn" title="Chỉnh sửa" (click)="onEdit(member)">
+                <button class="action-btn" title="Chỉnh sửa" (click)="onEdit(user)">
                   <span class="material-symbols-outlined">edit</span>
                 </button>
-                <button class="action-btn action-btn-danger" title="Xóa tài khoản" (click)="onDelete(member)">
+                <!-- <button class="action-btn action-btn-danger" title="Xóa tài khoản" (click)="onDelete(user)">
                   <span class="material-symbols-outlined">delete</span>
-                </button>
+                </button> -->
               </div>
             </td>
           </tr>

@@ -13,7 +13,7 @@ export class User {
   failedAttempts: number;
   createdAt: Date;
   isDeleted: boolean;
-
+  member?: Member | null;
   constructor(data: Partial<User> = {}) {
     this.id = data.id ?? 0;
     this.username = data.username ?? '';
@@ -27,6 +27,7 @@ export class User {
     this.failedAttempts = data.failedAttempts ?? 0;
     this.createdAt = data.createdAt ?? new Date();
     this.isDeleted = data.isDeleted ?? false;
+    this.member = data.member ?? null;
   }
 
   get displayName(): string {
