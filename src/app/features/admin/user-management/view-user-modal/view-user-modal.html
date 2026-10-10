@@ -1,0 +1,159 @@
+@if (isOpen() && user()) {
+  <div class="view-modal__backdrop" (click)="close()">
+    <div class="view-modal" (click)="$event.stopPropagation()">
+      <!-- Header -->
+      <div class="view-modal__header">
+        <div class="view-modal__title-group">
+          <div class="view-modal__icon-wrap">
+            <span class="material-symbols-outlined">person</span>
+          </div>
+          <div class="view-modal__title-block">
+            <h3 class="view-modal__title">Chi tiết người dùng</h3>
+            <span class="view-modal__sub">{{ user()!.username }}</span>
+          </div>
+        </div>
+        <div class="view-modal__header-actions">
+          <button class="view-modal__btn view-modal__btn--primary" type="button" (click)="onEdit()">
+            <span class="material-symbols-outlined">edit_square</span>
+            <span>Chỉnh sửa</span>
+          </button>
+          <button class="view-modal__close" type="button" (click)="close()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="view-modal__body">
+        <!-- Avatar & Basic Info -->
+        <div class="view-modal__profile">
+          <div class="view-modal__avatar-wrap">
+            <img
+              class="view-modal__avatar"
+              [src]="avatarSrc()"
+              [alt]="user()!.fullName"
+            />
+            <span
+              class="view-modal__status-badge"
+              [class.view-modal__status-badge--active]="user()!.isActive"
+              [class.view-modal__status-badge--locked]="!user()!.isActive"
+            >
+              {{ user()!.isActive ? 'Hoạt động' : 'Đang khóa' }}
+            </span>
+          </div>
+          <div class="view-modal__profile-info">
+            <h4 class="view-modal__name">{{ user()!.fullName }}</h4>
+            <p class="view-modal__role">
+              <span class="material-symbols-outlined">verified_user</span>
+              {{ getRoleLabel(user()!.roleName) }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Detail Sections -->
+        <div class="view-modal__sections">
+          <!-- Account Info -->
+          <div class="view-modal__section">
+            <h5 class="view-modal__section-title">
+              <span class="material-symbols-outlined">account_circle</span>
+              Thông tin tài khoản
+            </h5>
+            <div class="view-modal__grid">
+              <div class="view-modal__field">
+                <span class="view-modal__label">Tên đăng nhập</span>
+                <span class="view-modal__value">{{ user()!.username }}</span>
+              </div>
+              <div class="view-modal__field">
+                <span class="view-modal__label">Email</span>
+                <span class="view-modal__value">{{ user()!.email }}</span>
+              </div>
+              <div class="view-modal__field">
+                <span class="view-modal__label">Vai trò</span>
+                <span class="view-modal__value">{{ getRoleLabel(user()!.roleName) }}</span>
+              </div>
+              <div class="view-modal__field">
+                <span class="view-modal__label">Ngày tạo</span>
+                <span class="view-modal__value">{{ formatDate(user()!.createdAt) }}</span>
+              </div>
+            </div>
+          </div>
+
+          @if (user()!.member) {
+            <!-- Personal Info (Member) -->
+            <div class="view-modal__section">
+              <h5 class="view-modal__section-title">
+                <span class="material-symbols-outlined">badge</span>
+                Thông tin cá nhân
+              </h5>
+              <div class="view-modal__grid">
+                <div class="view-modal__field">
+                  <span class="view-modal__label">Số CCCD</span>
+                  <span class="view-modal__value view-modal__value--mono">{{ user()!.member!.identityNumber }}</span>
+                </div>
+                <div class="view-modal__field">
+                  <span class="view-modal__label">Số điện thoại</span>
+                  <span class="view-modal__value">{{ user()!.member!.phone || '-' }}</span>
+                </div>
+                <div class="view-modal__field view-modal__field--full">
+                  <span class="view-modal__label">Địa chỉ</span>
+                  <span class="view-modal__value">{{ user()!.member!.address || '-' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Library Card Info -->
+            <div class="view-modal__section">
+              <h5 class="view-modal__section-title">
+                <span class="material-symbols-outlined">library_books</span>
+                Thẻ thư viện
+              </h5>
+              <div class="view-modal__grid">
+                <div class="view-modal__field">
+                  <span class="view-modal__label">Mã thẻ</span>
+                  <span class="view-modal__value view-modal__value--mono">{{ user()!.member!.memberCode }}</span>
+                </div>
+                <div class="view-modal__field">
+                  <span class="view-modal__label">Trạng thái thẻ</span>
+                  <span
+                    class="view-modal__badge"
+                    [class.view-modal__badge--issued]="user()!.member!.cardStatus === 'ISSUED'"
+                    [class.view-modal__badge--pending]="user()!.member!.cardStatus === 'PENDING'"
+                  >
+                    {{ getCardStatusLabel(user()!.member!.cardStatus) }}
+                  </span>
+                </div>
+                <div class="view-modal__field">
+                  <span class="view-modal__label">Ngày hết hạn</span>
+                  <span class="view-modal__value">
+                    {{ formatDate(user()!.member!.cardExpiry) }}
+                    @if (isCardExpired()) {
+                      <span class="view-modal__expired-tag">Hết hạn</span>
+                    }
+                  </span>
+                </div>
+                <div class="view-modal__field">
+                  <span class="view-modal__label">Ngày đăng ký</span>
+                  <span class="view-modal__value">{{ formatDate(user()!.member!.createdAt) }}</span>
+                </div>
+              </div>
+            </div>
+          } @else {
+            <div class="view-modal__section">
+              <div class="view-modal__no-member">
+                <span class="material-symbols-outlined">person_off</span>
+                <p>Người dùng chưa được cấp thẻ thành viên</p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="view-modal__footer">
+        <button class="view-modal__btn view-modal__btn--ghost" type="button" (click)="close()">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+}

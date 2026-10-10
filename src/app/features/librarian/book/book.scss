@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+
+.book-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  // padding: 24px;
+  background: var(--background, #f8f9ff);
+}

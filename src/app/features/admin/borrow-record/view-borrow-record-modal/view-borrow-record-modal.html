@@ -1,0 +1,149 @@
+<div class="modal-overlay" [class.modal-overlay--open]="isOpen()" (click)="close()">
+  @if (record()) {
+    <div class="modal" (click)="$event.stopPropagation()">
+      <!-- Modal Header -->
+      <header class="modal__header" [attr.data-status]="status()">
+        <div class="modal__header-left">
+          <div class="modal__status-dot" [attr.data-status]="status()"></div>
+          <div class="modal__header-info">
+            <div class="modal__header-title">
+              <h3 class="modal__record-code">Phiếu mượn #{{ record()!.id }}</h3>
+              @if (status() === 'overdue') {
+                <span class="modal__overdue-badge">Quá hạn {{ overdueDays() }} ngày</span>
+              }
+            </div>
+            <span class="modal__created-time">Lập lúc {{ formatDateTime(record()!.borrowDate) }}</span>
+          </div>
+        </div>
+        <button class="modal__close-btn" title="Đóng" type="button" (click)="close()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </header>
+
+      <!-- Modal Content -->
+      <div class="modal__content">
+        <!-- Member Info -->
+        <section class="modal__section">
+          <span class="modal__section-label">Thông tin độc giả & Mượn</span>
+          <div class="modal__member-card">
+            <div class="modal__member-info">
+              <h4 class="modal__member-name">{{ member()!.user.fullName }}</h4>
+              <p class="modal__member-meta">
+                Thẻ: <strong class="modal__member-code">{{ member()!.memberCode }}</strong> &bull; {{ member()!.user.roleName }}
+              </p>
+              <p class="modal__member-meta">
+                SĐT: <span class="modal__member-phone">{{ member()!.phone }}</span>
+              </p>
+            </div>
+            <div class="modal__member-avatar">{{ getAvatarLetter(member()!.user.fullName) }}</div>
+          </div>
+          <div class="modal__meta-grid">
+            <div class="modal__meta-item">
+              <span class="modal__meta-label">Thủ thư tạo:</span>
+              <span class="modal__meta-value">{{ librarian()!.fullName }}</span>
+            </div>
+            <div class="modal__meta-item">
+              <span class="modal__meta-label">Hạn trả gốc:</span>
+              <span class="modal__meta-value" [class.modal__meta-value--error]="status() === 'overdue'">{{ formatDate(record()!.dueDate) }}</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Books List -->
+        <section class="modal__section">
+          <div class="modal__books-header">
+            <span class="modal__section-label">Ấn phẩm mượn ({{ totalBooks() }} cuốn)</span>
+            <span class="modal__return-rate">Tỷ lệ trả: {{ returnedCount() }}/{{ totalBooks() }}</span>
+          </div>
+
+          @for (detail of borrowDetails(); track detail.id) {
+            <div class="modal__book-card" [class.modal__book-card--returned]="isBookReturned(detail)">
+              <div class="modal__book-info">
+                <div class="modal__book-icon" [class.modal__book-icon--returned]="isBookReturned(detail)">
+                  <span class="material-symbols-outlined">
+                    @if (isBookReturned(detail)) {
+                      menu_book
+                    } @else {
+                      book
+                    }
+                  </span>
+                </div>
+                <div class="modal__book-details">
+                  <h5 class="modal__book-title">{{ detail.book.title }}</h5>
+                  <p class="modal__book-code">Mã cá biệt: <span class="modal__book-code-value">{{ detail.book.bookCode }}</span></p>
+                  @if (!isBookReturned(detail)) {
+                    @if (getBookOverdueDays(detail) > 0) {
+                      <span class="modal__book-status modal__book-status--overdue">
+                        Chưa trả (Trễ {{ getBookOverdueDays(detail) }} ngày)
+                      </span>
+                    } @else {
+                      <span class="modal__book-status modal__book-status--returned">
+                        Chưa trả (Đúng hạn)
+                      </span>
+                    }
+                  } @else {
+                    <span class="modal__book-status modal__book-status--returned">
+                      Đã trả {{ formatDate(detail.returnDate!) }}
+                    </span>
+                  }
+                </div>
+              </div>
+              <div class="modal__fine-row" [class.modal__fine-row--returned]="isBookReturned(detail)">
+                <span class="modal__fine-label">
+                  @if (isBookReturned(detail)) {
+                    Phí trễ hạn:
+                  } @else {
+                    Phạt trễ ({{ formatCurrency(getFineRatePerDay()) }}đ x {{ getBookOverdueDays(detail) }} ngày):
+                  }
+                </span>
+                <span class="modal__fine-value" [class.modal__fine-value--returned]="isBookReturned(detail)">
+                  @if (isBookReturned(detail)) {
+                    0 VNĐ
+                  } @else {
+                    {{ formatCurrency(detail.fineAmount) }} VNĐ
+                  }
+                </span>
+              </div>
+            </div>
+          }
+        </section>
+
+        <!-- Total Fine -->
+        @if (totalFine() > 0) {
+          <section class="modal__total-fine">
+            <div class="modal__total-fine-info">
+              <span class="material-symbols-outlined modal__total-fine-icon">payments</span>
+              <div>
+                <span class="modal__total-fine-label">Tổng tiền phạt phát sinh</span>
+                <p class="modal__total-fine-sub">Tính đến ngày hôm nay</p>
+              </div>
+            </div>
+            <span class="modal__total-fine-value">{{ formatCurrency(totalFine()) }} đ</span>
+          </section>
+        }
+
+        <!-- Notes -->
+        @if (record()!.note) {
+          <section class="modal__section">
+            <span class="modal__section-label">Ghi chú & Biên bản tình trạng</span>
+            <div class="modal__notes">
+              <p class="modal__note">{{ record()!.note }}</p>
+            </div>
+          </section>
+        }
+      </div>
+
+      <!-- Modal Footer -->
+      <footer class="modal__footer">
+        <button class="modal__action-btn modal__action-btn--secondary" type="button">
+          <span class="material-symbols-outlined">chat</span>
+          <span>Nhắc SMS / Zalo</span>
+        </button>
+        <button class="modal__action-btn modal__action-btn--secondary" type="button">
+          <span class="material-symbols-outlined">print</span>
+          <span>In phiếu / Biên lai</span>
+        </button>
+      </footer>
+    </div>
+  }
+</div>

@@ -1,0 +1,28 @@
+<div class="book-bulk-actions" [class.book-bulk-actions--visible]="visible()">
+  <div class="book-bulk-actions__info">
+    <span class="material-symbols-outlined book-bulk-actions__icon">check_circle</span>
+    <span class="book-bulk-actions__text">
+      <strong>{{ selectedCount() }}</strong> ấn phẩm đã chọn
+    </span>
+  </div>
+
+  <div class="book-bulk-actions__divider"></div>
+
+  <div class="book-bulk-actions__buttons">
+    <button class="book-bulk-actions__btn" type="button" (click)="printBarcode.emit()">
+      <span class="material-symbols-outlined book-bulk-actions__btn-icon">qr_code</span>
+      <span>In mã vạch</span>
+    </button>
+    <button class="book-bulk-actions__btn" type="button" (click)="moveShelf.emit()">
+      <span class="material-symbols-outlined book-bulk-actions__btn-icon">swap_horiz</span>
+      <span>Chuyển kệ</span>
+    </button>
+    <button class="book-bulk-actions__btn" type="button" (click)="exportList.emit()">
+      <span class="material-symbols-outlined book-bulk-actions__btn-icon">file_export</span>
+      <span>Xuất danh sách</span>
+    </button>
+    <button class="book-bulk-actions__close" type="button" title="Hủy chọn" (click)="deselectAll.emit()">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+</div>

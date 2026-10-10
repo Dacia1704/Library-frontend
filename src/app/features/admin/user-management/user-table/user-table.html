@@ -1,0 +1,177 @@
+<div class="user-table-container">
+  <!-- Loading overlay -->
+  @if (isLoading) {
+    <div class="loading-overlay">
+      <div class="spinner"></div>
+    </div>
+  }
+
+  <div class="table-wrapper">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th class="col-checkbox">
+            <input type="checkbox" class="checkbox" />
+          </th>
+          <th class="col-name">Họ tên & Người dùng</th>
+          <th class="col-username">Tên đăng nhập</th>
+          <th class="col-email">Email</th>
+          <th class="col-cccd">CCCD</th>
+          <th class="col-card">Trạng thái thẻ</th>
+          <th class="col-expiry">Hạn thành viên</th>
+          <th class="col-role">Vai trò</th>
+          <th class="col-status text-center">Trạng thái</th>
+          <th class="col-created">Ngày tạo</th>
+          <th class="col-actions text-right">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (users.length === 0 && !isLoading) {
+          <tr>
+            <td colspan="10" class="empty-state">
+              <span class="material-symbols-outlined">search_off</span>
+              <p>Không tìm thấy người dùng nào</p>
+            </td>
+          </tr>
+        }
+        @for (user of users; track user.id) {
+          <tr>
+            <td class="col-checkbox">
+              <input type="checkbox" class="checkbox" />
+            </td>
+            <td class="col-name">
+              <div class="user-info">
+                @if (getUserAvatarSrc(user)) {
+                  <img 
+                    [src]="getUserAvatarSrc(user)" 
+                    [alt]="user.fullName"
+                    class="avatar avatar-img"
+                    (error)="$event.target.style.display='none'"
+                  />
+                } @else {
+                  <div class="avatar" [ngClass]="'avatar-' + getUserAvatarColor(user)">
+                    {{ getUserAvatarInitials(user) }}
+                  </div>
+                }
+                <div class="user-details">
+                  <span class="user-name">{{ user.fullName }}</span>
+                  <span class="user-meta">ID: {{ user.id }}</span>
+                </div>
+              </div>
+            </td>
+            <td class="col-username">
+              <span class="username-badge">{{ user.username }}</span>
+            </td>
+            <td class="col-email">
+              <span class="email-text">{{ user.email }}</span>
+            </td>
+            <td class="col-cccd">
+              <span class="cccd-text">{{ user.member?.identityNumber || '—' }}</span>
+            </td>
+            <td class="col-card">
+              @if (user.member) {
+                <span class="card-badge" [ngClass]="getCardStatusClass(user.member.cardStatus)">
+                  <span class="material-symbols-outlined">{{ getCardStatusIcon(user.member.cardStatus) }}</span>
+                  {{ getCardStatusLabel(user.member.cardStatus) }}
+                </span>
+              } @else {
+                <span class="card-badge card-none">
+                  <span class="material-symbols-outlined">credit_card_off</span>
+                  Không có
+                </span>
+              }
+            </td>
+            <td class="col-expiry">
+              @if (user.member) {
+                <span class="expiry-text" [class.expiry-expired]="isCardExpired(user.member)">
+                  {{ formatDate(user.member.cardExpiry) }}
+                </span>
+              } @else {
+                <span class="expiry-text">—</span>
+              }
+            </td>
+            <td class="col-role">
+              <span class="role-badge" [ngClass]="'role-' + user.roleName?.toLowerCase()">
+                <span class="material-symbols-outlined">{{ getRoleIcon(user.roleName) }}</span>
+                {{ getRoleLabel(user.roleName) }}
+              </span>
+            </td>
+            <td class="col-status text-center">
+              <div class="status-wrapper">
+                <label class="toggle-wrapper">
+                  <input 
+                    type="checkbox" 
+                    [checked]="user.isActive" 
+                    (change)="onToggleStatus(user)" 
+                    class="toggle-input" 
+                  />
+                  <span class="toggle-switch" [class.active]="user.isActive"></span>
+                </label>
+                <span class="status-text" [class.active]="user.isActive">
+                  {{ user.isActive ? 'Hoạt động' : 'Vô hiệu hóa' }}
+                </span>
+              </div>
+            </td>
+            <td class="col-created">
+              <span class="date-text">{{ formatDate(user.createdAt) }}</span>
+            </td>
+            <td class="col-actions text-right">
+              <div class="action-buttons">
+                <button class="action-btn" title="Xem chi tiết" (click)="onView(user)">
+                  <span class="material-symbols-outlined">visibility</span>
+                </button>
+                <button class="action-btn" title="Chỉnh sửa" (click)="onEdit(user)">
+                  <span class="material-symbols-outlined">edit</span>
+                </button>
+                <!-- <button class="action-btn action-btn-danger" title="Xóa tài khoản" (click)="onDelete(user)">
+                  <span class="material-symbols-outlined">delete</span>
+                </button> -->
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  @if (totalElements > 0) {
+    <div class="pagination">
+      <div class="pagination-info">
+        <span>Hiển thị <strong>{{ displayedRange.start }} - {{ displayedRange.end }}</strong> của <strong>{{ totalElements }}</strong> người dùng</span>
+        <div class="page-size-select">
+          <span>Số dòng:</span>
+          <select [ngModel]="pageSize" (ngModelChange)="onPageSizeChange()" class="select-small">
+            @for (size of pageSizeOptions; track size) {
+              <option [value]="size">{{ size }} dòng / trang</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="pagination-controls">
+        <button class="page-btn" [disabled]="currentPage === 0" (click)="goToPage(currentPage - 1)">
+          <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+        
+        @for (page of visiblePages; track page) {
+          @if (page === -1) {
+            <span class="page-ellipsis">...</span>
+          } @else {
+            <button 
+              class="page-btn" 
+              [class.active]="page === currentPage"
+              (click)="goToPage(page)"
+            >
+              {{ page + 1 }}
+            </button>
+          }
+        }
+        
+        <button class="page-btn" [disabled]="currentPage >= totalPages - 1" (click)="goToPage(currentPage + 1)">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </button>
+      </div>
+    </div>
+  }
+</div>

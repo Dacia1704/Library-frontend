@@ -1,0 +1,84 @@
+<div class="toolbar">
+  <div class="filters-grid">
+    <!-- Search Keyword -->
+    <div class="filter-item">
+      <label class="filter-label">Tìm kiếm</label>
+      <div class="input-with-icon">
+        <span class="material-symbols-outlined">search</span>
+        <input 
+          type="text"
+          class="filter-input"
+          placeholder="Tìm họ tên, username..."
+          [(ngModel)]="searchKeyword"
+          (ngModelChange)="onFilterChange()"
+        />
+      </div>
+    </div>
+
+    <!-- Search Email -->
+    <div class="filter-item">
+      <label class="filter-label">Email</label>
+      <div class="input-with-icon">
+        <span class="material-symbols-outlined">mail</span>
+        <input 
+          type="text"
+          class="filter-input"
+          placeholder="Tìm theo email..."
+          [(ngModel)]="searchEmail"
+          (ngModelChange)="onFilterChange()"
+        />
+      </div>
+    </div>
+
+    <!-- Role Select -->
+    <div class="filter-item">
+      <label class="filter-label">Vai trò</label>
+      <div class="select-wrapper">
+        <select class="filter-select" [(ngModel)]="selectedRoleId" (ngModelChange)="onFilterChange()">
+          @for (role of roles; track role.value) {
+            <option [ngValue]="role.value">{{ role.label }}</option>
+          }
+        </select>
+        <span class="material-symbols-outlined select-icon">expand_more</span>
+      </div>
+    </div>
+
+    <!-- Member Status -->
+    <div class="filter-item">
+      <label class="filter-label">Trạng thái thẻ</label>
+      <div class="select-wrapper">
+        <select class="filter-select" [(ngModel)]="isMember" (ngModelChange)="onFilterChange()">
+          @for (status of memberStatuses; track status.value) {
+            <option [ngValue]="status.value">{{ status.label }}</option>
+          }
+        </select>
+        <span class="material-symbols-outlined select-icon">expand_more</span>
+      </div>
+    </div>
+
+    <!-- Phone Search -->
+    <div class="filter-item">
+      <label class="filter-label">Số điện thoại</label>
+      <div class="input-with-icon">
+        <span class="material-symbols-outlined">call</span>
+        <input 
+          type="text"
+          class="filter-input"
+          placeholder="Tìm theo SĐT..."
+          [(ngModel)]="searchPhone"
+          (ngModelChange)="onFilterChange()"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Strip -->
+  <div class="action-strip">
+    <div class="right-actions">
+      <button class="btn-reset" (click)="resetFilters()">
+        <span class="material-symbols-outlined">restart_alt</span>
+        Đặt lại bộ lọc
+      </button>
+    </div>
+  </div>
+</div>

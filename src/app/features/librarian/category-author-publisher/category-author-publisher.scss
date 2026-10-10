@@ -1,0 +1,19 @@
+.category-author-publisher {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  // padding: var(--space-lg);
+  max-width: 1600px;
+  margin: 0 auto;
+
+  &__workspace {
+    background: var(--surface-container-lowest);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+
+  &__content {
+    min-height: 400px;
+  }
+}

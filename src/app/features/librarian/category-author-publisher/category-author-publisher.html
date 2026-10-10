@@ -1,0 +1,90 @@
+<div class="category-author-publisher">
+  <app-cat-auth-pub-breadcrumb></app-cat-auth-pub-breadcrumb>
+  <app-cat-auth-pub-header
+    [stats]="stats()"
+    (export)="onExport()"
+    (create)="onCreate()">
+  </app-cat-auth-pub-header>
+
+  <div class="category-author-publisher__workspace">
+    <!-- Tab Navigation -->
+    <app-cat-auth-pub-tabs
+      [activeTab]="activeTab()"
+      [tabCounts]="tabCounts()"
+      (tabChange)="onTabChange($event)">
+    </app-cat-auth-pub-tabs>
+
+    <!-- Toolbar -->
+    <app-cat-auth-pub-toolbar
+      [activeTab]="activeTab()"
+      [searchPlaceholder]="searchPlaceholder()"
+      [showDeleted]="showDeleted()"
+      [deletedCount]="stats().deletedCount"
+      (search)="onSearch($event)"
+      (statusFilter)="onStatusFilter($event)"
+      (toggleDeleted)="onToggleDeleted($event)"
+      (refresh)="onRefresh()"
+      (create)="onCreate()">
+    </app-cat-auth-pub-toolbar>
+
+    <!-- Tab Content -->
+    <div class="category-author-publisher__content">
+      <!-- Categories Table (no pagination) -->
+      @if (activeTab() === 'categories') {
+        <app-cat-auth-pub-category-table
+          [categories]="filteredCategories()"
+          [loading]="loading()"
+          [showDeleted]="showDeleted()"
+          (edit)="onEditCategory($event)"
+          (delete)="onDeleteCategory($event)"
+          (restore)="onRestoreCategory($event)"
+          (permanentDelete)="onPermanentDeleteCategory($event)">
+        </app-cat-auth-pub-category-table>
+      }
+
+      <!-- Authors Grid (with pagination) -->
+      @if (activeTab() === 'authors') {
+        <app-cat-auth-pub-author-grid
+          [authors]="authors()"
+          [loading]="loading()"
+          (edit)="onEditAuthor($event)"
+          (delete)="onDeleteAuthor($event)">
+        </app-cat-auth-pub-author-grid>
+      }
+
+      <!-- Publishers Grid (with pagination) -->
+      @if (activeTab() === 'publishers') {
+        <app-cat-auth-pub-publisher-grid
+          [publishers]="publishers()"
+          [loading]="loading()"
+          (edit)="onEditPublisher($event)"
+          (delete)="onDeletePublisher($event)">
+        </app-cat-auth-pub-publisher-grid>
+      }
+    </div>
+
+    <!-- Pagination (only for authors/publishers) -->
+    @if (activeTab() === 'authors' || activeTab() === 'publishers') {
+      <app-cat-auth-pub-pagination
+        [pagination]="pagination()"
+        (pageChange)="onPageChange($event)"
+        (sizeChange)="onSizeChange($event)">
+      </app-cat-auth-pub-pagination>
+    }
+  </div>
+
+  <!-- Helper Card -->
+  <app-cat-auth-pub-helper-card></app-cat-auth-pub-helper-card>
+
+  <!-- CRUD Modal -->
+  <app-cat-auth-pub-modal
+    [isOpen]="isModalOpen()"
+    [mode]="modalMode()"
+    [scope]="modalScope()"
+    [category]="editingCategory()"
+    [author]="editingAuthor()"
+    [publisher]="editingPublisher()"
+    (close)="onCloseModal()"
+    (save)="onSave($event)">
+  </app-cat-auth-pub-modal>
+</div>

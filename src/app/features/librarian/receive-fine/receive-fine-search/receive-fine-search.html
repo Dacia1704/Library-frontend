@@ -1,0 +1,61 @@
+<div class="search-bar">
+  <div class="search-bar__input-wrapper">
+    <span class="material-symbols-outlined search-bar__icon">badge</span>
+    <input
+      class="search-bar__input"
+      type="text"
+      placeholder="Nhập mã thẻ thư viện (MBR-...) hoặc họ tên độc giả..."
+      [ngModel]="searchQuery"
+      (ngModelChange)="onSearchInput($event)"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+    />
+    <button class="search-bar__scan-btn" type="button">
+      <span class="material-symbols-outlined search-bar__scan-icon">qr_code_scanner</span>
+      <span class="search-bar__scan-text">F2</span>
+    </button>
+
+    <!-- Dropdown -->
+    @if (isOpen()) {
+      <div class="search-bar__dropdown" (mousedown)="$event.preventDefault()">
+        @if (isLoading()) {
+          <div class="search-bar__loading">Đang tải...</div>
+        } @else if (searchResults().length === 0) {
+          <div class="search-bar__empty">Không tìm thấy độc giả phù hợp</div>
+        } @else {
+          @for (member of searchResults(); track member.id) {
+            <div
+              class="search-bar__item"
+              (click)="selectMember(member)"
+              [class.search-bar__item--selected]="selectedMember?.id === member.id">
+              <img
+                class="search-bar__avatar"
+                [src]="avatarSrc(member)"
+                [alt]="member.user.fullName + ' avatar'"
+              />
+              <div class="search-bar__info">
+                <span class="search-bar__name">{{ member.user.fullName }}</span>
+                <span class="search-bar__meta">
+                  {{ member.memberCode }} • {{ member.user.email || 'Không có email' }}
+                </span>
+              </div>
+              @if (selectedMember?.id === member.id) {
+                <span class="material-symbols-outlined search-bar__check">check</span>
+              }
+            </div>
+          }
+        }
+      </div>
+    }
+  </div>
+
+  <div class="search-bar__actions">
+    <button class="search-bar__search-btn" type="button" (click)="onSearchInput(searchQuery)">
+      <span class="material-symbols-outlined">search</span>
+      <span>Tra cứu hồ sơ</span>
+    </button>
+    <button class="search-bar__refresh-btn" type="button" (click)="clearSearch()" title="Làm mới tìm kiếm">
+      <span class="material-symbols-outlined">restart_alt</span>
+    </button>
+  </div>
+</div>

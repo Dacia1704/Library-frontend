@@ -1,0 +1,37 @@
+<div class="author-grid">
+  @if (loading) {
+    <div class="author-grid__loading">
+      <span class="material-symbols-outlined">hourglass_empty</span>
+      <span>Đang tải dữ liệu...</span>
+    </div>
+  } @else if (authors.length === 0) {
+    <div class="author-grid__empty">
+      <span class="material-symbols-outlined">person_off</span>
+      <span>Không có tác giả nào</span>
+    </div>
+  } @else {
+    <div class="author-grid__cards">
+      @for (author of authors; track author.id) {
+        <div class="author-card">
+          <div class="author-card__header">
+            <div class="author-card__avatar">
+              {{ getInitials(author.name) }}
+            </div>
+            <div class="author-card__info">
+              <h4 class="author-card__name">{{ author.name }}</h4>
+            </div>
+            <div class="author-card__actions">
+              <button class="author-card__action-btn" title="Chỉnh sửa" (click)="onEdit(author)">
+                <span class="material-symbols-outlined">edit</span>
+              </button>
+              <button class="author-card__action-btn author-card__action-btn--danger" title="Xóa" (click)="onDelete(author)">
+                <span class="material-symbols-outlined">delete</span>
+              </button>
+            </div>
+          </div>
+          <p class="author-card__bio">{{ author.bio || 'Không có tiểu sử' }}</p>
+        </div>
+      }
+    </div>
+  }
+</div>

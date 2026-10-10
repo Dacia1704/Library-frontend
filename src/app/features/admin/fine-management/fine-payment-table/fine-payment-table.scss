@@ -1,0 +1,290 @@
+.payment-table-container {
+  background: var(--surface-container-lowest);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+
+  thead {
+    background: var(--surface-container-low);
+    color: var(--on-surface-variant);
+  }
+
+  th {
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--surface-container);
+    transition: background 0.2s;
+
+    &:hover {
+      background: rgba(var(--surface-container-low), 0.6);
+    }
+  }
+
+  td {
+    padding: 14px 16px;
+  }
+}
+
+.col-receipt {
+  min-width: 120px;
+}
+
+.col-datetime {
+  min-width: 120px;
+}
+
+.col-amount {
+  min-width: 120px;
+}
+
+.col-method {
+  min-width: 120px;
+}
+
+.col-librarian {
+  min-width: 160px;
+}
+
+.col-note {
+  min-width: 200px;
+}
+
+.col-actions {
+  min-width: 140px;
+}
+
+.receipt-id {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.datetime-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.date-text {
+  display: block;
+  font-size: 14px;
+  color: var(--on-surface);
+}
+
+.date-time {
+  display: block;
+  font-size: 12px;
+  color: var(--on-surface-variant);
+}
+
+.amount-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+.method-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--surface-container-high);
+  color: var(--on-surface-variant);
+
+  .material-symbols-outlined {
+    font-size: 16px;
+  }
+}
+
+.librarian-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.librarian-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--primary-container);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--on-primary-container);
+}
+
+.librarian-name {
+  font-size: 14px;
+  color: var(--on-surface);
+}
+
+.note-text {
+  font-size: 14px;
+  color: var(--on-surface-variant);
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid var(--surface-container);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  transition: all 0.2s;
+
+  .material-symbols-outlined {
+    font-size: 16px;
+  }
+
+  &:hover {
+    background: var(--surface-container);
+    color: var(--primary);
+    border-color: var(--primary);
+  }
+
+  &.action-btn-print:hover {
+    background: var(--primary-container);
+    color: var(--on-primary-container);
+  }
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: var(--surface-container-low);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.pagination-info {
+  font-size: 14px;
+  color: var(--on-surface-variant);
+
+  strong {
+    color: var(--on-surface);
+  }
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.page-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  color: var(--on-surface-variant);
+  cursor: pointer;
+
+  .material-symbols-outlined {
+    font-size: 18px;
+  }
+
+  &:hover:not(:disabled) {
+    background: var(--surface-container);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &.active {
+    background: var(--primary);
+    color: var(--on-primary);
+    font-weight: 600;
+  }
+}
+
+.page-ellipsis {
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--on-surface-variant);
+}
+
+.text-right {
+  text-align: right;
+}
+
+.loading-cell,
+.empty-cell {
+  text-align: center;
+  padding: 48px 16px;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--on-surface-variant);
+
+  .spinning {
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.empty-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--on-surface-variant);
+}
+
+.empty-icon {
+  font-size: 48px;
+  opacity: 0.5;
+}

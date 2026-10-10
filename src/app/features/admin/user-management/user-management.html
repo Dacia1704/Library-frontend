@@ -1,0 +1,58 @@
+<div class="user-management">
+  
+  <!-- Header -->
+  <app-user-management-header (createUserClicked)="openCreateModal()" />
+
+  <!-- Toolbar with Filters -->
+  <app-user-management-toolbar 
+    (filterChanged)="onFilterChanged($event)"
+    (resetFiltersEvent)="onResetFilters()"
+  />
+
+  <!-- User Table -->
+  <app-user-table 
+    [usersInput]="users()"
+    [totalElementsInput]="totalElements()"
+    [totalPagesInput]="totalPages()"
+    [currentPageInput]="currentPage()"
+    [pageSizeInput]="pageSize()"
+    [isLoadingInput]="isLoading()"
+    (pageChanged)="onPageChanged($event)"
+    (toggleUserStatus)="onToggleUserStatus($event.userId, $event.isActive)"
+    (deleteUser)="openDeleteModal($event)"
+    (viewUser)="onViewUser($event)"
+    (editUser)="onEditUser($event)"
+  />
+
+  <!-- View User Modal -->
+  <app-view-user-modal
+    [isOpen]="!!viewModalUser()"
+    [user]="viewModalUser()"
+    (closed)="closeViewModal()"
+    (editUser)="openEditFromView()"
+  />
+
+  <!-- Edit User Modal -->
+  <app-edit-user-modal
+    [isOpen]="!!editModalUser()"
+    [user]="editModalUser()"
+    (closed)="closeEditModal()"
+    (updated)="onUserUpdated($event)"
+  />
+
+  <!-- Delete User Modal -->
+  <app-delete-user-modal
+    [isOpen]="!!deleteModalUser()"
+    [user]="deleteModalUser()"
+    (closed)="closeDeleteModal()"
+    (confirmed)="onDeleteUser($event)"
+  />
+
+  <!-- Create User Modal -->
+  <app-create-user-modal
+    [isOpen]="createModalOpen()"
+    (closed)="closeCreateModal()"
+    (created)="onUserCreated($event)"
+  />
+
+</div>

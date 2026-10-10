@@ -6,6 +6,7 @@ import { environment } from "@environments/environment";
 import { ApiResponse, PageResponse } from "@model/api-response";
 import { BookRequest } from "@model/book/request/book-request";
 import { BookResponse } from "@model/book/response/book-response";
+import { BookStatisticsResponse } from "@model/book/response/book-statistics-response";
 import { BookFilter } from "@model/book/request/book-filter";
 import { BookMapper } from "@model/book/book.mapper";
 import { Book } from "@model/book/book.model";
@@ -142,6 +143,14 @@ export class BookService {
           data: BookMapper.toModelList(response.data)
         }))
       );
+  }
+
+  /**
+   * Get book statistics
+   * Backend: GET /books/statistics
+   */
+  getStatistics(): Observable<ApiResponse<BookStatisticsResponse>> {
+    return this.http.get<ApiResponse<BookStatisticsResponse>>(`${this.api}/statistics`);
   }
 
   // ===== Delete =====

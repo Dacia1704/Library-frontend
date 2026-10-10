@@ -1,0 +1,43 @@
+<div class="pagination">
+  <div class="pagination__info">
+    <span>Hiển thị</span>
+    <select 
+      class="pagination__select" 
+      [ngModel]="selectedSize" 
+      (ngModelChange)="onSizeChange($event)">
+      @for (size of pageSizes; track size) {
+        <option [value]="size">{{ size }}</option>
+      }
+    </select>
+    <span>trên tổng số <strong>{{ pagination.totalElements }}</strong> mục</span>
+  </div>
+
+  <div class="pagination__controls">
+    <button
+      class="pagination__btn"
+      [disabled]="pagination.page === 0"
+      (click)="onPageChange(pagination.page - 1)">
+      <span class="material-symbols-outlined">chevron_left</span>
+    </button>
+
+    @for (page of visiblePages; track page) {
+      @if (page === -1) {
+        <span class="pagination__ellipsis">...</span>
+      } @else {
+        <button
+          class="pagination__btn"
+          [class.pagination__btn--active]="page === pagination.page"
+          (click)="onPageChange(page)">
+          {{ page + 1 }}
+        </button>
+      }
+    }
+
+    <button
+      class="pagination__btn"
+      [disabled]="pagination.page >= pagination.totalPages - 1"
+      (click)="onPageChange(pagination.page + 1)">
+      <span class="material-symbols-outlined">chevron_right</span>
+    </button>
+  </div>
+</div>

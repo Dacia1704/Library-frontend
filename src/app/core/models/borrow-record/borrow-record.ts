@@ -1,12 +1,11 @@
 import { BorrowStatus } from "@model/enum/borrow-status.enum";
 import { Member } from "@model/member/member.model";
 import { User } from "@model/user/user.model";
+import { Book } from "@model/book/book.model";
 
 export interface BorrowDetail {
   id: number;
-  bookId: number;
-  bookTitle: string;
-  bookCode: string;
+  book: Book;
   returnDate?: Date;
   fineAmount: number;
   borrowStatus: BorrowStatus;

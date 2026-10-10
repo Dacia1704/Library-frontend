@@ -1,0 +1,138 @@
+@if (isOpen) {
+  <div class="modal-overlay" (click)="onOverlayClick($event)">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <!-- Modal Header -->
+      <div class="modal__header">
+        <div class="modal__title-wrapper">
+          <span class="modal__indicator"></span>
+          <h3 class="modal__title">{{ modalTitle }}</h3>
+        </div>
+        <button class="modal__close" (click)="onClose()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Scope Switcher -->
+      <div class="modal__scope-tabs">
+        <button
+          class="modal__scope-btn"
+          [class.modal__scope-btn--active]="scope === 'category'"
+          (click)="setScope('category')">
+          Danh mục
+        </button>
+        <button
+          class="modal__scope-btn"
+          [class.modal__scope-btn--active]="scope === 'author'"
+          (click)="setScope('author')">
+          Tác giả
+        </button>
+        <button
+          class="modal__scope-btn"
+          [class.modal__scope-btn--active]="scope === 'publisher'"
+          (click)="setScope('publisher')">
+          Nhà xuất bản
+        </button>
+      </div>
+
+      <!-- Form Body -->
+      <form class="modal__form" (ngSubmit)="onSubmit()">
+        <!-- Category Fields -->
+        @if (scope === 'category') {
+          <div class="modal__fields">
+            <div class="modal__field">
+              <label class="modal__label">
+                <span>Tên danh mục <span class="modal__required">*</span></span>
+                <span class="modal__hint">Bắt buộc</span>
+              </label>
+              <input
+                type="text"
+                class="modal__input"
+                #categoryNameInput
+                [(ngModel)]="categoryName"
+                name="categoryName"
+                placeholder="Ví dụ: Khoa học viễn tưởng & Tương lai"
+                required>
+            </div>
+          </div>
+        }
+
+        <!-- Author Fields -->
+        @if (scope === 'author') {
+          <div class="modal__fields">
+            <div class="modal__field">
+              <label class="modal__label">
+                <span>Tên tác giả / Bút danh <span class="modal__required">*</span></span>
+                <span class="modal__hint">Bắt buộc</span>
+              </label>
+              <input
+                type="text"
+                class="modal__input"
+                #authorNameInput
+                [(ngModel)]="authorName"
+                name="authorName"
+                placeholder="Ví dụ: Nguyễn Du, Victor Hugo..."
+                required>
+            </div>
+            <div class="modal__field">
+              <label class="modal__label">Tiểu sử / Giới thiệu tóm tắt <span class="modal__required">*</span></label>
+              <textarea
+                class="modal__textarea"
+                [(ngModel)]="authorBio"
+                name="authorBio"
+                placeholder="Tóm tắt phong cách sáng tác, giải thưởng văn học hoặc đóng góp học thuật tiêu biểu..."
+                rows="3"
+                required></textarea>
+            </div>
+          </div>
+        }
+
+        <!-- Publisher Fields -->
+        @if (scope === 'publisher') {
+          <div class="modal__fields">
+            <div class="modal__field">
+              <label class="modal__label">
+                <span>Tên nhà xuất bản <span class="modal__required">*</span></span>
+                <span class="modal__hint">Bắt buộc</span>
+              </label>
+              <input
+                type="text"
+                class="modal__input"
+                #publisherNameInput
+                [(ngModel)]="publisherName"
+                name="publisherName"
+                placeholder="Ví dụ: Nhà xuất bản Giáo Dục Việt Nam"
+                required>
+            </div>
+            <div class="modal__field">
+              <label class="modal__label">
+                <span>Địa chỉ trụ sở chính <span class="modal__required">*</span></span>
+              </label>
+              <input
+                type="text"
+                class="modal__input"
+                [(ngModel)]="publisherAddress"
+                name="publisherAddress"
+                placeholder="Số nhà, đường phố, quận/huyện, tỉnh/thành phố..."
+                required>
+            </div>
+          </div>
+        }
+
+        <!-- Form Actions -->
+        <div class="modal__actions">
+          <button type="button" class="modal__btn modal__btn--cancel" (click)="onClose()">
+            Hủy bỏ
+          </button>
+          <button type="submit" class="modal__btn modal__btn--submit" [disabled]="!isValid() || isLoading">
+            @if (isLoading) {
+              <span class="material-symbols-outlined">hourglass_empty</span>
+            } @else {
+              <span class="material-symbols-outlined">save</span>
+            }
+            <span>{{ isLoading ? 'Đang xử lý...' : 'Lưu thông tin' }}</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

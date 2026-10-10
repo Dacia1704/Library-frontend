@@ -1,0 +1,37 @@
+@if (isOpen() && user()) {
+  <div class="delete-modal__backdrop" (click)="close()">
+    <div class="delete-modal" (click)="$event.stopPropagation()">
+      <!-- Header -->
+      <div class="delete-modal__header">
+        <div class="delete-modal__icon-wrap">
+          <span class="material-symbols-outlined">warning</span>
+        </div>
+        <button class="delete-modal__close" type="button" (click)="close()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="delete-modal__body">
+        <h3 class="delete-modal__title">Xác nhận xóa người dùng</h3>
+        <p class="delete-modal__message">
+          Bạn có chắc chắn muốn xóa người dùng <strong>{{ user()!.fullName }}</strong> không?
+        </p>
+        <p class="delete-modal__warning">
+          Hành động này không thể hoàn tác và người dùng sẽ bị xóa vĩnh viễn khỏi hệ thống.
+        </p>
+      </div>
+
+      <!-- Footer -->
+      <div class="delete-modal__footer">
+        <button class="delete-modal__btn delete-modal__btn--ghost" type="button" (click)="close()">
+          Hủy bỏ
+        </button>
+        <button class="delete-modal__btn delete-modal__btn--danger" type="button" (click)="onConfirm()">
+          <span class="material-symbols-outlined">delete</span>
+          <span>Xóa người dùng</span>
+        </button>
+      </div>
+    </div>
+  </div>
+}

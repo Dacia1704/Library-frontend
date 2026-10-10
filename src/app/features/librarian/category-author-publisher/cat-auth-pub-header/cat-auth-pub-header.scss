@@ -1,0 +1,233 @@
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-md);
+  background: var(--surface-container-lowest);
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+
+  &__info {
+    flex: 1;
+    max-width: 600px;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+
+    h1 {
+      font-size: var(--headline-lg);
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+    }
+  }
+
+  &__badge {
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    background: var(--primary-fixed);
+    color: var(--primary);
+    font-size: var(--label-sm);
+    font-weight: 600;
+  }
+
+  &__desc {
+    margin: var(--space-xs) 0 0;
+    font-size: var(--body-md);
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  &__actions {
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  &__btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 var(--space-md);
+    border-radius: var(--radius);
+    font-size: var(--label-lg);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+
+    .material-symbols-outlined {
+      font-size: 18px;
+    }
+
+    &--secondary {
+      background: var(--surface-container-high);
+      color: var(--text-primary);
+
+      &:hover {
+        background: var(--surface-container-highest);
+      }
+    }
+
+    &--primary {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      box-shadow: var(--shadow-card);
+
+      &:hover {
+        background: var(--primary);
+        color: var(--on-primary);
+      }
+    }
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-md);
+    // margin-top: var(--space-lg);
+  }
+}
+
+.stat-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: var(--shadow-floating);
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius);
+    background: var(--primary-subtle);
+    color: var(--primary);
+
+    .material-symbols-outlined {
+      font-size: 20px;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__label {
+    font-size: var(--label-md);
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  &__value {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  &__number {
+    font-size: var(--display);
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  &__unit {
+    font-size: var(--label-md);
+    color: var(--secondary);
+    font-weight: 500;
+  }
+
+  &__decoration {
+    position: absolute;
+    top: var(--space-sm);
+    right: var(--space-sm);
+    color: var(--primary-subtle);
+    pointer-events: none;
+    transition: color 0.2s;
+
+    .material-symbols-outlined {
+      font-size: 64px;
+    }
+  }
+
+  &:hover &__decoration {
+    color: var(--primary);
+  }
+
+  // Variants
+  &--category {
+    .stat-card__icon {
+      background: var(--primary-subtle);
+      color: var(--primary);
+    }
+  }
+
+  &--author {
+    .stat-card__icon {
+      background: rgba(#0D9488, 0.1);
+      color: var(--secondary);
+    }
+    .stat-card__unit {
+      color: var(--secondary);
+    }
+    .stat-card__decoration {
+      color: rgba(#0D9488, 0.1);
+    }
+    &:hover .stat-card__decoration {
+      color: rgba(#0D9488, 0.2);
+    }
+  }
+
+  &--publisher {
+    .stat-card__icon {
+      background: rgba(#1E40AF, 0.1);
+      color: var(--primary);
+    }
+    .stat-card__unit {
+      color: var(--primary);
+    }
+    .stat-card__decoration {
+      color: rgba(#1E40AF, 0.1);
+    }
+    &:hover .stat-card__decoration {
+      color: rgba(#1E40AF, 0.2);
+    }
+  }
+
+  &--deleted {
+    .stat-card__icon {
+      background: rgba(#882D00, 0.1);
+      color: var(--tertiary);
+    }
+    .stat-card__number {
+      color: var(--tertiary);
+    }
+    .stat-card__unit {
+      color: var(--tertiary);
+    }
+    .stat-card__decoration {
+      color: rgba(#882D00, 0.1);
+    }
+    &:hover .stat-card__decoration {
+      color: rgba(#882D00, 0.2);
+    }
+  }
+}

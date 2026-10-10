@@ -1,0 +1,94 @@
+<div class="payment-form">
+  <div class="payment-form__header">
+    <div class="payment-form__header-left">
+      <div class="payment-form__icon">
+        <span class="material-symbols-outlined">payments</span>
+      </div>
+      <h3 class="payment-form__title">Lập biên lai thu tiền phạt</h3>
+    </div>
+    <span class="payment-form__counter-badge">Quầy số 02</span>
+  </div>
+
+  <div class="payment-form__debt-notice">
+    <div class="payment-form__debt-info">
+      <span class="payment-form__debt-label">Dư nợ hiện tại</span>
+      <span class="payment-form__debt-amount">{{ formatCurrency(unpaidAmount) }} VNĐ</span>
+    </div>
+    <div class="payment-form__debt-hint">
+      <span class="material-symbols-outlined">pie_chart</span>
+      Hỗ trợ thu nhiều đợt
+    </div>
+  </div>
+
+  <form class="payment-form__form" (ngSubmit)="handleSubmit()">
+    <div class="payment-form__preset">
+      <label class="payment-form__label">Chọn nhanh số tiền thu</label>
+      <div class="payment-form__preset-grid">
+        <button type="button" class="payment-form__preset-btn payment-form__preset-btn--primary" (click)="setPresetFull()">
+          Thu hết ({{ formatCurrency(unpaidAmount) }})
+        </button>
+        <button type="button" class="payment-form__preset-btn" (click)="setPresetHalf()">
+          {{ formatPresetAmount(halfAmount) }}
+        </button>
+        <button type="button" class="payment-form__preset-btn" (click)="setPresetCustom(30000)">
+          30.000đ
+        </button>
+        <button type="button" class="payment-form__preset-btn" (click)="setPresetCustom(0)">
+          Số khác
+        </button>
+      </div>
+    </div>
+
+    <div class="payment-form__amount">
+      <label class="payment-form__label payment-form__label--required" for="fineAmount">
+        Số tiền thu đợt này (VNĐ)
+      </label>
+      <div class="payment-form__amount-input-wrapper">
+        <input
+          class="payment-form__amount-input"
+          id="fineAmount"
+          type="text"
+          [value]="formatInputAmount()"
+          (input)="onAmountChange($event)"
+          placeholder="0"
+        />
+        <span class="payment-form__amount-suffix">₫</span>
+      </div>
+      @if (amountError) {
+        <p class="payment-form__error">{{ amountError }}</p>
+      } @else if (isValidAmount) {
+        <p class="payment-form__hint payment-form__hint--valid">
+          Hợp lệ (≤ {{ formatCurrency(unpaidAmount) }}đ)
+        </p>
+      } @else {
+        <p class="payment-form__hint">
+          Không được vượt quá số tiền còn phải nộp ({{ formatCurrency(unpaidAmount) }} VNĐ).
+        </p>
+      }
+    </div>
+
+    <div class="payment-form__note">
+      <label class="payment-form__label" for="receiptNote">Ghi chú biên lai thu phí</label>
+      <textarea
+        class="payment-form__textarea"
+        id="receiptNote"
+        rows="2"
+        [value]="paymentNote"
+        (input)="onNoteChange($event)"
+        placeholder="Nhập ghi chú (nếu có)..."></textarea>
+    </div>
+
+    <div class="payment-form__actions">
+      <button
+        type="submit"
+        class="payment-form__submit-btn"
+        [disabled]="!isValidAmount">
+        <span class="material-symbols-outlined">check_circle</span>
+        <span>Xác nhận thu tiền ({{ formatCurrency(paymentAmount) }} VNĐ)</span>
+      </button>
+      <div class="payment-form__secondary-actions">
+        <button type="button" class="payment-form__secondary-btn" (click)="handleReset()">Hủy bỏ / Làm lại</button>
+      </div>
+    </div>
+  </form>
+</div>

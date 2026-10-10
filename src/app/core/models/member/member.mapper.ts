@@ -23,6 +23,20 @@ export class MemberMapper {
     });
   }
 
+  static fromResponseForUser(res: MemberResponse): Member | null {
+    if (!res) return null;
+    return new Member({
+      id: res.id,
+      memberCode: res.memberCode,
+      phone: res.phone,
+      address: res.address,
+      identityNumber: res.identityNumber,
+      cardExpiry: new Date(res.cardExpiry),
+      cardStatus: res.cardStatus,
+      createdAt: new Date(res.createdAt)
+    });
+  }
+
   /**
    * Map Member (domain model) → MemberRequest (for create/update)
    */

@@ -1,0 +1,221 @@
+:host {
+  display: block;
+}
+
+.search-bar {
+  background: var(--surface-container-lowest, #ffffff);
+  border-radius: 12px;
+  padding: var(--space-md, 16px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md, 16px);
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &__input-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  &__icon {
+    position: absolute;
+    left: 16px;
+    font-size: 20px;
+    color: var(--on-surface-variant, #444653);
+    pointer-events: none;
+  }
+
+  &__input {
+    width: 100%;
+    height: 44px;
+    padding-left: 48px;
+    padding-right: 80px;
+    border-radius: 8px;
+    background: var(--surface-container-low, #eff4ff);
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: var(--on-surface, #0b1c30);
+    transition: background 0.2s ease;
+
+    &::placeholder {
+      color: var(--on-surface-variant, #444653);
+    }
+
+    &:focus {
+      background: var(--surface-container-lowest, #ffffff);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  &__scan-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: var(--surface-container, #e5eeff);
+    color: var(--on-surface-variant, #444653);
+    border: none;
+    cursor: pointer;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: var(--primary, #1E40AF);
+    }
+  }
+
+  &__scan-icon {
+    font-size: 16px;
+  }
+
+  &__scan-text {
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  &__actions {
+    display: flex;
+    gap: var(--space-sm, 8px);
+    width: 100%;
+
+    @media (min-width: 768px) {
+      width: auto;
+    }
+  }
+
+  &__search-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 44px;
+    padding: 0 var(--space-lg, 24px);
+    border-radius: 8px;
+    background: var(--primary, #1E40AF);
+    color: var(--on-primary, #ffffff);
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: var(--primary-container, #a8b8ff);
+    }
+
+    span {
+      font-size: 18px;
+    }
+  }
+
+  &__refresh-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    padding: 0 var(--space-md, 16px);
+    border-radius: 8px;
+    background: var(--surface-container, #e5eeff);
+    color: var(--on-surface-variant, #444653);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: var(--on-surface, #0b1c30);
+    }
+
+    span {
+      font-size: 18px;
+    }
+  }
+
+  // Dropdown styles
+  &__dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: var(--surface-container-lowest, #ffffff);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    max-height: 320px;
+    overflow-y: auto;
+    z-index: 100;
+  }
+
+  &__loading,
+  &__empty {
+    padding: var(--space-lg, 24px);
+    text-align: center;
+    color: var(--on-surface-variant, #444653);
+    font-size: 14px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm, 8px);
+    padding: var(--space-sm, 8px) var(--space-md, 16px);
+    cursor: pointer;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: var(--surface-container-low, #eff4ff);
+    }
+
+    &--selected {
+      background: var(--primary-fixed, #dde1ff);
+    }
+  }
+
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  &__info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--on-surface, #0b1c30);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__meta {
+    font-size: 12px;
+    color: var(--on-surface-variant, #444653);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__check {
+    font-size: 18px;
+    color: var(--primary, #1E40AF);
+    flex-shrink: 0;
+  }
+}

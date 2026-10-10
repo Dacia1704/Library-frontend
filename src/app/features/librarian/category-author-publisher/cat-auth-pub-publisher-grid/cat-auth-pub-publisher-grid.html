@@ -1,0 +1,51 @@
+<div class="publisher-grid">
+  @if (loading) {
+    <div class="publisher-grid__loading">
+      <span class="material-symbols-outlined">hourglass_empty</span>
+      <span>Đang tải dữ liệu...</span>
+    </div>
+  } @else if (publishers.length === 0) {
+    <div class="publisher-grid__empty">
+      <span class="material-symbols-outlined">domain_disabled</span>
+      <span>Không có nhà xuất bản nào</span>
+    </div>
+  } @else {
+    <div class="publisher-grid__cards">
+      @for (publisher of publishers; track publisher.id) {
+        <div class="publisher-card">
+          <div class="publisher-card__header">
+            <div class="publisher-card__logo">
+              {{ getInitials(publisher.name) }}
+            </div>
+            <div class="publisher-card__info">
+              <h4 class="publisher-card__name">{{ publisher.name }}</h4>
+              <span class="publisher-card__code">NXB-{{ publisher.id }}</span>
+            </div>
+            <div class="publisher-card__actions">
+              <button class="publisher-card__action-btn" title="Chỉnh sửa" (click)="onEdit(publisher)">
+                <span class="material-symbols-outlined">edit</span>
+              </button>
+              <button class="publisher-card__action-btn publisher-card__action-btn--danger" title="Xóa" (click)="onDelete(publisher)">
+                <span class="material-symbols-outlined">delete</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="publisher-card__details">
+            @if (publisher.address) {
+              <div class="publisher-card__detail">
+                <span class="material-symbols-outlined">location_on</span>
+                <span>{{ publisher.address }}</span>
+              </div>
+            } @else {
+              <div class="publisher-card__detail publisher-card__detail--muted">
+                <span class="material-symbols-outlined">location_on</span>
+                <span>Chưa cập nhật địa chỉ</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

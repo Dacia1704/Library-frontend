@@ -1,0 +1,67 @@
+<div class="category-table">
+  <div class="category-table__wrapper">
+    <table class="category-table__table">
+      <thead>
+        <tr>
+          <th class="category-table__th category-table__th--checkbox">
+            <input type="checkbox">
+          </th>
+          <th class="category-table__th">Mã danh mục</th>
+          <th class="category-table__th">Tên danh mục</th>
+          <th class="category-table__th category-table__th--center">Trạng thái</th>
+          <th class="category-table__th category-table__th--right">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (loading) {
+          <tr>
+            <td colspan="7" class="category-table__loading">
+              <span class="material-symbols-outlined">hourglass_empty</span>
+              <span>Đang tải dữ liệu...</span>
+            </td>
+          </tr>
+        } @else if (categories.length === 0) {
+          <tr>
+            <td colspan="7" class="category-table__empty">
+              <span class="material-symbols-outlined">folder_off</span>
+              <span>Không có danh mục nào</span>
+            </td>
+          </tr>
+        } @else {
+          @for (category of categories; track category.id; let i = $index) {
+            <tr class="category-table__row" [class.category-table__row--deleted]="false">
+              <td class="category-table__td category-table__td--center">
+                <input type="checkbox">
+              </td>
+              <td class="category-table__td">
+                <span class="category-table__code">{{ category.id }}</span>
+              </td>
+              <td class="category-table__td">
+                <div class="category-table__name">
+                  <span class="category-table__dot"></span>
+                  <span>{{ category.name }}</span>
+                </div>
+              </td>
+              <td class="category-table__td category-table__td--center">
+                <span class="category-table__status category-table__status--active">
+                  <span class="category-table__status-dot"></span>
+                  Hoạt động
+                </span>
+              </td>
+              <td class="category-table__td category-table__td--right">
+                <div class="category-table__actions">
+                  <button class="category-table__action-btn" title="Chỉnh sửa" (click)="onEdit(category)">
+                    <span class="material-symbols-outlined">edit</span>
+                  </button>
+                  <button class="category-table__action-btn category-table__action-btn--danger" title="Xóa tạm" (click)="onDelete(category)">
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

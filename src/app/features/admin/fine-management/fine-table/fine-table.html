@@ -1,0 +1,152 @@
+<div class="fine-table-container">
+  <!-- Filters -->
+  <div class="filters-bar">
+    <div class="search-wrapper">
+      <span class="material-symbols-outlined">search</span>
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Tìm theo Mã thẻ, Họ tên, SĐT..." 
+        [(ngModel)]="searchText"
+        (ngModelChange)="applyFilters()" />
+    </div>
+    <div class="select-wrapper">
+      <span class="material-symbols-outlined">filter_list</span>
+      <select class="filter-select" [(ngModel)]="statusFilter" (ngModelChange)="applyFilters()">
+        <option value="all">Tất cả trạng thái</option>
+        <option value="pending">Chờ thanh toán (Đang nợ)</option>
+        <option value="paid">Đã thanh toán (Hoàn tất)</option>
+        <option value="waived">Đã miễn giảm (Bởi Admin)</option>
+      </select>
+      <span class="material-symbols-outlined select-icon">expand_more</span>
+    </div>
+    <div class="date-wrapper">
+      <span class="material-symbols-outlined">date_range</span>
+      <input 
+        type="text" 
+        class="date-input" 
+        placeholder="Từ ngày - Đến ngày"
+        [(ngModel)]="dateRange"
+        (ngModelChange)="applyFilters()" />
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrapper">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th class="col-code">Mã biên phạt</th>
+          <th class="col-patron">Thành viên / Thẻ</th>
+          <th class="col-book">Phiếu mượn & Sách</th>
+          <th class="col-reason">Lý do vi phạm</th>
+          <th class="col-amount text-right">Số tiền phạt</th>
+          <th class="col-date">Ngày lập</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (isLoading) {
+          <tr>
+            <td colspan="9" class="loading-cell">
+              <div class="loading-spinner">
+                <span class="material-symbols-outlined spinning">progress_activity</span>
+                <span>Đang tải dữ liệu...</span>
+              </div>
+            </td>
+          </tr>
+        } @else if (fines.length === 0) {
+          <tr>
+            <td colspan="9" class="empty-cell">
+              <span class="material-symbols-outlined empty-icon">assignment_late</span>
+              <span>Không có khoản phạt nào</span>
+            </td>
+          </tr>
+        } @else {
+          @for (fine of filteredFines; track fine.id) {
+            <tr>
+              <td class="col-code">
+                <span class="fine-code">#FP-{{ fine.id.toString().padStart(4, '0') }}</span>
+                <span class="fine-source">FP-{{ fine.id }}</span>
+              </td>
+              <td class="col-patron">
+                <div class="patron-info">
+                  <div class="patron-avatar">{{ getInitials(getMemberName(fine)) }}</div>
+                  <div class="patron-details">
+                    <span class="patron-name">{{ getMemberName(fine) }}</span>
+                    <span class="patron-card">{{ getMemberCode(fine) }} • {{ getMemberType(fine) }}</span>
+                  </div>
+                </div>
+              </td>
+              <td class="col-book">
+                <div class="book-info">
+                  <span class="book-title">{{ getBookTitle(fine) }}</span>
+                  <span class="book-slip">Phiếu: {{ getBorrowCode(fine) }}</span>
+                </div>
+              </td>
+              <td class="col-reason">
+                <div class="reason-info">
+                  <span class="reason-badge" [ngClass]="getReasonClass(fine.reason)">
+                    @if (fine.reason === 'OVERDUE') {
+                      <span class="material-symbols-outlined">schedule</span>
+                    } @else if (fine.reason === 'LOST') {
+                      <span class="material-symbols-outlined">search_off</span>
+                    } @else {
+                      <span class="material-symbols-outlined">handyman</span>
+                    }
+                    {{ getReasonLabel(fine.reason) }}
+                    @if (fine.overdueDays && fine.overdueDays > 0) {
+                      <span class="overdue-days">({{ fine.overdueDays }} ngày)</span>
+                    }
+                  </span>
+                </div>
+              </td>
+              <td class="col-amount text-right">
+                <span class="amount-value">{{ formatCurrency(fine.amount) }} đ</span>
+              </td>
+              <td class="col-date">
+                <span class="date-text">{{ formatDate(fine.createdAt).date }}</span>
+                <span class="date-time">{{ formatDate(fine.createdAt).time }}</span>
+              </td>
+            
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  @if (totalElements > 0) {
+    <div class="pagination">
+      <div class="pagination-info">
+        <span>Hiển thị <strong>{{ getStartIndex() }} - {{ getEndIndex() }}</strong> của <strong>{{ totalElements }}</strong> khoản phạt</span>
+      </div>
+      <div class="pagination-controls">
+        <button class="page-btn" [disabled]="!hasPrevious" (click)="goToPage(0)">
+          <span class="material-symbols-outlined">first_page</span>
+        </button>
+        <button class="page-btn" [disabled]="!hasPrevious" (click)="goToPage(currentPage - 1)">
+          <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+        @for (page of pages; track page) {
+          @if (page === 0 || page === totalPages - 1 || (page >= currentPage - 1 && page <= currentPage + 1)) {
+            <button 
+              class="page-btn" 
+              [class.active]="page === currentPage" 
+              (click)="goToPage(page)">
+              {{ page + 1 }}
+            </button>
+          } @else if (page === currentPage - 2 || page === currentPage + 2) {
+            <span class="page-ellipsis">...</span>
+          }
+        }
+        <button class="page-btn" [disabled]="!hasNext" (click)="goToPage(currentPage + 1)">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </button>
+        <button class="page-btn" [disabled]="!hasNext" (click)="goToPage(totalPages - 1)">
+          <span class="material-symbols-outlined">last_page</span>
+        </button>
+      </div>
+    </div>
+  }
+</div>

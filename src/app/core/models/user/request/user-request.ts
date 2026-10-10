@@ -1,6 +1,6 @@
 export interface UserRequest {
   username: string;         // max 50
-  password: string;         // min 6, max 100
+  password?: string;         // min 6, max 100 (optional for update)
   fullName: string;         // max 100
   email: string;            // max 100
   avatar?: string;

@@ -14,7 +14,7 @@ export class Member {
 
   constructor(data: Partial<Member> = {}) {
     this.id = data.id ?? 0;
-    this.user = data.user!;
+    this.user = data.user ?? null!;
     this.memberCode = data.memberCode ?? '';
     this.phone = data.phone ?? '';
     this.address = data.address ?? '';

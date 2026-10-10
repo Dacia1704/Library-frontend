@@ -1,0 +1,25 @@
+<div class="borrow-record">
+  
+  <!-- Header -->
+  <app-borrow-record-header />
+
+  <!-- Table -->
+  <app-borrow-record-table
+    [records]="records()"
+    [totalElements]="totalElements()"
+    [currentPage]="currentPage()"
+    [pageSize]="pageSize()"
+    [isLoading]="isLoading()"
+    (pageChange)="onPageChange($event)"
+    (pageSizeChange)="onPageSizeChange($event)"
+    (filterChange)="onFilterChange($event)"
+    (viewRecord)="onViewRecord($event)"
+  />
+
+  <!-- View Record Modal -->
+  <app-view-borrow-record-modal
+    [record]="selectedRecord()"
+    (closed)="onCloseModal()"
+  />
+
+</div>

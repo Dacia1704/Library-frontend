@@ -14,17 +14,18 @@
     <div class="return-book__left">
       <!-- Record Card -->
       <app-return-book-record-card
-        [data]="currentRecord()">
+        [data]="recordCardData">
       </app-return-book-record-card>
 
       <!-- Books Table -->
       <app-return-book-table
-        [books]="borrowedBooks()"
+        [books]="borrowedBooks"
         [totalBooks]="totalBooks"
         (processReturn)="onProcessReturn($event)"
         (quickReturnAll)="onQuickReturnAll()"
         (selectAll)="onSelectAll()">
       </app-return-book-table>
+
     </div>
 
     <!-- RIGHT SECTION -->

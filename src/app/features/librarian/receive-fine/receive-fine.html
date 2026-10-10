@@ -1,0 +1,91 @@
+<div class="receive-fine">
+  <app-receive-fine-breadcrumb></app-receive-fine-breadcrumb>
+
+  <app-receive-fine-header
+    [librarian]="currentLibrarian"
+    [todayReceiptCount]="paidFineCount()"
+    (onRefresh)="refreshData()">
+  </app-receive-fine-header>
+
+  <div class="receive-fine__content">
+    <div class="receive-fine__main">
+      <app-receive-fine-search
+        [selectedMember]="selectedMember()"
+        (memberChange)="onMemberChange($event)">
+      </app-receive-fine-search>
+
+      @if (selectedMember()) {
+        <app-receive-fine-member-card
+          [member]="selectedMember()!"
+          [totalFine]="totalFineAmount()"
+          [paidAmount]="paidAmount()"
+          [unpaidAmount]="unpaidAmount()"
+          [unpaidCount]="unpaidFineCount()">
+        </app-receive-fine-member-card>
+
+        <!-- Tabs: Khoản phạt | Khoản thu -->
+        <div class="receive-fine__tabs">
+          <button
+            class="receive-fine__tab"
+            [class.receive-fine__tab--active]="activeTab() === 'FINES'"
+            (click)="setActiveTab('FINES')">
+            <span class="material-symbols-outlined receive-fine__tab-icon">receipt</span>
+            <span>Khoản phạt</span>
+            @if (unpaidFineCount() > 0) {
+              <span class="receive-fine__tab-badge">{{ unpaidFineCount() }}</span>
+            }
+          </button>
+          <button
+            class="receive-fine__tab"
+            [class.receive-fine__tab--active]="activeTab() === 'PAYMENTS'"
+            (click)="setActiveTab('PAYMENTS')">
+            <span class="material-symbols-outlined receive-fine__tab-icon">payments</span>
+            <span>Khoản thu</span>
+            @if (paidFineCount() > 0) {
+              <span class="receive-fine__tab-badge receive-fine__tab-badge--paid">{{ paidFineCount() }}</span>
+            }
+          </button>
+        </div>
+
+        @if (activeTab() === 'FINES') {
+          <app-receive-fine-fine-list
+            [fines]="fines()"
+            [unpaidTotal]="unpaidAmount()"
+            [fineOverduePerDay]="fineOverduePerDay">
+          </app-receive-fine-fine-list>
+        } @else {
+          <app-receive-fine-payment-list
+            [payments]="payments()"
+            [currentPage]="paymentPage()"
+            [totalPages]="totalPaymentPages()"
+            [totalElements]="paymentTotalElements()"
+            (pageChange)="onPaymentPageChange($event)">
+          </app-receive-fine-payment-list>
+        }
+
+        <app-receive-fine-policy
+          [unpaidAmount]="unpaidAmount()">
+        </app-receive-fine-policy>
+      }
+    </div>
+
+    <div class="receive-fine__sidebar">
+      @if (selectedMember()) {
+        <app-receive-fine-payment-form
+          [unpaidAmount]="unpaidAmount()"
+          [paymentAmount]="paymentAmount"
+          [paymentNote]="paymentNote"
+          [paymentMethod]="paymentMethod"
+          [autoPrint]="autoPrint"
+          [autoUnlock]="autoUnlock"
+          (paymentAmountChange)="onPaymentAmountChange($event)"
+          (paymentNoteChange)="onPaymentNoteChange($event)"
+          (paymentMethodChange)="onPaymentMethodChange($event)"
+          (presetAmount)="setPresetAmount($event)"
+          (submit)="submitPayment()"
+          (reset)="resetPaymentForm()">
+        </app-receive-fine-payment-form>
+      }
+    </div>
+  </div>
+</div>

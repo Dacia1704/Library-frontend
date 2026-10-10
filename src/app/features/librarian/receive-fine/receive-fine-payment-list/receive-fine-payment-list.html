@@ -1,0 +1,116 @@
+<div class="payment-list">
+  <div class="payment-list__header">
+    <div class="payment-list__title-group">
+      <h3 class="payment-list__title">Lịch sử thanh toán phạt của độc giả</h3>
+      <p class="payment-list__subtitle">Nhật ký các đợt nộp phạt, biên lai thu và cán bộ phụ trách tiếp nhận</p>
+    </div>
+    <div class="payment-list__count">
+      <span class="material-symbols-outlined payment-list__count-icon">description</span>
+      <span>{{ totalElements }} biên lai</span>
+    </div>
+  </div>
+
+  <div class="payment-list__table-wrapper">
+    <table class="payment-list__table">
+      <thead>
+        <tr>
+          <th>Mã biên lai</th>
+          <th>Thời gian nộp</th>
+          <th class="payment-list__text-right">Số tiền nộp</th>
+          <th>Hình thức</th>
+          <th>Thủ thư tiếp nhận</th>
+          <th>Ghi chú / Nội dung thu</th>
+          <th class="payment-list__text-right">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (payment of payments; track payment.id) {
+          <tr class="payment-list__row">
+            <td class="payment-list__cell">
+              <span class="payment-list__receipt-id">{{ getReceiptId(payment.id) }}</span>
+            </td>
+            <td class="payment-list__cell">
+              <div class="payment-list__datetime">
+                <span>{{ formatDate(payment.paidAt).date }}</span>
+                <span class="payment-list__time">{{ formatDate(payment.paidAt).time }}</span>
+              </div>
+            </td>
+            <td class="payment-list__cell payment-list__cell--amount">
+              {{ formatCurrency(payment.amount) }}
+            </td>
+            <td class="payment-list__cell">
+              <span class="payment-list__method-badge">
+                <span class="material-symbols-outlined">payments</span>
+                Tiền mặt
+              </span>
+            </td>
+            <td class="payment-list__cell">
+              <div class="payment-list__librarian">
+                <span class="payment-list__avatar">{{ getInitials(payment.receivedByUsername || '') }}</span>
+                <span>{{ payment.receivedByUsername || 'N/A' }}</span>
+              </div>
+            </td>
+            <td class="payment-list__cell payment-list__cell--note">
+              {{ payment.note || '-' }}
+            </td>
+            <td class="payment-list__cell payment-list__cell--actions">
+              <div class="payment-list__action-group">
+                <button
+                  class="payment-list__action-btn"
+                  title="In lại biên lai"
+                  (click)="printReceipt(payment)">
+                  <span class="material-symbols-outlined">print</span>
+                  <span>In lại</span>
+                </button>
+                <button
+                  class="payment-list__action-icon"
+                  title="Xem chi tiết"
+                  (click)="viewReceipt(payment)">
+                  <span class="material-symbols-outlined">visibility</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="7" class="payment-list__empty">
+              <span class="material-symbols-outlined payment-list__empty-icon">receipt_long</span>
+              <span>Chưa có biên lai nào</span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (totalPages > 1) {
+    <div class="payment-list__pagination">
+      <button
+        class="payment-list__page-btn"
+        [disabled]="!hasPrevious"
+        (click)="goToPage(currentPage - 1)">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+
+      @for (page of pages; track page) {
+        @if (page === 0 || page === totalPages - 1 || (page >= currentPage - 1 && page <= currentPage + 1)) {
+          <button
+            class="payment-list__page-btn"
+            [class.payment-list__page-btn--active]="page === currentPage"
+            (click)="goToPage(page)">
+            {{ page + 1 }}
+          </button>
+        } @else if (page === currentPage - 2 || page === currentPage + 2) {
+          <span class="payment-list__page-ellipsis">...</span>
+        }
+      }
+
+      <button
+        class="payment-list__page-btn"
+        [disabled]="!hasNext"
+        (click)="goToPage(currentPage + 1)">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  }
+</div>

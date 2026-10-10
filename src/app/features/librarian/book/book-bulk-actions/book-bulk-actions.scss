@@ -1,0 +1,107 @@
+:host {
+  display: block;
+}
+
+.book-bulk-actions {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(96px);
+  opacity: 0;
+  pointer-events: none;
+  background: var(--inverse-surface, #213145);
+  color: var(--inverse-on-surface, #eaf1ff);
+  padding: 12px 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 30;
+  transition: all 0.3s ease;
+
+  &--visible {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__icon {
+    font-size: 20px;
+    color: var(--secondary-fixed, #89f5e7);
+  }
+
+  &__text {
+    font-size: 14px;
+    font-weight: 500;
+
+    strong {
+      font-weight: 600;
+    }
+  }
+
+  &__divider {
+    width: 1px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  &__buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    border-radius: var(--radius, 4px);
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: var(--inverse-on-surface, #eaf1ff);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    white-space: nowrap;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+  }
+
+  &__btn-icon {
+    font-size: 16px;
+  }
+
+  &__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: var(--radius, 4px);
+    background: transparent;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: color 0.15s ease;
+    margin-left: 8px;
+
+    .material-symbols-outlined {
+      font-size: 18px;
+    }
+
+    &:hover {
+      color: var(--inverse-on-surface, #eaf1ff);
+    }
+  }
+}

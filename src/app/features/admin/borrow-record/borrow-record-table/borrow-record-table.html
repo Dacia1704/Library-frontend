@@ -1,0 +1,223 @@
+<div class="borrow-table-container">
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <span class="toolbar-title">
+        <span class="material-symbols-outlined">filter_alt</span>
+        Bộ lọc tìm kiếm nâng cao
+      </span>
+    </div>
+    <div class="toolbar-actions">
+      <button class="btn-action" (click)="resetFilters()">
+        <span class="material-symbols-outlined">restart_alt</span>
+        Đặt lại bộ lọc
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-bar">
+    <div class="filter-group">
+      <label class="filter-label">
+        <span class="material-symbols-outlined">person_search</span>
+        Thành viên / Độc giả
+      </label>
+      <input 
+        type="text" 
+        class="filter-input" 
+        placeholder="Tên hoặc mã thẻ (MBR-09...)"
+        [ngModel]="memberKeyword()"
+        (ngModelChange)="memberKeyword.set($event); onFilterChange()"
+      />
+    </div>
+    <div class="filter-group">
+      <label class="filter-label">
+        <span class="material-symbols-outlined">calendar_today</span>
+        Từ ngày
+      </label>
+      <input 
+        type="date" 
+        class="filter-input"
+        [ngModel]="startBorrowDate()"
+        (ngModelChange)="startBorrowDate.set($event); onFilterChange()"
+      />
+    </div>
+    <div class="filter-group">
+      <label class="filter-label">
+        <span class="material-symbols-outlined">calendar_today</span>
+        Đến ngày
+      </label>
+      <input 
+        type="date" 
+        class="filter-input"
+        [ngModel]="endBorrowDate()"
+        (ngModelChange)="endBorrowDate.set($event); onFilterChange()"
+      />
+    </div>
+    <div class="filter-group">
+      <label class="filter-label">
+        <span class="material-symbols-outlined">auto_stories</span>
+        Sách / Tên ấn phẩm
+      </label>
+      <input 
+        type="text" 
+        class="filter-input" 
+        placeholder="Nhập tên sách hoặc ISBN..."
+        [ngModel]="bookKeyword()"
+        (ngModelChange)="bookKeyword.set($event); onFilterChange()"
+      />
+    </div>
+    <div class="filter-group">
+      <label class="filter-label">
+        <span class="material-symbols-outlined">checklist</span>
+        Trạng thái phiếu
+      </label>
+      <select 
+        class="filter-select"
+        [ngModel]="status()"
+        (ngModelChange)="status.set($event); onFilterChange()"
+      >
+        <option value="">Tất cả trạng thái ({{ totalElements() }})</option>
+        <option value="BORROWING">Đang mượn</option>
+        <option value="RETURNED">Đã trả</option>
+        <option value="OVERDUE">Quá hạn cảnh báo</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrapper">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Mã phiếu</th>
+          <th>Độc giả / Thành viên</th>
+          <th>Ấn phẩm mượn</th>
+          <th>Ngày mượn & Hạn trả</th>
+          <th>Thủ thư lập</th>
+          <th class="text-center">Trạng thái</th>
+          <th class="text-right">Thao tác Admin</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (isLoading()) {
+          <tr>
+            <td colspan="7" class="text-center">
+              <div class="loading-spinner">
+                <span class="material-symbols-outlined spinning">progress_activity</span>
+                <span>Đang tải dữ liệu...</span>
+              </div>
+            </td>
+          </tr>
+        } @else if (records().length === 0) {
+          <tr>
+            <td colspan="7" class="text-center">
+              <div class="empty-state">
+                <span class="material-symbols-outlined">search_off</span>
+                <span>Không tìm thấy phiếu mượn nào</span>
+              </div>
+            </td>
+          </tr>
+        } @else {
+          @for (record of records(); track record.id) {
+            <tr>
+              <td>
+                <div class="slip-id">
+                  <span class="slip-code">#{{ record.id }}</span>
+                </div>
+              </td>
+              <td>
+                <div class="patron-info">
+                  <div class="patron-avatar">{{ record.member.user.fullName.charAt(0) }}</div>
+                  <div class="patron-details">
+                    <span class="patron-name">{{ record.member.user.fullName }}</span>
+                    <span class="patron-meta">{{ record.member.memberCode }} &bull; {{ record.member.user.roleName }}</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="book-info">
+                  <span class="book-title">{{ record.borrowDetails[0]?.book.title }}</span>
+                  @if (record.borrowDetails.length > 1) {
+                    <span class="book-meta">+{{ record.borrowDetails.length - 1 }} tài liệu khác</span>
+                  }
+                </div>
+              </td>
+              <td>
+                <div class="date-info">
+                  <div class="date-row">
+                    <span>{{ formatDate(record.borrowDate) }}</span>
+                    <span class="arrow">→</span>
+                    <span [class.overdue]="record.status === 'overdue'">{{ formatDate(record.dueDate) }}</span>
+                  </div>
+                  @if (record.overdueDays > 0) {
+                    <span class="overdue-badge">
+                      <span class="material-symbols-outlined">alarm</span>
+                      Quá hạn {{ record.overdueDays }} ngày
+                    </span>
+                  }
+                </div>
+              </td>
+              <td>
+                <div class="librarian-info">
+                  <span class="librarian-name">{{ record.librarian.fullName }}</span>
+                </div>
+              </td>
+              <td class="text-center">
+                <span class="status-badge" [ngClass]="'status-' + record.status">
+                  <span class="status-dot"></span>
+                  {{ getStatusText(record) }}
+                </span>
+              </td>
+              <td class="text-right">
+                <div class="action-buttons">
+                  <button class="action-btn" title="Xem chi tiết" (click)="onViewRecord(record)">
+                    <span class="material-symbols-outlined">visibility</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <div class="pagination-info">
+      <span>Hiển thị <strong>{{ pageRangeStart() }} - {{ pageRangeEnd() }}</strong> của <strong>{{ totalElements() }}</strong> phiếu mượn</span>
+      <div class="page-size">
+        <span>Hiển thị mỗi trang:</span>
+        <select [ngModel]="pageSize()" (ngModelChange)="onPageSizeChange($event)" class="select-small">
+          @for (size of pageSizeOptions; track size) {
+            <option [value]="size">{{ size }}</option>
+          }
+        </select>
+      </div>
+    </div>
+    <div class="pagination-controls">
+      <button class="page-btn" [disabled]="isFirstPage()" (click)="onPageChange(currentPage() - 1)">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      @for (page of pageNumbers; track page) {
+        <button 
+          class="page-btn" 
+          [class.active]="page === currentPage()"
+          (click)="onPageChange(page)"
+        >
+          {{ page + 1 }}
+        </button>
+      }
+      @if (totalPages() > 5 && currentPage() < totalPages() - 3) {
+        <span class="page-ellipsis">...</span>
+        <button class="page-btn" (click)="onPageChange(totalPages() - 1)">
+          {{ totalPages() }}
+        </button>
+      }
+      <button class="page-btn" [disabled]="isLastPage()" (click)="onPageChange(currentPage() + 1)">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </div>
+</div>

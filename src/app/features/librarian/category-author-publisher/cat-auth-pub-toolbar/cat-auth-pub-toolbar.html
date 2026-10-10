@@ -1,0 +1,24 @@
+<div class="toolbar">
+  <div class="toolbar__left">
+    <!-- Search Box -->
+    <div class="toolbar__search">
+      <span class="material-symbols-outlined">search</span>
+      <input
+        type="text"
+        class="toolbar__search-input"
+        [placeholder]="searchPlaceholder"
+        (input)="onSearchInput($event)"
+        (keyup.enter)="onSearchEnter()">
+    </div>
+  </div>
+
+  <div class="toolbar__right">
+    <!-- Toggle Show Deleted -->
+
+    <!-- Create Button -->
+    <button class="toolbar__create-btn" (click)="onCreate()">
+      <span class="material-symbols-outlined">add</span>
+      <span>Tạo mới</span>
+    </button>
+  </div>
+</div>

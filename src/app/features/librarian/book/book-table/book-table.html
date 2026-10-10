@@ -1,0 +1,186 @@
+<div class="book-table">
+  <!-- Table Header Status Bar -->
+  <div class="book-table__status-bar">
+    <div class="book-table__status-left">
+      <span class="book-table__status-title">Danh mục ấn phẩm trong kho</span>
+      <span class="book-table__status-badge">{{ books().length }} ấn phẩm đang xem</span>
+    </div>
+    <div class="book-table__status-right">
+      <span class="book-table__status-legend">
+        <span class="book-table__legend-dot book-table__legend-dot--available"></span>
+        <span>Còn sách</span>
+      </span>
+      <span class="book-table__status-legend">
+        <span class="book-table__legend-dot book-table__legend-dot--out"></span>
+        <span>Hết bản in lưu kho</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Table Body -->
+  <div class="book-table__container">
+    <table class="book-table__table">
+      <thead>
+        <tr class="book-table__header-row">
+          <th class="book-table__th book-table__th--checkbox">
+            <input
+              class="book-table__checkbox"
+              type="checkbox"
+              [checked]="isAllSelected()"
+              (change)="toggleSelectAll()"
+            />
+          </th>
+          <th class="book-table__th">Bìa</th>
+          <th class="book-table__th book-table__th--name">Tên sách & Vị trí kệ</th>
+          <th class="book-table__th">Mã ISBN</th>
+          <th class="book-table__th">Tác giả</th>
+          <th class="book-table__th">Danh mục</th>
+          <th class="book-table__th">Nhà xuất bản</th>
+          <th class="book-table__th book-table__th--center">Năm</th>
+          <th class="book-table__th book-table__th--right">Giá bìa</th>
+          <th class="book-table__th book-table__th--center">Tổng SL</th>
+          <th class="book-table__th book-table__th--center">Còn lại</th>
+          <th class="book-table__th book-table__th--actions">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody class="book-table__body">
+        @for (book of books(); track book.id) {
+          <tr
+            class="book-table__row"
+            [class.book-table__row--out-of-stock]="isBookOutOfStock(book)"
+          >
+            <td class="book-table__td book-table__td--checkbox">
+              <input
+                class="book-table__checkbox"
+                type="checkbox"
+                [checked]="selectedIds().has(book.id)"
+                (change)="toggleSelectOne(book.id)"
+              />
+            </td>
+            <td class="book-table__td">
+              <div class="book-table__cover">
+                <img
+                  [src]="getBookCover(book)"
+                  [alt]="'Bìa sách ' + getBookTitle(book)"
+                />
+              </div>
+            </td>
+            <td class="book-table__td">
+              <div class="book-table__name-cell">
+                <div class="book-table__name-row">
+                  <span class="book-table__title">{{ getBookTitle(book) }}</span>
+                  @if (isBookOutOfStock(book)) {
+                    <span class="material-symbols-outlined book-table__error-icon" title="Cần nhập bổ sung">error</span>
+                  }
+                </div>
+                <div class="book-table__shelf">
+                  <span class="material-symbols-outlined book-table__shelf-icon">shelves</span>
+                  <span class="book-table__shelf-code" [class.book-table__shelf-code--warning]="isBookOutOfStock(book)">
+                    {{ getBookShelfCode(book) }}
+                  </span>
+                </div>
+              </div>
+            </td>
+            <td class="book-table__td book-table__td--mono">{{ getBookIsbn(book) }}</td>
+            <td class="book-table__td">{{ getBookAuthor(book) }}</td>
+            <td class="book-table__td">
+              <span class="book-table__category">{{ getBookCategory(book) }}</span>
+            </td>
+            <td class="book-table__td book-table__td--muted">{{ getBookPublisher(book) }}</td>
+            <td class="book-table__td book-table__td--center book-table__td--small">{{ getBookPublishYear(book) }}</td>
+            <td class="book-table__td book-table__td--right">{{ formatPrice(book.price) }}</td>
+            <td class="book-table__td book-table__td--center book-table__td--semibold">{{ book.quantity }}</td>
+            <td class="book-table__td book-table__td--center">
+              @if (isBookOutOfStock(book)) {
+                <span class="book-table__badge book-table__badge--out">
+                  <span class="material-symbols-outlined book-table__badge-icon">block</span>
+                  Hết sách (0)
+                </span>
+              } @else {
+                <span class="book-table__badge book-table__badge--available">
+                  <span class="book-table__badge-dot"></span>
+                  Còn {{ book.available }} cuốn
+                </span>
+              }
+            </td>
+            <td class="book-table__td book-table__td--actions">
+              <div class="book-table__actions">
+                <button class="book-table__action-btn" type="button" title="Xem chi tiết & Vị trí" (click)="onView(book.id)">
+                  <span class="material-symbols-outlined">visibility</span>
+                </button>
+                <button class="book-table__action-btn" type="button" title="Chỉnh sửa thông tin" (click)="onEdit(book.id)">
+                  <span class="material-symbols-outlined">edit</span>
+                </button>
+                <button class="book-table__action-btn book-table__action-btn--danger" type="button" title="Xóa ấn phẩm" (click)="onDelete(book.id)">
+                  <span class="material-symbols-outlined">delete</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr class="book-table__row book-table__row--empty">
+            <td class="book-table__td book-table__td--empty" colspan="12">
+              <div class="book-table__empty">
+                <span class="material-symbols-outlined book-table__empty-icon">library_books</span>
+                <span class="book-table__empty-text">Không tìm thấy ấn phẩm nào</span>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination & Page Controls -->
+  <div class="book-table__pagination">
+    <div class="book-table__pagination-info">
+      <span>
+        Hiển thị <strong>{{ displayStart() }}</strong> - <strong>{{ displayEnd() }}</strong> của <strong>{{ totalElements() | number }}</strong> tựa sách
+      </span>
+      <div class="book-table__page-size">
+        <span>Bản ghi mỗi trang:</span>
+        <select class="book-table__page-size-select" [value]="pageSize()" (change)="onPageSizeChange($event)">
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="book-table__pagination-controls">
+      <button
+        class="book-table__page-btn"
+        type="button"
+        [disabled]="currentPage() === 0"
+        (click)="onPageClick(currentPage() - 1)"
+      >
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+
+      @for (page of pageNumbers(); track $index) {
+        @if (page === '...') {
+          <span class="book-table__page-ellipsis">...</span>
+        } @else {
+          <button
+            class="book-table__page-btn"
+            [class.book-table__page-btn--active]="page === currentPage()"
+            type="button"
+            (click)="onPageClick(page)"
+          >
+            {{ getPageDisplayNumber(page) }}
+          </button>
+        }
+      }
+
+      <button
+        class="book-table__page-btn"
+        type="button"
+        [disabled]="currentPage() >= totalPages() - 1"
+        (click)="onPageClick(currentPage() + 1)"
+      >
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </div>
+</div>

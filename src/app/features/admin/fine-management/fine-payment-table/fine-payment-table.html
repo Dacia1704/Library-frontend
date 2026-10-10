@@ -1,0 +1,96 @@
+<div class="payment-table-container">
+  <!-- Table -->
+  <div class="table-wrapper">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th class="col-receipt">Mã biên lai</th>
+          <th class="col-datetime">Thời gian nộp</th>
+          <th class="col-amount text-right">Số tiền nộp</th>
+          <th class="col-librarian">Thủ thư tiếp nhận</th>
+          <th class="col-note">Ghi chú / Nội dung thu</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (isLoading) {
+          <tr>
+            <td colspan="8" class="loading-cell">
+              <div class="loading-spinner">
+                <span class="material-symbols-outlined spinning">progress_activity</span>
+                <span>Đang tải dữ liệu...</span>
+              </div>
+            </td>
+          </tr>
+        } @else if (payments.length === 0) {
+          <tr>
+            <td colspan="8" class="empty-cell">
+              <span class="material-symbols-outlined empty-icon">receipt_long</span>
+              <span>Chưa có biên lai nào</span>
+            </td>
+          </tr>
+        } @else {
+          @for (payment of payments; track payment.id) {
+            <tr>
+              <td class="col-receipt">
+                <span class="receipt-id">{{ getReceiptId(payment.id) }}</span>
+              </td>
+              <td class="col-datetime">
+                <div class="datetime-info">
+                  <span class="date-text">{{ formatDate(payment.paidAt).date }}</span>
+                  <span class="date-time">{{ formatDate(payment.paidAt).time }}</span>
+                </div>
+              </td>
+              <td class="col-amount text-right">
+                <span class="amount-value">{{ formatCurrency(payment.amount) }} đ</span>
+              </td>
+              <td class="col-librarian">
+                <div class="librarian-info">
+                  <span class="librarian-avatar">{{ getInitials(payment.receivedByUsername || '') }}</span>
+                  <span class="librarian-name">{{ payment.receivedByUsername || 'N/A' }}</span>
+                </div>
+              </td>
+              <td class="col-note">
+                <span class="note-text">{{ payment.note || '-' }}</span>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  @if (totalElements > 0) {
+    <div class="pagination">
+      <div class="pagination-info">
+        <span>Hiển thị <strong>{{ getStartIndex() }} - {{ getEndIndex() }}</strong> của <strong>{{ totalElements }}</strong> biên lai</span>
+      </div>
+      <div class="pagination-controls">
+        <button class="page-btn" [disabled]="!hasPrevious" (click)="goToPage(0)">
+          <span class="material-symbols-outlined">first_page</span>
+        </button>
+        <button class="page-btn" [disabled]="!hasPrevious" (click)="goToPage(currentPage - 1)">
+          <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+        @for (page of pages; track page) {
+          @if (page === 0 || page === totalPages - 1 || (page >= currentPage - 1 && page <= currentPage + 1)) {
+            <button 
+              class="page-btn" 
+              [class.active]="page === currentPage" 
+              (click)="goToPage(page)">
+              {{ page + 1 }}
+            </button>
+          } @else if (page === currentPage - 2 || page === currentPage + 2) {
+            <span class="page-ellipsis">...</span>
+          }
+        }
+        <button class="page-btn" [disabled]="!hasNext" (click)="goToPage(currentPage + 1)">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </button>
+        <button class="page-btn" [disabled]="!hasNext" (click)="goToPage(totalPages - 1)">
+          <span class="material-symbols-outlined">last_page</span>
+        </button>
+      </div>
+    </div>
+  }
+</div>
