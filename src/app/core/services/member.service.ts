@@ -188,7 +188,7 @@ export class MemberService {
    * Update member info (phone, address, identity number, card status...) + user fields
    * Accepts both MemberRequest (backward compatible) and MemberUpdateRequest (new API)
    */
-  updateMember(id: number, data: MemberRequest | MemberUpdateRequest): Observable<ApiResponse<Member>> {
+  updateMember(id: number, data: MemberUpdateRequest): Observable<ApiResponse<Member>> {
     return this.http
       .put<ApiResponse<MemberResponse>>(`${this.api}/${id}`, data)
       .pipe(

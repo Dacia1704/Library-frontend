@@ -1,14 +1,16 @@
 import { Component, inject, input, output, signal, effect } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { User } from '@model/user/user.model';
 import { MemberService } from '@services/member.service';
 import { UserService } from '@services/user.service';
 import { MemberUpdateRequest } from '@model/member/request/member-update-request';
+import { UserRequest } from '@model/user/request/user-request';
 import { CardStatus } from '@model/enum/card-status.enum';
 
 @Component({
   selector: 'app-edit-user-modal',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './edit-user-modal.html',
   styleUrl: './edit-user-modal.scss',
 })
@@ -23,6 +25,7 @@ export class EditUserModalComponent {
 
   // User fields
   readonly username = signal('');
+  readonly password = signal('');
   readonly email = signal('');
   readonly fullName = signal('');
   readonly isActive = signal(true);
@@ -36,6 +39,7 @@ export class EditUserModalComponent {
 
   readonly isSubmitting = signal(false);
   readonly isMember = signal(false);
+  readonly errorMessage = signal<string | null>(null);
 
   // Watch user input to populate form
   private formEffect = effect(() => {
@@ -43,10 +47,12 @@ export class EditUserModalComponent {
     if (u && this.isOpen()) {
       // User fields
       this.username.set(u.username);
+      this.password.set(''); // Clear password field on open
       this.email.set(u.email);
       this.fullName.set(u.fullName);
       this.isActive.set(u.isActive);
       this.roleId.set(u.roleId);
+      this.errorMessage.set(null);
 
       // Member fields
       if (u.member) {
@@ -67,18 +73,27 @@ export class EditUserModalComponent {
 
   setUsername(value: string): void {
     this.username.set(value);
+    this.clearError();
+  }
+
+  setPassword(value: string): void {
+    this.password.set(value);
+    this.clearError();
   }
 
   setEmail(value: string): void {
     this.email.set(value);
+    this.clearError();
   }
 
   setFullName(value: string): void {
     this.fullName.set(value);
+    this.clearError();
   }
 
   setIdentityNumber(value: string): void {
     this.identityNumber.set(value);
+    this.clearError();
   }
 
   setPhone(value: string): void {
@@ -97,6 +112,10 @@ export class EditUserModalComponent {
     this.isActive.set(value);
   }
 
+  clearError(): void {
+    this.errorMessage.set(null);
+  }
+
   close(): void {
     if (this.isSubmitting()) return;
     this.closed.emit();
@@ -107,7 +126,26 @@ export class EditUserModalComponent {
     const u = this.user();
     if (!u || this.isSubmitting()) return;
 
+    // Validation
+    if (!this.username().trim()) {
+      this.errorMessage.set('Tên đăng nhập không được để trống');
+      return;
+    }
+    if (!this.fullName().trim()) {
+      this.errorMessage.set('Họ và tên không được để trống');
+      return;
+    }
+    if (!this.email().trim() || !this.email().includes('@')) {
+      this.errorMessage.set('Email không hợp lệ');
+      return;
+    }
+    if (this.password().length > 0 && this.password().length < 6) {
+      this.errorMessage.set('Mật khẩu phải có ít nhất 6 ký tự');
+      return;
+    }
+
     this.isSubmitting.set(true);
+    this.errorMessage.set(null);
 
     if (u.member) {
       // Update member with user info
@@ -122,7 +160,6 @@ export class EditUserModalComponent {
         roleId: this.roleId(),
         isActive: this.isActive(),
       };
-      console.log(u.member);
       this.memberService.updateMember(u.member.id, memberRequest).subscribe({
         next: (res) => {
           if (res.code === 200) {
@@ -146,15 +183,40 @@ export class EditUserModalComponent {
             this.isSubmitting.set(false);
           }
         },
-        error: () => {
+        error: (err) => {
           this.isSubmitting.set(false);
+          this.errorMessage.set(err.error?.message || 'Có lỗi xảy ra khi cập nhật');
         }
       });
     } else {
-      // User without member - just update user info via user service
-      // This would require a separate updateUser method
-      this.isSubmitting.set(false);
-      this.closed.emit();
+      // User without member - update user info via user service
+      const userRequest: UserRequest = {
+        username: this.username().trim(),
+        fullName: this.fullName().trim(),
+        email: this.email().trim(),
+        roleId: this.roleId(),
+        isActive: this.isActive(),
+      };
+
+      // Only include password if provided
+      if (this.password().length > 0) {
+        userRequest.password = this.password();
+      }
+
+      this.userService.updateUser(u.id, userRequest).subscribe({
+        next: (res) => {
+          if (res.code === 200) {
+            this.updated.emit(res.data);
+            this.isSubmitting.set(false);
+          } else {
+            this.isSubmitting.set(false);
+          }
+        },
+        error: (err) => {
+          this.isSubmitting.set(false);
+          this.errorMessage.set(err.error?.message || 'Có lỗi xảy ra khi cập nhật');
+        }
+      });
     }
   }
 }

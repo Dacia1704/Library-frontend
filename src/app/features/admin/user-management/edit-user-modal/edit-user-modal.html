@@ -20,6 +20,13 @@
       <!-- Body -->
       <form class="edit-modal__form" (submit)="submit($event)">
         <div class="edit-modal__body">
+          @if (errorMessage()) {
+            <div class="edit-modal__error">
+              <span class="material-symbols-outlined">error</span>
+              <span>{{ errorMessage() }}</span>
+            </div>
+          }
+
           <!-- User Info Section -->
           <div class="edit-modal__section">
             <h5 class="edit-modal__section-title">
@@ -38,6 +45,19 @@
                   maxlength="50"
                   [value]="username()"
                   (input)="setUsername($any($event.target).value)"
+                />
+              </div>
+              <div class="edit-modal__field">
+                <label class="edit-modal__label">
+                  <span>Mật khẩu mới</span>
+                </label>
+                <input
+                  type="password"
+                  minlength="6"
+                  maxlength="100"
+                  placeholder="Để trống nếu không đổi"
+                  [value]="password()"
+                  (input)="setPassword($any($event.target).value)"
                 />
               </div>
               <div class="edit-modal__field">

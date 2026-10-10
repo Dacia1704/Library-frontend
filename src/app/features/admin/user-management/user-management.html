@@ -1,7 +1,7 @@
 <div class="user-management">
   
   <!-- Header -->
-  <app-user-management-header />
+  <app-user-management-header (createUserClicked)="openCreateModal()" />
 
   <!-- Toolbar with Filters -->
   <app-user-management-toolbar 
@@ -46,6 +46,13 @@
     [user]="deleteModalUser()"
     (closed)="closeDeleteModal()"
     (confirmed)="onDeleteUser($event)"
+  />
+
+  <!-- Create User Modal -->
+  <app-create-user-modal
+    [isOpen]="createModalOpen()"
+    (closed)="closeCreateModal()"
+    (created)="onUserCreated($event)"
   />
 
 </div>

@@ -1,9 +1,54 @@
 <div class="fine-management">
   
   <!-- Header -->
-  <app-fine-management-header />
+  <app-fine-management-header 
+    [pendingAmount]="totalPendingAmount()"
+    [pendingCount]="totalPendingCount()"
+    [paidAmount]="totalPaidAmount()"
+  />
 
-  <!-- Fine Table -->
-  <app-fine-table />
+  <!-- Tab Buttons -->
+  <div class="tabs">
+    <button 
+      class="tab-btn"
+      [class.active]="activeTab() === 'FINES'"
+      (click)="setActiveTab('FINES')">
+      <span class="material-symbols-outlined">assignment_late</span>
+      Các khoản phạt
+      <span class="tab-count" [class.tab-count-inactive]="activeTab() === 'PAYMENTS'">{{ fineTotalElements() }}</span>
+    </button>
+    <button 
+      class="tab-btn"
+      [class.active]="activeTab() === 'PAYMENTS'"
+      (click)="setActiveTab('PAYMENTS')">
+      <span class="material-symbols-outlined">receipt_long</span>
+      Thanh toán phạt
+      <span class="tab-count tab-count-secondary">{{ paymentTotalElements() }}</span>
+    </button>
+  </div>
+
+  <!-- Tab Content -->
+  @if (activeTab() === 'FINES') {
+    <!-- Fine Table -->
+    <app-fine-table 
+      [fines]="fines()"
+      [currentPage]="finePage()"
+      [totalPages]="fineTotalPages()"
+      [totalElements]="fineTotalElements()"
+      [isLoading]="fineLoading()"
+      (pageChange)="onFinePageChange($event)"
+      (filterChange)="onFilterChange($event)"
+    />
+  } @else {
+    <!-- Payment Table -->
+    <app-fine-payment-table 
+      [payments]="payments()"
+      [currentPage]="paymentPage()"
+      [totalPages]="paymentTotalPages()"
+      [totalElements]="paymentTotalElements()"
+      [isLoading]="paymentLoading()"
+      (pageChange)="onPaymentPageChange($event)"
+    />
+  }
 
 </div>

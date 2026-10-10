@@ -24,31 +24,23 @@
       </p>
     </div>
 
-    <div class="header-stats">
+    <!-- <div class="header-stats">
       <div class="stat-card">
         <span class="stat-label">
           <span class="material-symbols-outlined">pending_actions</span>
           Đang chờ thu
         </span>
-        <span class="stat-value">1.850.000 <span class="stat-unit">đ</span></span>
-        <span class="stat-sub">42 khoản chưa xử lý</span>
+        <span class="stat-value">{{ formatCurrency(pendingAmount) }} <span class="stat-unit">đ</span></span>
+        <span class="stat-sub">{{ pendingCount }} khoản chưa xử lý</span>
       </div>
       <div class="stat-card">
         <span class="stat-label">
           <span class="material-symbols-outlined">payments</span>
-          Đã thu tháng này
+          Đã thu
         </span>
-        <span class="stat-value">6.420.000 <span class="stat-unit">đ</span></span>
-        <span class="stat-sub stat-sub-success">+14.8% so tháng trước</span>
+        <span class="stat-value">{{ formatCurrency(paidAmount) }} <span class="stat-unit">đ</span></span>
+        <span class="stat-sub stat-sub-success">Tổng thu</span>
       </div>
-      <div class="stat-card">
-        <span class="stat-label">
-          <span class="material-symbols-outlined">high_res</span>
-          Admin miễn giảm
-        </span>
-        <span class="stat-value">350.000 <span class="stat-unit">đ</span></span>
-        <span class="stat-sub">6 quyết định duyệt</span>
-      </div>
-    </div>
+    </div> -->
   </div>
 </div>

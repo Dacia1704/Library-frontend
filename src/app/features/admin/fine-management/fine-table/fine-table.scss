@@ -247,11 +247,6 @@
   }
 }
 
-.col-checkbox {
-  width: 48px;
-  text-align: center;
-}
-
 .col-code {
   min-width: 160px;
 }
@@ -544,4 +539,50 @@
 
 .text-center {
   text-align: center;
+}
+
+.loading-cell,
+.empty-cell {
+  text-align: center;
+  padding: 48px 16px;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--on-surface-variant);
+
+  .spinning {
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.empty-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--on-surface-variant);
+}
+
+.empty-icon {
+  font-size: 48px;
+  opacity: 0.5;
+}
+
+.overdue-days {
+  font-size: 11px;
+  opacity: 0.8;
+  margin-left: 4px;
 }

@@ -1,0 +1,149 @@
+@if (isOpen()) {
+  <div class="create-modal__backdrop" (click)="close()">
+    <div class="create-modal" (click)="$event.stopPropagation()">
+      <!-- Header -->
+      <div class="create-modal__header">
+        <div class="create-modal__title-group">
+          <div class="create-modal__icon-wrap">
+            <span class="material-symbols-outlined">person_add</span>
+          </div>
+          <div class="create-modal__title-block">
+            <h3 class="create-modal__title">Tạo người dùng mới</h3>
+            <span class="create-modal__sub">Điền thông tin để tạo tài khoản mới</span>
+          </div>
+        </div>
+        <button class="create-modal__close" type="button" (click)="close()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <form class="create-modal__form" (submit)="submit($event)">
+        <div class="create-modal__body">
+          @if (errorMessage()) {
+            <div class="create-modal__error">
+              <span class="material-symbols-outlined">error</span>
+              <span>{{ errorMessage() }}</span>
+            </div>
+          }
+
+          <!-- Account Info Section -->
+          <div class="create-modal__section">
+            <h5 class="create-modal__section-title">
+              <span class="material-symbols-outlined">account_circle</span>
+              Thông tin tài khoản
+            </h5>
+            <div class="create-modal__grid">
+              <div class="create-modal__field">
+                <label class="create-modal__label">
+                  <span>Tên đăng nhập</span>
+                  <span class="create-modal__required">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  maxlength="50"
+                  placeholder="Nhập tên đăng nhập"
+                  [value]="username()"
+                  (input)="setUsername($any($event.target).value)"
+                />
+              </div>
+              <div class="create-modal__field">
+                <label class="create-modal__label">
+                  <span>Mật khẩu</span>
+                  <span class="create-modal__required">*</span>
+                </label>
+                <input
+                  type="password"
+                  required
+                  minlength="6"
+                  maxlength="100"
+                  placeholder="Ít nhất 6 ký tự"
+                  [value]="password()"
+                  (input)="setPassword($any($event.target).value)"
+                />
+              </div>
+              <div class="create-modal__field">
+                <label class="create-modal__label">
+                  <span>Email</span>
+                  <span class="create-modal__required">*</span>
+                </label>
+                <input
+                  type="email"
+                  required
+                  maxlength="100"
+                  placeholder="email@example.com"
+                  [value]="email()"
+                  (input)="setEmail($any($event.target).value)"
+                />
+              </div>
+              <div class="create-modal__field">
+                <label class="create-modal__label">
+                  <span>Họ và tên</span>
+                  <span class="create-modal__required">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  maxlength="100"
+                  placeholder="Nhập họ và tên đầy đủ"
+                  [value]="fullName()"
+                  (input)="setFullName($any($event.target).value)"
+                />
+              </div>
+              <div class="create-modal__field">
+                <label class="create-modal__label">
+                  <span>Vai trò</span>
+                  <span class="create-modal__required">*</span>
+                </label>
+                @if (isLoadingRoles()) {
+                  <select disabled>
+                    <option value="">Đang tải...</option>
+                  </select>
+                } @else {
+                  <select
+                    required
+                    [value]="roleId() ?? ''"
+                    (change)="setRoleId($any($event.target).value)"
+                  >
+                    <option value="" disabled>Chọn vai trò</option>
+                    @for (role of roles(); track role.id) {
+                      <option [value]="role.id">{{ role.name }}</option>
+                    }
+                  </select>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Role Description -->
+          @if (roleId() !== null) {
+            @for (role of roles(); track role.id) {
+              @if (role.id === roleId()) {
+                <div class="create-modal__role-info">
+                  <span class="material-symbols-outlined">info</span>
+                  <p>{{ role.description || 'Vai trò: ' + role.name }}</p>
+                </div>
+              }
+            }
+          }
+        </div>
+
+        <!-- Footer -->
+        <div class="create-modal__footer">
+          <button class="create-modal__btn create-modal__btn--ghost" type="button" (click)="close()" [disabled]="isSubmitting()">
+            Hủy bỏ
+          </button>
+          <button class="create-modal__btn create-modal__btn--primary" type="submit" [disabled]="isSubmitting()">
+            @if (isSubmitting()) {
+              <span class="material-symbols-outlined">hourglass_empty</span>
+            } @else {
+              <span class="material-symbols-outlined">check</span>
+            }
+            <span>{{ isSubmitting() ? 'Đang tạo...' : 'Tạo người dùng' }}</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

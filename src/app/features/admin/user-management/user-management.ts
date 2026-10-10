@@ -9,6 +9,7 @@ import { UserTableComponent } from './user-table/user-table';
 import { ViewUserModalComponent } from './view-user-modal/view-user-modal';
 import { EditUserModalComponent } from './edit-user-modal/edit-user-modal';
 import { DeleteUserModalComponent } from './delete-user-modal/delete-user-modal';
+import { CreateUserModalComponent } from './create-user-modal/create-user-modal';
 
 @Component({
   selector: 'app-user-management',
@@ -20,6 +21,7 @@ import { DeleteUserModalComponent } from './delete-user-modal/delete-user-modal'
     ViewUserModalComponent,
     EditUserModalComponent,
     DeleteUserModalComponent,
+    CreateUserModalComponent,
   ],
   templateUrl: './user-management.html',
   styleUrls: ['./user-management.scss'],
@@ -39,6 +41,7 @@ export class UserManagement implements OnInit {
   viewModalUser = signal<User | null>(null);
   editModalUser = signal<User | null>(null);
   deleteModalUser = signal<User | null>(null);
+  createModalOpen = signal(false);
 
   constructor(private userService: UserService) {}
 
@@ -160,5 +163,20 @@ export class UserManagement implements OnInit {
     if (user) {
       this.onDeleteUser(user.id);
     }
+  }
+
+  // Create Modal handlers
+  openCreateModal(): void {
+    this.createModalOpen.set(true);
+  }
+
+  closeCreateModal(): void {
+    this.createModalOpen.set(false);
+  }
+
+  onUserCreated(newUser: User): void {
+    this.users.update(users => [newUser, ...users]);
+    this.totalElements.update(count => count + 1);
+    this.closeCreateModal();
   }
 }
