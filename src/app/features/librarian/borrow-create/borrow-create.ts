@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 import { BorrowCreateViolationAlertComponent } from './borrow-create-violation-alert/borrow-create-violation-alert';
 
@@ -32,6 +33,7 @@ export class BorrowCreatePage {
   private readonly authService = inject(AuthService);
   private readonly borrowRecordService = inject(BorrowRecordService);
   private readonly toast = inject(ToastService);
+  private readonly router = inject(Router);
 
   /** Current librarian info (from localStorage session). */
   get currentLibrarian(): { name: string; id: string } {
@@ -189,7 +191,7 @@ export class BorrowCreatePage {
       next: (response) => {
         console.log('Created borrow ticket:', response.data);
         this.toast.success('Tạo phiếu mượn thành công!');
-        this.refreshForm();
+        this.router.navigate(['/librarian/borrow-records']);
       },
       error: (err) => {
         console.error('Lỗi khi tạo phiếu mượn:', err);
@@ -212,7 +214,7 @@ export class BorrowCreatePage {
   }
 
   cancelTransaction(): void {
-    console.log('Cancel transaction');
+    this.router.navigate(['/librarian/borrow-records']);
   }
 
   // ===== Helpers =====
