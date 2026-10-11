@@ -12,10 +12,58 @@
   <div class="topbar-right">
 
     <!-- Notifications -->
-    <button class="icon-btn notif-btn" title="Thông báo" type="button">
+    <button class="icon-btn notif-btn" 
+            title="Thông báo" 
+            type="button"
+            (click)="toggleNotifications()"
+            [matBadge]="unreadCount()"
+            [matBadgeHidden]="unreadCount() === 0"
+            matBadgeColor="warn"
+            matBadgeSize="small">
       <span class="material-symbols-outlined">notifications</span>
-      <span class="notif-dot"></span>
     </button>
+
+    <!-- Notification dropdown panel -->
+    @if (showNotifications()) {
+      <div class="notification-panel">
+        <div class="notif-header">
+          <h4>Thông báo</h4>
+          @if (unreadCount() > 0) {
+            <button mat-button color="primary" (click)="markAllAsRead()">Đánh dấu tất cả đã đọc</button>
+          }
+        </div>
+        
+        <mat-divider></mat-divider>
+        
+        @if (notifications.length === 0) {
+          <div class="notif-empty">
+            <span class="material-symbols-outlined">notifications_none</span>
+            <p>Không có thông báo nào</p>
+          </div>
+        } @else {
+          <div class="notif-list">
+            @for (notif of notifications; track notif.id) {
+              <div class="notif-item" [class.unread]="!notif.read">
+                <div class="notif-content">
+                  <p>{{ notif.content }}</p>
+                  <span class="notif-time">{{ notif.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+                </div>
+                <div class="notif-actions">
+                  @if (!notif.read) {
+                    <button class="notif-action-btn" (click)="markAsRead(notif.id); $event.stopPropagation()" title="Đánh dấu đã đọc">
+                      <span class="material-symbols-outlined">check</span>
+                    </button>
+                  }
+                  <button class="notif-action-btn" (click)="deleteNotification(notif.id); $event.stopPropagation()" title="Xóa">
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
 
     <!-- Help -->
     <button class="icon-btn" title="Trợ giúp" type="button">
