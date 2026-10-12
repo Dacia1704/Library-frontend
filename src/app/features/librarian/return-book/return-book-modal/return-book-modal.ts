@@ -106,10 +106,10 @@ export class ReturnBookModalComponent {
   get conditionOptions(): { value: BookCondition; label: string; description: string }[] {
     return [
       { value: 'good', label: 'Bình thường (không phạt)', description: '' },
-      { value: 'damaged-light', label: 'Hư hỏng nhẹ (20%)', description: 'Rách góc, gập nếp nhẹ' },
-      { value: 'damaged-heavy', label: 'Hư hỏng nặng - còn sửa (50%)', description: 'Bung gáy, rách nhiều' },
-      { value: 'damaged-unusable', label: 'Hư hỏng nặng - không dùng được (100%)', description: 'Mất trang nội dung, ướt sũng hoặc biến dạng' },
-      { value: 'lost', label: 'Làm mất sách (100%)', description: 'Không thể hoàn trả bản gốc' },
+      { value: 'damaged-light', label: 'Hư hỏng nhẹ', description: 'Rách góc, gập nếp nhẹ' },
+      { value: 'damaged-heavy', label: 'Hư hỏng nặng - còn sửa', description: 'Bung gáy, rách nhiều' },
+      { value: 'damaged-unusable', label: 'Hư hỏng nặng - không dùng được', description: 'Mất trang nội dung, ướt sũng hoặc biến dạng' },
+      { value: 'lost', label: 'Làm mất sách', description: 'Không thể hoàn trả bản gốc' },
     ];
   }
 
