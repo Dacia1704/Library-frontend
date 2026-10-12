@@ -109,13 +109,15 @@ export class BookService {
   }
 
   /**
-   * Get a soft-deleted book by id
-   * Backend: GET /books/deleted/{id}
-   * Requires: BOOK_WRITE authority
+   * Get a soft-deleted book by ISBN
+   * Backend: POST /books/deleted (body: ISBN)
+   * Requires: BOOK_READ authority
    */
-  getBookDeleted(id: string): Observable<ApiResponse<Book>> {
+  getBookDeletedByIsbn(isbn: string): Observable<ApiResponse<Book>> {
     return this.http
-      .get<ApiResponse<BookResponse>>(`${this.api}/deleted/${id}`)
+      .post<ApiResponse<BookResponse>>(`${this.api}/deleted`, isbn, {
+        headers: { 'Content-Type': 'application/json' }
+      })
       .pipe(
         map(response => ({
           ...response,

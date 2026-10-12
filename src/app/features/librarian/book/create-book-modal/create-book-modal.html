@@ -314,3 +314,16 @@
     </div>
   </div>
 }
+
+<!-- Book Existed Modal -->
+<app-book-existed-modal
+  [isOpen]="showBookExistedModal()"
+  [isbn]="existedIsbn()"
+  [deletedBook]="deletedBook()"
+  [isLoading]="isLoadingDeletedBook()"
+  [newFormData]="getCurrentFormData()"
+  (cancel)="onCancelBookExisted()"
+  (viewOldRecord)="onViewDeletedBook($event)"
+  (restored)="onBookRestored($event)"
+  (restoreError)="onRestoreError($event)"
+></app-book-existed-modal>

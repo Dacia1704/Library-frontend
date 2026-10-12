@@ -36,7 +36,8 @@ export class DeleteBookModalComponent {
       next: (res) => {
         if (res.code === 200 || res.code === 204) {
           this.deleted.emit(b.id);
-          this.close();
+          // Close modal immediately after successful delete
+          setTimeout(() => this.close(), 0);
         } else {
           this.errorMessage.set(res.message || 'Có lỗi xảy ra');
         }

@@ -2,16 +2,18 @@ import { Component, inject, input, output, signal, effect } from '@angular/core'
 import { FormsModule } from '@angular/forms';
 import { BookService } from '@services/book.service';
 import { BookRequest } from '@model/book/request/book-request';
+import { Book } from '@model/book/book.model';
 import { Category } from '@model/category/category.model';
 import { Author } from '@model/author/author.model';
 import { Publisher } from '@model/publisher/publisher.model';
 import { Shelf } from '@model/shelf/shelf.model';
 import { Language } from '@model/enum/language.enum';
+import { BookExistedModalComponent } from '../book-existed-modal/book-existed-modal';
 
 @Component({
   selector: 'app-create-book-modal',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, BookExistedModalComponent],
   templateUrl: './create-book-modal.html',
   styleUrls: ['./create-book-modal.scss'],
 })
@@ -46,6 +48,15 @@ export class CreateBookModalComponent {
   readonly shelfId = signal<number | undefined>(undefined);
   readonly isSubmitting = signal(false);
   readonly errorMessage = signal('');
+
+  // Signals for handling BOOK_EXISTED conflict
+  readonly showBookExistedModal = signal(false);
+  readonly existedIsbn = signal('');
+  readonly deletedBook = signal<Book | null>(null);
+  readonly isLoadingDeletedBook = signal(false);
+
+  // Store current form data when showing existed modal
+  private pendingFormData: BookRequest | null = null;
 
   readonly languageOptions = Object.values(Language);
 
@@ -145,6 +156,69 @@ export class CreateBookModalComponent {
     this.closed.emit();
   }
 
+  // ===== Book Existed Modal Handlers =====
+  getCurrentFormData(): BookRequest {
+    return {
+      title: this.title(),
+      isbn: this.isbn(),
+      quantity: this.quantity(),
+      available: this.available(),
+      publishYear: this.publishYear() || undefined,
+      price: this.price() || undefined,
+      cover: this.coverFile() || undefined,
+      categoryIds: this.selectedCategoryIds().length > 0 ? this.selectedCategoryIds() : undefined,
+      authorIds: this.selectedAuthorIds().length > 0 ? this.selectedAuthorIds() : undefined,
+      publisherIds: this.selectedPublisherIds().length > 0 ? this.selectedPublisherIds() : undefined,
+      pages: this.pages() || undefined,
+      synopsis: this.synopsis() || undefined,
+      language: this.language(),
+      shelfId: this.shelfId(),
+      width: this.width() || undefined,
+      height: this.height() || undefined,
+    };
+  }
+
+  onBookRestored(result: { book: Book; isRestored: boolean }): void {
+    // Close existed modal
+    this.deletedBook.set(null);
+    this.showBookExistedModal.set(false);
+    
+    // Emit created event to refresh the list
+    this.created.emit();
+    
+    // Close create modal
+    this.resetForm();
+    this.closed.emit();
+  }
+
+  onRestoreError(error: string): void {
+    this.errorMessage.set(error);
+  }
+
+  onViewDeletedBook(isbn: string): void {
+    this.isLoadingDeletedBook.set(true);
+    this.bookService.getBookDeletedByIsbn(isbn).subscribe({
+      next: (res) => {
+        if (res.code === 200) {
+          this.deletedBook.set(res.data);
+        } else {
+          this.errorMessage.set(res.message || 'Không thể tải thông tin sách');
+        }
+        this.isLoadingDeletedBook.set(false);
+      },
+      error: (err) => {
+        this.errorMessage.set(err.error?.message || 'Có lỗi xảy ra khi tải thông tin sách');
+        this.isLoadingDeletedBook.set(false);
+      }
+    });
+  }
+
+  onCancelBookExisted(): void {
+    this.deletedBook.set(null);
+    this.showBookExistedModal.set(false);
+    this.existedIsbn.set('');
+  }
+
   private resetForm(): void {
     this.title.set('');
     this.isbn.set('');
@@ -206,14 +280,21 @@ export class CreateBookModalComponent {
         if (res.code === 200) {
           this.resetForm();
           this.created.emit();
+          this.isSubmitting.set(false);
           this.close();
         } else {
           this.errorMessage.set(res.message || 'Có lỗi xảy ra');
+          this.isSubmitting.set(false);
         }
-        this.isSubmitting.set(false);
       },
       error: (err) => {
-        this.errorMessage.set(err.error?.message || 'Có lỗi xảy ra khi tạo sách');
+        if (err.status === 409) {
+          // BOOK_EXISTED - show book-existed modal
+          this.existedIsbn.set(this.isbn());
+          this.showBookExistedModal.set(true);
+        } else {
+          this.errorMessage.set(err.error?.message || 'Có lỗi xảy ra khi tạo sách');
+        }
         this.isSubmitting.set(false);
       }
     });

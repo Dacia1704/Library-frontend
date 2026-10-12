@@ -234,12 +234,12 @@
                     <span>Kệ sách</span>
                   </label>
                   <select
-                    [value]="shelfId()"
+                    [value]="shelfId() || 0"
                     (change)="onShelfIdChange($event)"
                   >
                     <option [value]="0">-- Chọn kệ sách --</option>
                     @for (shelf of shelves(); track shelf.id) {
-                      <option [value]="shelf.id">{{ shelf.code }} - {{ shelf.name }}</option>
+                      <option [value]="shelf.id" [selected]="shelf.id === shelfId()">{{ shelf.code }} - {{ shelf.name }}</option>
                     }
                   </select>
                 </div>

@@ -99,7 +99,6 @@ export class BookPage implements OnInit {
     this.bookService.getStatistics().subscribe({
       next: (response) => {
         if (response.code === 200) {
-          console.log(response.data);
           this.stats.set(response.data);
         }
       }

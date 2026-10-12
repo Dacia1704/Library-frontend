@@ -32,14 +32,14 @@
           </th>
           <th class="book-table__th">Bìa</th>
           <th class="book-table__th book-table__th--name">Tên sách & Vị trí kệ</th>
-          <th class="book-table__th">Mã ISBN</th>
+          <th class="book-table__th book-table__th--isbn">Mã ISBN</th>
           <th class="book-table__th">Tác giả</th>
           <th class="book-table__th">Danh mục</th>
           <th class="book-table__th">Nhà xuất bản</th>
           <th class="book-table__th book-table__th--center">Năm</th>
           <th class="book-table__th book-table__th--right">Giá bìa</th>
           <th class="book-table__th book-table__th--center">Tổng SL</th>
-          <th class="book-table__th book-table__th--center">Còn lại</th>
+          <th class="book-table__th book-table__th--center book-table__th--available">Còn lại</th>
           <th class="book-table__th book-table__th--actions">Thao tác</th>
         </tr>
       </thead>
@@ -94,12 +94,12 @@
               @if (isBookOutOfStock(book)) {
                 <span class="book-table__badge book-table__badge--out">
                   <span class="material-symbols-outlined book-table__badge-icon">block</span>
-                  Hết sách (0)
+                  Hết sách
                 </span>
               } @else {
                 <span class="book-table__badge book-table__badge--available">
                   <span class="book-table__badge-dot"></span>
-                  Còn {{ book.available }} cuốn
+                  {{ book.available }} cuốn
                 </span>
               }
             </td>

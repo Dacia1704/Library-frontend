@@ -118,6 +118,14 @@
       width: 112px;
       text-align: center;
     }
+
+    &--isbn {
+      min-width: 160px;
+    }
+
+    &--available {
+      min-width: 120px;
+    }
   }
 
   &__checkbox {

@@ -1,0 +1,107 @@
+@if (isOpen()) {
+  <div class="existed-modal__backdrop" (click)="onCancel()">
+    <div class="existed-modal" (click)="$event.stopPropagation()">
+      @if (deletedBook()) {
+        <!-- View deleted book info mode -->
+        <div class="existed-modal__header">
+          <div class="existed-modal__title-group">
+            <div class="existed-modal__icon-wrap existed-modal__icon-wrap--warning">
+              <span class="material-symbols-outlined">info</span>
+            </div>
+            <div class="existed-modal__title-block">
+              <h3 class="existed-modal__title">Bản ghi đã bị xóa</h3>
+              <span class="existed-modal__sub">ISBN: {{ isbn() }}</span>
+            </div>
+          </div>
+          <button class="existed-modal__close" type="button" (click)="onCancel()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div class="existed-modal__body">
+          <p class="existed-modal__message">
+            Đây là thông tin sách đã bị xóa trước đó. Bạn có muốn sử dụng thông tin cũ hay ghi đè?
+          </p>
+
+          <div class="existed-modal__book-preview">
+            <div class="existed-modal__book-cover">
+              <img [src]="ImageUtils.toImageSrc(deletedBook()!.cover, 'assets/images/book-placeholder.png')" 
+                   [alt]="deletedBook()!.title" />
+            </div>
+            <div class="existed-modal__book-info">
+              <h4 class="existed-modal__book-title">{{ deletedBook()!.title }}</h4>
+              <div class="existed-modal__detail-row">
+                <span class="existed-modal__detail-label">ISBN:</span>
+                <span class="existed-modal__detail-value">{{ deletedBook()!.isbn }}</span>
+              </div>
+              <div class="existed-modal__detail-row">
+                <span class="existed-modal__detail-label">The loai:</span>
+                <span class="existed-modal__detail-value">
+                  {{ deletedBook()!.categories?.map(c => c.name).join(', ') || 'Khong co' }}
+                </span>
+              </div>
+              <div class="existed-modal__detail-row">
+                <span class="existed-modal__detail-label">Tac gia:</span>
+                <span class="existed-modal__detail-value">
+                  {{ deletedBook()!.authors?.map(a => a.name).join(', ') || 'Khong co' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="existed-modal__footer">
+          <button class="existed-modal__btn existed-modal__btn--ghost" type="button" (click)="onCancel()" [disabled]="isRestoring()">
+            <span class="material-symbols-outlined">close</span>
+            <span>Huy bo</span>
+          </button>
+          <button class="existed-modal__btn existed-modal__btn--secondary" type="button" (click)="onRestore()" [disabled]="isRestoring()">
+            <span class="material-symbols-outlined">restore</span>
+            <span>Khoi phuc</span>
+          </button>
+          <button class="existed-modal__btn existed-modal__btn--primary" type="button" (click)="onOverwrite()" [disabled]="isRestoring()">
+            <span class="material-symbols-outlined">edit</span>
+            <span>Cap nhat</span>
+          </button>
+        </div>
+      } @else {
+        <!-- Loading mode -->
+        <div class="existed-modal__header">
+          <div class="existed-modal__title-group">
+            <div class="existed-modal__icon-wrap existed-modal__icon-wrap--warning">
+              <span class="material-symbols-outlined">warning</span>
+            </div>
+            <div class="existed-modal__title-block">
+              <h3 class="existed-modal__title">Sách đã tồn tại</h3>
+              <span class="existed-modal__sub">ISBN: {{ isbn() }}</span>
+            </div>
+          </div>
+          <button class="existed-modal__close" type="button" (click)="onCancel()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div class="existed-modal__body">
+          <div class="existed-modal__warning">
+            <span class="material-symbols-outlined existed-modal__warning-icon">error</span>
+            <p class="existed-modal__message">
+              Đã tồn tại một bản ghi sách với ISBN này trong hệ thống (đã bị xóa trước đó).
+              Bạn có muốn xem thông tin bản ghi cũ?
+            </p>
+          </div>
+        </div>
+
+        <div class="existed-modal__footer">
+          <button class="existed-modal__btn existed-modal__btn--ghost" type="button" (click)="onCancel()">
+            <span class="material-symbols-outlined">close</span>
+            <span>Hủy bỏ</span>
+          </button>
+          <button class="existed-modal__btn existed-modal__btn--primary" type="button" (click)="onViewOldRecord()">
+            <span class="material-symbols-outlined">visibility</span> 
+            <span>Xem bản ghi cũ</span>
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+}

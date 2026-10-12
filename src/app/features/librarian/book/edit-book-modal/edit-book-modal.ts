@@ -207,11 +207,12 @@ export class EditBookModalComponent {
         if (res.code === 200) {
           const book = BookMapper.toModel(res.data);
           this.updated.emit(book);
+          this.isSubmitting.set(false);
           this.close();
         } else {
           this.errorMessage.set(res.message || 'Có lỗi xảy ra');
+          this.isSubmitting.set(false);
         }
-        this.isSubmitting.set(false);
       },
       error: (err) => {
         this.errorMessage.set(err.error?.message || 'Có lỗi xảy ra khi cập nhật sách');

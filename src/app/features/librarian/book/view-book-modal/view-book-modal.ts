@@ -1,4 +1,4 @@
-import { Component, inject, input, output, signal, computed } from '@angular/core';
+import { Component, inject, input, output, signal, computed, effect } from '@angular/core';
 import { BookService } from '@services/book.service';
 import { Book } from '@model/book/book.model';
 import { ImageUtils } from '@shared/utils/image-utils';
@@ -76,6 +76,13 @@ export class ViewBookModalComponent {
   readonly isOutOfStock = computed(() => {
     const b = this.book();
     return b ? b.available === 0 : false;
+  });
+
+  // Load book data when modal opens
+  private loadEffect = effect(() => {
+    if (this.isOpen() && this.bookId()) {
+      this.loadBook();
+    }
   });
 
   loadBook(): void {
