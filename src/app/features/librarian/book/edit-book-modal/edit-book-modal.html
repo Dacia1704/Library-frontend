@@ -1,0 +1,325 @@
+@if (isOpen()) {
+  <div class="edit-modal__backdrop" (click)="close()">
+    <div class="edit-modal" (click)="$event.stopPropagation()">
+      <!-- Header -->
+      <div class="edit-modal__header">
+        <div class="edit-modal__title-group">
+          <div class="edit-modal__icon-wrap">
+            <span class="material-symbols-outlined">edit_square</span>
+          </div>
+          <div class="edit-modal__title-block">
+            <h3 class="edit-modal__title">Chỉnh sửa ấn phẩm</h3>
+            @if (bookId()) {
+              <span class="edit-modal__sub">ID: {{ bookId() }}</span>
+            }
+          </div>
+        </div>
+        <button class="edit-modal__close" type="button" (click)="close()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <form class="edit-modal__form" (submit)="submit($event)">
+        <div class="edit-modal__body">
+          @if (isLoading()) {
+            <div class="edit-modal__loading">
+              <span class="material-symbols-outlined">hourglass_empty</span>
+              <span>Đang tải thông tin...</span>
+            </div>
+          } @else {
+            <!-- Cover & Basic Info Section -->
+            <div class="edit-modal__section edit-modal__section--row">
+              <!-- Cover Upload -->
+              <div class="edit-modal__cover-section">
+                <label class="edit-modal__label">
+                  <span>Ảnh bìa</span>
+                </label>
+                <div class="edit-modal__cover-upload">
+                  @if (coverPreview() || coverUrl()) {
+                    <div class="edit-modal__cover-preview">
+                      <img [src]="ImageUtils.toImageSrc(coverUrl(), 'book-default.jpg') || ''" alt="Cover preview" />
+                      <button class="edit-modal__cover-remove" type="button" (click)="removeCover()">
+                        <span class="material-symbols-outlined">close</span>
+                      </button>
+                    </div>
+                  } @else {
+                    <label class="edit-modal__cover-placeholder">
+                      <input type="file" accept="image/*" (change)="onCoverChange($event)" />
+                      <span class="material-symbols-outlined">add_photo_alternate</span>
+                      <span>Chọn ảnh bìa</span>
+                    </label>
+                  }
+                </div>
+              </div>
+
+              <!-- Basic Info -->
+              <div class="edit-modal__basic-info">
+                <div class="edit-modal__field">
+                  <label class="edit-modal__label">
+                    <span>Tên ấn phẩm</span>
+                    <span class="edit-modal__required">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    [value]="title()"
+                    (input)="title.set($any($event.target).value)"
+                    placeholder="Nhập tên ấn phẩm"
+                  />
+                </div>
+                <div class="edit-modal__field">
+                  <label class="edit-modal__label">
+                    <span>ISBN</span>
+                    <span class="edit-modal__required">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    [value]="isbn()"
+                    (input)="isbn.set($any($event.target).value)"
+                    placeholder="978-0-123456-78-9"
+                    class="edit-modal__input-mono"
+                  />
+                </div>
+                <div class="edit-modal__field-row">
+                  <div class="edit-modal__field">
+                    <label class="edit-modal__label">
+                      <span>Tổng số lượng</span>
+                      <span class="edit-modal__required">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      required
+                      min="1"
+                      [value]="quantity()"
+                      (input)="quantity.set(+$any($event.target).value)"
+                    />
+                  </div>
+                  <div class="edit-modal__field">
+                    <label class="edit-modal__label">
+                      <span>Khả dụng</span>
+                      <span class="edit-modal__required">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      required
+                      min="0"
+                      [value]="available()"
+                      (input)="available.set(+$any($event.target).value)"
+                    />
+                  </div>
+                </div>
+                <div class="edit-modal__field-row">
+                  <div class="edit-modal__field">
+                    <label class="edit-modal__label">
+                      <span>Năm xuất bản</span>
+                    </label>
+                    <input
+                      type="number"
+                      min="1800"
+                      max="2030"
+                      [value]="publishYear()"
+                      (input)="onPublishYearInput($event)"
+                      placeholder="2024"
+                    />
+                  </div>
+                  <div class="edit-modal__field">
+                    <label class="edit-modal__label">
+                      <span>Giá bìa</span>
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      step="1000"
+                      [value]="price()"
+                      (input)="onPriceInput($event)"
+                      placeholder="75000"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category, Author, Publisher Selection -->
+            <div class="edit-modal__section">
+              <h5 class="edit-modal__section-title">
+                <span class="material-symbols-outlined">category</span>
+                Thể loại, Tác giả, Nhà xuất bản
+              </h5>
+
+              <!-- Categories -->
+              <div class="edit-modal__multi-select">
+                <label class="edit-modal__label">
+                  <span>Thể loại</span>
+                </label>
+                <div class="edit-modal__chips">
+                  @for (category of categories(); track category.id) {
+                    <button
+                      type="button"
+                      class="edit-modal__chip"
+                      [class.edit-modal__chip--selected]="isCategorySelected(category.id)"
+                      (click)="toggleCategory(category.id)"
+                    >
+                      {{ category.name }}
+                    </button>
+                  }
+                </div>
+              </div>
+
+              <!-- Authors -->
+              <div class="edit-modal__multi-select">
+                <label class="edit-modal__label">
+                  <span>Tác giả</span>
+                </label>
+                <div class="edit-modal__chips">
+                  @for (author of authors(); track author.id) {
+                    <button
+                      type="button"
+                      class="edit-modal__chip"
+                      [class.edit-modal__chip--selected]="isAuthorSelected(author.id)"
+                      (click)="toggleAuthor(author.id)"
+                    >
+                      {{ author.name }}
+                    </button>
+                  }
+                </div>
+              </div>
+
+              <!-- Publishers -->
+              <div class="edit-modal__multi-select">
+                <label class="edit-modal__label">
+                  <span>Nhà xuất bản</span>
+                </label>
+                <div class="edit-modal__chips">
+                  @for (publisher of publishers(); track publisher.id) {
+                    <button
+                      type="button"
+                      class="edit-modal__chip"
+                      [class.edit-modal__chip--selected]="isPublisherSelected(publisher.id)"
+                      (click)="togglePublisher(publisher.id)"
+                    >
+                      {{ publisher.name }}
+                    </button>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <!-- Additional Info -->
+            <div class="edit-modal__section">
+              <h5 class="edit-modal__section-title">
+                <span class="material-symbols-outlined">info</span>
+                Thông tin bổ sung
+              </h5>
+              <div class="edit-modal__grid">
+                <div class="edit-modal__field">
+                  <label class="edit-modal__label">
+                    <span>Ngôn ngữ</span>
+                  </label>
+                  <select
+                    [value]="language()"
+                    (change)="language.set($any($event.target).value)"
+                  >
+                    <option value="VI">Tiếng Việt</option>
+                    <option value="EN">Tiếng Anh</option>
+                    <option value="RU">Tiếng Nga</option>
+                    <option value="JA">Tiếng Nhật</option>
+                    <option value="KO">Tiếng Hàn</option>
+                    <option value="ZH">Tiếng Trung</option>
+                  </select>
+                </div>
+                <div class="edit-modal__field">
+                  <label class="edit-modal__label">
+                    <span>Kệ sách</span>
+                  </label>
+                  <select
+                    [value]="shelfId()"
+                    (change)="onShelfIdChange($event)"
+                  >
+                    <option [value]="0">-- Chọn kệ sách --</option>
+                    @for (shelf of shelves(); track shelf.id) {
+                      <option [value]="shelf.id">{{ shelf.code }} - {{ shelf.name }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="edit-modal__field">
+                  <label class="edit-modal__label">
+                    <span>Số trang</span>
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    [value]="pages()"
+                    (input)="onPagesInput($event)"
+                    placeholder="320"
+                  />
+                </div>
+                <div class="edit-modal__field">
+                  <label class="edit-modal__label">
+                    <span>Chiều rộng (cm)</span>
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    [value]="width()"
+                    (input)="onWidthInput($event)"
+                    placeholder="15"
+                  />
+                </div>
+                <div class="edit-modal__field">
+                  <label class="edit-modal__label">
+                    <span>Chiều cao (cm)</span>
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    [value]="height()"
+                    (input)="onHeightInput($event)"
+                    placeholder="23"
+                  />
+                </div>
+                <div class="edit-modal__field edit-modal__field--full">
+                  <label class="edit-modal__label">
+                    <span>Mô tả / Tóm tắt</span>
+                  </label>
+                  <textarea
+                    rows="3"
+                    [value]="synopsis()"
+                    (input)="synopsis.set($any($event.target).value)"
+                    placeholder="Mô tả ngắn về nội dung ấn phẩm..."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Error Message -->
+            @if (errorMessage()) {
+              <div class="edit-modal__error">
+                <span class="material-symbols-outlined">error</span>
+                <span>{{ errorMessage() }}</span>
+              </div>
+            }
+          }
+        </div>
+
+        <!-- Footer -->
+        <div class="edit-modal__footer">
+          <button class="edit-modal__btn edit-modal__btn--ghost" type="button" (click)="close()" [disabled]="isSubmitting()">
+            Hủy bỏ
+          </button>
+          <button class="edit-modal__btn edit-modal__btn--primary" type="submit" [disabled]="isSubmitting() || isLoading()">
+            @if (isSubmitting()) {
+              <span class="material-symbols-outlined">hourglass_empty</span>
+            } @else {
+              <span class="material-symbols-outlined">check</span>
+            }
+            <span>{{ isSubmitting() ? 'Đang lưu...' : 'Lưu thay đổi' }}</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

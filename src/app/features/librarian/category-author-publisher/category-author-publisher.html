@@ -61,6 +61,16 @@
           (delete)="onDeletePublisher($event)">
         </app-cat-auth-pub-publisher-grid>
       }
+
+      <!-- Shelves Grid (no pagination) -->
+      @if (activeTab() === 'shelves') {
+        <app-cat-auth-pub-shelf-grid
+          [shelves]="shelves()"
+          [loading]="loading()"
+          (edit)="onEditShelf($event)"
+          (delete)="onDeleteShelf($event)">
+        </app-cat-auth-pub-shelf-grid>
+      }
     </div>
 
     <!-- Pagination (only for authors/publishers) -->
@@ -84,7 +94,8 @@
     [category]="editingCategory()"
     [author]="editingAuthor()"
     [publisher]="editingPublisher()"
-    (close)="onCloseModal()"
-    (save)="onSave($event)">
+    [shelf]="editingShelf()"
+    (saved)="onModalSaved()"
+    (close)="onCloseModal()">
   </app-cat-auth-pub-modal>
 </div>

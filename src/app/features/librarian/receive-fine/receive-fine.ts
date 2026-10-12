@@ -15,6 +15,7 @@ import { Fine } from '@model/fine/fine.model';
 import { FinePayment } from '@model/fine/fine-payment.model';
 import { FineService } from '@core/services/fine.service';
 import { FinePaymentService } from '@core/services/fine-payment.service';
+import { BorrowDetailService } from '@core/services/borrow-detail.service';
 import { AuthService } from '@core/services/auth.service';
 import { ToastService } from '@core/services/toast.service';
 import { SettingService } from '@core/services/setting.service';
@@ -42,6 +43,7 @@ export class ReceiveFinePage {
   private readonly authService = inject(AuthService);
   private readonly fineService = inject(FineService);
   private readonly finePaymentService = inject(FinePaymentService);
+  private readonly borrowDetailService = inject(BorrowDetailService);
   private readonly toast = inject(ToastService);
 
   /** Current librarian info. */
@@ -60,6 +62,7 @@ export class ReceiveFinePage {
   // Fine data
   fines = signal<Fine[]>([]);
   totalFineAmount = signal<number>(0);
+  unrecordedOverdueFine = signal<number>(0);
 
   // Payment data
   payments = signal<FinePayment[]>([]);
@@ -90,6 +93,7 @@ export class ReceiveFinePage {
     this.resetData();
     this.loadTotalFines(member.id);
     this.loadTotalPaid(member.id);
+    this.loadOverdueFine(member.id);
     this.loadFines(member.id);
     this.loadPayments(member.id, 0);
   }
@@ -99,6 +103,7 @@ export class ReceiveFinePage {
     this.payments.set([]);
     this.totalFineAmount.set(0);
     this.paidAmount.set(0);
+    this.unrecordedOverdueFine.set(0);
     this.paymentPage.set(0);
     this.paymentTotalElements.set(0);
     this.activeTab.set('FINES');
@@ -115,6 +120,13 @@ export class ReceiveFinePage {
     this.finePaymentService.getTotalByMemberId(memberId).subscribe({
       next: (total) => this.paidAmount.set(total),
       error: (err) => console.error('Error loading total paid:', err),
+    });
+  }
+
+  private loadOverdueFine(memberId: number): void {
+    this.borrowDetailService.getOverdueFine(memberId).subscribe({
+      next: (amount) => this.unrecordedOverdueFine.set(amount),
+      error: (err) => console.error('Error loading overdue fine:', err),
     });
   }
 
@@ -196,17 +208,20 @@ export class ReceiveFinePage {
     this.finePaymentService.create(request).subscribe({
       next: (response) => {
         this.toast.success(`Thu tiền phạt thành công: ${this.formatCurrency(response.amount)}`);
-        
-        // Update paid amount
-        this.paidAmount.update(v => v + response.amount);
-        
-        // Refresh payments list
-        this.loadPayments(member.id, 0);
-        
+
+        // Update paid amount synchronously before the auto-unlock check
+        const updatedPaidAmount = this.paidAmount() + response.amount;
+        this.paidAmount.set(updatedPaidAmount);
+
+        // Refresh fines and payments list (remove separate loadPayments call to avoid double-fire)
+        this.loadFines(member.id);
+        this.loadPayments(member.id, 0); 
+
         this.resetPaymentForm();
-        
-        // Check if debt is cleared
-        if (this.unpaidAmount() === 0 && this.autoUnlock) {
+
+        // Check if debt is cleared using the already-updated value
+        const remainingDebt = this.totalFineAmount() - updatedPaidAmount;
+        if (remainingDebt === 0 && this.autoUnlock) {
           this.toast.info('Độc giả đã thanh toán hết. Thẻ đã được mở khóa tự động.');
         }
       },

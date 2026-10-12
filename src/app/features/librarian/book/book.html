@@ -13,7 +13,7 @@
     (onRefresh)="onReset()"
   />
 
-  <app-book-stats [stats]="stats()" />
+  <!-- <app-book-stats [stats]="stats()" /> -->
 
   <app-book-search
     [categories]="categories()"
@@ -44,5 +44,40 @@
     (moveShelf)="onMoveShelf()"
     (exportList)="onExportList()"
     (deselectAll)="onDeselectAll()"
+  />
+
+  <!-- Modals -->
+  <app-create-book-modal
+    [isOpen]="showCreateModal()"
+    [categories]="categories()"
+    [authors]="authors()"
+    [publishers]="publishers()"
+    [shelves]="shelves()"
+    (closed)="closeCreateModal()"
+    (created)="onBookCreated()"
+  />
+
+  <app-view-book-modal
+    [isOpen]="showViewModal()"
+    [bookId]="viewingBookId()"
+    (closed)="closeViewModal()"
+  />
+
+  <app-edit-book-modal
+    [isOpen]="showEditModal()"
+    [bookId]="editingBookId()"
+    [categories]="categories()"
+    [authors]="authors()"
+    [publishers]="publishers()"
+    [shelves]="shelves()"
+    (closed)="closeEditModal()"
+    (updated)="onBookUpdated($event)"
+  />
+
+  <app-delete-book-modal
+    [isOpen]="showDeleteModal()"
+    [book]="deletingBook()"
+    (closed)="closeDeleteModal()"
+    (deleted)="onBookDeleted($event)"
   />
 </section>

@@ -6,6 +6,7 @@ import { ReaderTableComponent } from './reader-table/reader-table';
 import { RegisterReaderModalComponent } from './register-reader-modal/register-reader-modal';
 import { ViewReaderModalComponent } from './view-reader-modal/view-reader-modal';
 import { EditReaderModalComponent } from './edit-reader-modal/edit-reader-modal';
+import { RenewReaderModalComponent } from './renew-reader-modal/renew-reader-modal';
 import { SuccessToastComponent } from './success-toast/success-toast';
 import { MemberService } from '@services/member.service';
 import { Member } from '@model/member/member.model';
@@ -22,6 +23,7 @@ import { MemberFilter } from '@model/member/request/member-filter';
     RegisterReaderModalComponent,
     ViewReaderModalComponent,
     EditReaderModalComponent,
+    RenewReaderModalComponent,
     SuccessToastComponent,
   ],
   templateUrl: './reader.html',
@@ -43,6 +45,7 @@ export class Reader implements OnInit {
   readonly isRegisterModalOpen = signal(false);
   readonly isViewModalOpen = signal(false);
   readonly isEditModalOpen = signal(false);
+  readonly isRenewModalOpen = signal(false);
   readonly selectedMember = signal<Member | null>(null);
 
   // Toast
@@ -132,6 +135,23 @@ export class Reader implements OnInit {
     this.loadMembers();
   }
 
+  // ===== Modal: Renew =====
+  openRenewModal(member: Member): void {
+    this.selectedMember.set(member);
+    this.isRenewModalOpen.set(true);
+  }
+
+  closeRenewModal(): void {
+    this.isRenewModalOpen.set(false);
+    this.selectedMember.set(null);
+  }
+
+  onMemberRenewed(_renewed: Member): void {
+    this.isRenewModalOpen.set(false);
+    this.selectedMember.set(null);
+    this.loadMembers();
+  }
+
   // ===== Toast =====
   closeToast(): void {
     this.isToastVisible.set(false);
@@ -145,6 +165,9 @@ export class Reader implements OnInit {
         break;
       case 'edit':
         this.openEditModal(event.member);
+        break;
+      case 'renew-card':
+        this.openRenewModal(event.member);
         break;
       default:
         console.log('reader action', event.action, event.member.user.fullName);

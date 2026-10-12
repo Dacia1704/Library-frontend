@@ -51,6 +51,27 @@
                   (input)="setEmail($any($event.target).value)"
                 />
               </div>
+              <div class="edit-modal__field">
+                <label class="edit-modal__label">
+                  <span>Tên đăng nhập</span>
+                </label>
+                <input
+                  type="text"
+                  [value]="username()"
+                  (input)="setUsername($any($event.target).value)"
+                />
+              </div>
+              <div class="edit-modal__field">
+                <label class="edit-modal__label">
+                  <span>Mật khẩu mới</span>
+                </label>
+                <input
+                  type="password"
+                  placeholder="Để trống nếu không đổi"
+                  [value]="password()"
+                  (input)="setPassword($any($event.target).value)"
+                />
+              </div>
             </div>
           </div>
 
@@ -128,6 +149,18 @@
                   [value]="cardExpiry()"
                   (input)="setCardExpiry($any($event.target).value)"
                 />
+              </div>
+              <div class="edit-modal__field">
+                <label class="edit-modal__label">
+                  <span>Trạng thái tài khoản</span>
+                </label>
+                <select
+                  [value]="isActive()"
+                  (change)="setIsActive($any($event.target).value)"
+                >
+                  <option [value]="true">Hoạt động</option>
+                  <option [value]="false">Bị khóa</option>
+                </select>
               </div>
             </div>
           </div>

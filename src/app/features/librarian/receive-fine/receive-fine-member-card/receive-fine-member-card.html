@@ -4,7 +4,7 @@
   <div class="member-card__content">
     <div class="member-card__info">
       <div class="member-card__avatar">
-        <span class="material-symbols-outlined member-card__avatar-icon">account_circle</span>
+        <img class="member-card__avatar-icon" [src]="getAvatarUser(member.user)" alt="Avatar" />
         @if (isLocked) {
           <span class="member-card__lock-badge" title="Đang bị chặn mượn sách">
             <span class="material-symbols-outlined">lock</span>
@@ -18,7 +18,7 @@
           @if (isLocked) {
             <span class="member-card__status-badge">
               <span class="material-symbols-outlined">lock_clock</span>
-              Thẻ bị tạm khóa mượn sách (do nợ phạt quá hạn)
+              Tạm khóa
             </span>
           }
         </div>
@@ -51,6 +51,18 @@
           <span class="member-card__currency">VNĐ</span>
         </div>
         <p class="member-card__metric-sub">{{ unpaidCount }} khoản vi phạm</p>
+      </div>
+
+      <div class="member-card__metric member-card__metric--warning">
+        <div class="member-card__metric-header">
+          <span>Phạt quá hạn chưa ghi nhận</span>
+          <span class="material-symbols-outlined member-card__warning-icon">schedule</span>
+        </div>
+        <div class="member-card__metric-value member-card__metric-value--warning">
+          <span class="member-card__amount">{{ formatCurrency(unrecordedOverdueFine) }}</span>
+          <span class="member-card__currency">VNĐ</span>
+        </div>
+        <p class="member-card__metric-sub">Phạt quá hạn chưa lưu</p>
       </div>
 
       <div class="member-card__metric">

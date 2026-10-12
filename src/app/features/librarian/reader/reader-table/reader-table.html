@@ -93,12 +93,12 @@
               @if (!isCardExpired(member)) {
                 <div class="reader-table__status reader-table__status--active">
                   <span class="reader-table__status-dot"></span>
-                  <span>Còn hạn</span>
+                  <span>Còn hạn {{ getCardExpiredDate(member) }}</span>
                 </div>
               } @else {
                 <div class="reader-table__status reader-table__status--locked">
                   <span class="material-symbols-outlined">lock</span>
-                  <span>Hết hạn</span>
+                  <span>Hết hạn {{ getCardExpiredDate(member) }}</span>
                 </div>
               }
             </td>
@@ -106,16 +106,6 @@
             <!-- Actions -->
             <td>
               <div class="reader-table__actions">
-                @if (!member.user.isActive) {
-                  <button
-                    class="reader-table__btn reader-table__btn--secondary-sm"
-                    type="button"
-                    (click)="onAction(member, 'unlock')"
-                  >
-                    <span class="material-symbols-outlined">lock_open</span>
-                    <span>Mở khóa</span>
-                  </button>
-                }
                 @if (isCardExpired(member)) {
                   <button
                     class="reader-table__btn reader-table__btn--secondary-sm"
@@ -126,14 +116,6 @@
                     <span>Gia hạn</span>
                   </button>
                 }
-                <button
-                  class="reader-table__icon-btn"
-                  type="button"
-                  title="Xem chi tiết"
-                  (click)="onAction(member, 'view')"
-                >
-                  <span class="material-symbols-outlined">visibility</span>
-                </button>
                 @if (member.user.isActive) {
                   <button
                     class="reader-table__icon-btn"
@@ -144,6 +126,14 @@
                     <span class="material-symbols-outlined">edit_square</span>
                   </button>
                 }
+                <button
+                  class="reader-table__icon-btn"
+                  type="button"
+                  title="Xem chi tiết"
+                  (click)="onAction(member, 'view')"
+                >
+                  <span class="material-symbols-outlined">visibility</span>
+                </button>
               </div>
             </td>
           </tr>

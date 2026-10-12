@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <form class="payment-form__form" (ngSubmit)="handleSubmit()">
+  <form class="payment-form__form" action="#" (ngSubmit)="handleSubmit($event)">
     <div class="payment-form__preset">
       <label class="payment-form__label">Chọn nhanh số tiền thu</label>
       <div class="payment-form__preset-grid">
@@ -80,15 +80,16 @@
 
     <div class="payment-form__actions">
       <button
-        type="submit"
+        type="button"
         class="payment-form__submit-btn"
-        [disabled]="!isValidAmount">
+        [disabled]="!isValidAmount"
+        (click)="handleSubmit($event)">
         <span class="material-symbols-outlined">check_circle</span>
         <span>Xác nhận thu tiền ({{ formatCurrency(paymentAmount) }} VNĐ)</span>
       </button>
-      <div class="payment-form__secondary-actions">
-        <button type="button" class="payment-form__secondary-btn" (click)="handleReset()">Hủy bỏ / Làm lại</button>
-      </div>
+        <!-- <div class="payment-form__secondary-actions">
+          <button type="button" class="payment-form__secondary-btn" (click)="handleReset()">Hủy bỏ / Làm lại</button>
+        </div> -->
     </div>
   </form>
 </div>

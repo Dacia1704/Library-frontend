@@ -1,18 +1,17 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { CategoryService } from '@core/services/category.service';
 import { AuthorService } from '@core/services/author.service';
 import { PublisherService } from '@core/services/publisher.service';
+import { ShelfService } from '@core/services/shelf.service';
 import { ToastService } from '@core/services/toast.service';
 
 import { Category } from '@model/category/category.model';
 import { Author } from '@model/author/author.model';
 import { Publisher } from '@model/publisher/publisher.model';
-
-import { CategoryRequest } from '@model/category/request/category-request';
-import { AuthorRequest } from '@model/author/request/author-request';
-import { PublisherRequest } from '@model/publisher/request/publisher-request';
+import { Shelf } from '@model/shelf/shelf.model';
 
 import { CatAuthPubBreadcrumbComponent } from './cat-auth-pub-breadcrumb/cat-auth-pub-breadcrumb';
 import { CatAuthPubHeaderComponent } from './cat-auth-pub-header/cat-auth-pub-header';
@@ -21,18 +20,20 @@ import { CatAuthPubToolbarComponent } from './cat-auth-pub-toolbar/cat-auth-pub-
 import { CatAuthPubCategoryTableComponent } from './cat-auth-pub-category-table/cat-auth-pub-category-table';
 import { CatAuthPubAuthorGridComponent } from './cat-auth-pub-author-grid/cat-auth-pub-author-grid';
 import { CatAuthPubPublisherGridComponent } from './cat-auth-pub-publisher-grid/cat-auth-pub-publisher-grid';
+import { CatAuthPubShelfGridComponent } from './cat-auth-pub-shelf-grid/cat-auth-pub-shelf-grid';
 import { CatAuthPubPaginationComponent } from './cat-auth-pub-pagination/cat-auth-pub-pagination';
 import { CatAuthPubHelperCardComponent } from './cat-auth-pub-helper-card/cat-auth-pub-helper-card';
 import { CatAuthPubModalComponent } from './cat-auth-pub-modal/cat-auth-pub-modal';
 
-type TabKey = 'categories' | 'authors' | 'publishers';
-type ModalMode = 'create' | 'edit';
-type ModalScope = 'category' | 'author' | 'publisher';
+export type TabKey = 'categories' | 'authors' | 'publishers' | 'shelves';
+export type ModalScope = 'category' | 'author' | 'publisher' | 'shelf';
+export type ModalMode = 'create' | 'edit';
 
 interface Stats {
   categoryCount: number;
   authorCount: number;
   publisherCount: number;
+  shelfCount: number;
   deletedCount: number;
 }
 
@@ -55,6 +56,7 @@ interface Pagination {
     CatAuthPubCategoryTableComponent,
     CatAuthPubAuthorGridComponent,
     CatAuthPubPublisherGridComponent,
+    CatAuthPubShelfGridComponent,
     CatAuthPubPaginationComponent,
     CatAuthPubHelperCardComponent,
     CatAuthPubModalComponent,
@@ -66,7 +68,10 @@ export class CategoryAuthorPublisherPage implements OnInit {
   private readonly categoryService = inject(CategoryService);
   private readonly authorService = inject(AuthorService);
   private readonly publisherService = inject(PublisherService);
+  private readonly shelfService = inject(ShelfService);
   private readonly toast = inject(ToastService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   // Tab state
   activeTab = signal<TabKey>('categories');
@@ -76,6 +81,7 @@ export class CategoryAuthorPublisherPage implements OnInit {
   categories = signal<Category[]>([]);
   authors = signal<Author[]>([]);
   publishers = signal<Publisher[]>([]);
+  shelves = signal<Shelf[]>([]);
 
   // Loading signal
   loading = signal(false);
@@ -85,6 +91,7 @@ export class CategoryAuthorPublisherPage implements OnInit {
     categoryCount: 0,
     authorCount: 0,
     publisherCount: 0,
+    shelfCount: 0,
     deletedCount: 0,
   });
 
@@ -106,12 +113,14 @@ export class CategoryAuthorPublisherPage implements OnInit {
   editingCategory = signal<Category | null>(null);
   editingAuthor = signal<Author | null>(null);
   editingPublisher = signal<Publisher | null>(null);
+  editingShelf = signal<Shelf | null>(null);
 
   // Computed values
   tabCounts = computed(() => ({
     categories: this.stats().categoryCount,
     authors: this.stats().authorCount,
     publishers: this.stats().publisherCount,
+    shelves: this.stats().shelfCount,
   }));
 
   searchPlaceholder = computed(() => {
@@ -122,6 +131,8 @@ export class CategoryAuthorPublisherPage implements OnInit {
         return 'Tìm kiếm theo tên tác giả...';
       case 'publishers':
         return 'Tìm kiếm theo tên nhà xuất bản...';
+      case 'shelves':
+        return 'Tìm kiếm theo tên kệ...';
     }
   });
 
@@ -135,6 +146,14 @@ export class CategoryAuthorPublisherPage implements OnInit {
   });
 
   ngOnInit(): void {
+    // Read tab from query params
+    this.route.queryParams.subscribe(params => {
+      const tab = params['tab'];
+      if (tab === 'categories' || tab === 'authors' || tab === 'publishers' || tab === 'shelves') {
+        this.activeTab.set(tab);
+      }
+    });
+
     this.loadAllStats();
     this.loadCurrentTabData();
   }
@@ -160,6 +179,13 @@ export class CategoryAuthorPublisherPage implements OnInit {
         this.stats.update(s => ({ ...s, publisherCount: res.data?.length ?? 0 }));
       },
     });
+
+    // Load shelf count
+    this.shelfService.getAll().subscribe({
+      next: (res) => {
+        this.stats.update(s => ({ ...s, shelfCount: res.data?.length ?? 0 }));
+      },
+    });
   }
 
   loadCurrentTabData(): void {
@@ -173,6 +199,9 @@ export class CategoryAuthorPublisherPage implements OnInit {
         break;
       case 'publishers':
         this.loadPublishers();
+        break;
+      case 'shelves':
+        this.loadShelves();
         break;
     }
   }
@@ -226,10 +255,29 @@ export class CategoryAuthorPublisherPage implements OnInit {
     });
   }
 
+  private loadShelves(): void {
+    this.shelfService.getAll().subscribe({
+      next: (res) => {
+        this.shelves.set(res.data ?? []);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.toast.error('Không thể tải danh sách kệ sách');
+        this.loading.set(false);
+      },
+    });
+  }
+
   // Tab actions
   onTabChange(tab: TabKey): void {
     this.activeTab.set(tab);
     this.pagination.update(p => ({ ...p, page: 0 }));
+    // Update URL query params
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { tab },
+      queryParamsHandling: 'merge'
+    });
     this.loadCurrentTabData();
   }
 
@@ -280,6 +328,7 @@ export class CategoryAuthorPublisherPage implements OnInit {
     this.editingCategory.set(null);
     this.editingAuthor.set(null);
     this.editingPublisher.set(null);
+    this.editingShelf.set(null);
     this.isModalOpen.set(true);
   }
 
@@ -366,98 +415,36 @@ export class CategoryAuthorPublisherPage implements OnInit {
     });
   }
 
+  // Shelf CRUD
+  onEditShelf(shelf: Shelf): void {
+    this.modalMode.set('edit');
+    this.modalScope.set('shelf');
+    this.editingShelf.set(shelf);
+    this.isModalOpen.set(true);
+  }
+
+  onDeleteShelf(shelf: Shelf): void {
+    if (!confirm(`Xóa kệ sách "${shelf.name}"?`)) return;
+
+    this.shelfService.delete(shelf.id).subscribe({
+      next: () => {
+        this.toast.success('Xóa kệ sách thành công');
+        this.loadShelves();
+        this.loadAllStats();
+      },
+      error: () => {
+        this.toast.error('Không thể xóa kệ sách');
+      },
+    });
+  }
+
   // Modal
   onCloseModal(): void {
     this.isModalOpen.set(false);
   }
 
-  onSave(data: any): void {
-    switch (this.modalScope()) {
-      case 'category':
-        this.saveCategory(data);
-        break;
-      case 'author':
-        this.saveAuthor(data);
-        break;
-      case 'publisher':
-        this.savePublisher(data);
-        break;
-    }
-  }
-
-  private saveCategory(data: CategoryRequest): void {
-    if (this.modalMode() === 'create') {
-      this.categoryService.create(data).subscribe({
-        next: () => {
-          this.toast.success('Thêm danh mục thành công');
-          this.closeModalAndReload();
-        },
-        error: () => {
-          this.toast.error('Không thể thêm danh mục');
-        },
-      });
-    } else if (this.editingCategory()) {
-      this.categoryService.update(this.editingCategory()!.id, data).subscribe({
-        next: () => {
-          this.toast.success('Cập nhật danh mục thành công');
-          this.closeModalAndReload();
-        },
-        error: () => {
-          this.toast.error('Không thể cập nhật danh mục');
-        },
-      });
-    }
-  }
-
-  private saveAuthor(data: AuthorRequest): void {
-    if (this.modalMode() === 'create') {
-      this.authorService.create(data).subscribe({
-        next: () => {
-          this.toast.success('Thêm tác giả thành công');
-          this.closeModalAndReload();
-        },
-        error: () => {
-          this.toast.error('Không thể thêm tác giả');
-        },
-      });
-    } else if (this.editingAuthor()) {
-      this.authorService.update(this.editingAuthor()!.id, data).subscribe({
-        next: () => {
-          this.toast.success('Cập nhật tác giả thành công');
-          this.closeModalAndReload();
-        },
-        error: () => {
-          this.toast.error('Không thể cập nhật tác giả');
-        },
-      });
-    }
-  }
-
-  private savePublisher(data: PublisherRequest): void {
-    if (this.modalMode() === 'create') {
-      this.publisherService.create(data).subscribe({
-        next: () => {
-          this.toast.success('Thêm nhà xuất bản thành công');
-          this.closeModalAndReload();
-        },
-        error: () => {
-          this.toast.error('Không thể thêm nhà xuất bản');
-        },
-      });
-    } else if (this.editingPublisher()) {
-      this.publisherService.update(this.editingPublisher()!.id, data).subscribe({
-        next: () => {
-          this.toast.success('Cập nhật nhà xuất bản thành công');
-          this.closeModalAndReload();
-        },
-        error: () => {
-          this.toast.error('Không thể cập nhật nhà xuất bản');
-        },
-      });
-    }
-  }
-
-  private closeModalAndReload(): void {
+  onModalSaved(): void {
+    // Modal đã tự emit toast thành công, chỉ cần reload data
     this.isModalOpen.set(false);
     this.loadAllStats();
     this.loadCurrentTabData();

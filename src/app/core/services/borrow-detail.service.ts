@@ -124,4 +124,13 @@ export class BorrowDetailService {
         }))
       );
   }
+
+  /** Get unrecorded overdue fine amount for a member. */
+  getOverdueFine(memberId: number): Observable<number> {
+    return this.http
+      .get<ApiResponse<number>>(`${this.api}/overdue-fine/${memberId}`)
+      .pipe(
+        map(response => response.data ?? 0)
+      );
+  }
 }

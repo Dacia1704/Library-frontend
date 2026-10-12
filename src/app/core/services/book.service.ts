@@ -27,7 +27,7 @@ export class BookService {
    * Requires: BOOK_WRITE authority
    */
   create(data: BookRequest): Observable<ApiResponse<BookResponse>> {
-    const formData = this.buildFormData(data);
+    const formData = BookMapper.toFormData(data);
 
     return this.http.post<ApiResponse<BookResponse>>(this.api, formData);
   }
@@ -41,7 +41,7 @@ export class BookService {
     id: string,
     data: BookRequest
   ): Observable<ApiResponse<BookResponse>> {
-    const formData = this.buildFormData(data);
+    const formData = BookMapper.toFormData(data);
 
     return this.http.put<ApiResponse<BookResponse>>(
       `${this.api}/${id}`,
@@ -58,7 +58,7 @@ export class BookService {
     id: string,
     data: BookRequest
   ): Observable<ApiResponse<BookResponse>> {
-    const formData = this.buildFormData(data);
+    const formData = BookMapper.toFormData(data);
 
     return this.http.put<ApiResponse<BookResponse>>(
       `${this.api}/${id}/restore`,
@@ -162,31 +162,5 @@ export class BookService {
    */
   deleteBook(id: string): Observable<ApiResponse<void>> {
     return this.http.delete<ApiResponse<void>>(`${this.api}/${id}`);
-  }
-
-  // ===== Helpers =====
-
-  private buildFormData(data: BookRequest): FormData {
-    const formData = new FormData();
-
-    formData.append('title', data.title);
-    formData.append('isbn', data.isbn);
-    formData.append('quantity', data.quantity.toString());
-    formData.append('available', data.available.toString());
-
-    if (data.publishYear != null)
-      formData.append('publishYear', data.publishYear.toString());
-
-    if (data.price != null)
-      formData.append('price', data.price.toString());
-
-    if (data.cover)
-      formData.append('cover', data.cover);
-
-    data.categoryIds?.forEach(id => formData.append('categoryIds', id.toString()));
-    data.authorIds?.forEach(id => formData.append('authorIds', id.toString()));
-    data.publisherIds?.forEach(id => formData.append('publisherIds', id.toString()));
-
-    return formData;
   }
 }

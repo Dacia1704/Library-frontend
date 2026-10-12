@@ -32,6 +32,12 @@
           (click)="setScope('publisher')">
           Nhà xuất bản
         </button>
+        <button
+          class="modal__scope-btn"
+          [class.modal__scope-btn--active]="scope === 'shelf'"
+          (click)="setScope('shelf')">
+          Kệ sách
+        </button>
       </div>
 
       <!-- Form Body -->
@@ -114,6 +120,48 @@
                 name="publisherAddress"
                 placeholder="Số nhà, đường phố, quận/huyện, tỉnh/thành phố..."
                 required>
+            </div>
+          </div>
+        }
+
+        <!-- Shelf Fields -->
+        @if (scope === 'shelf') {
+          <div class="modal__fields">
+            <div class="modal__field">
+              <label class="modal__label">
+                <span>Mã kệ <span class="modal__required">*</span></span>
+                <span class="modal__hint">Bắt buộc, duy nhất</span>
+              </label>
+              <input
+                type="text"
+                class="modal__input"
+                #shelfCodeInput
+                [(ngModel)]="shelfCode"
+                name="shelfCode"
+                placeholder="Ví dụ: KS-001, A-01..."
+                required>
+            </div>
+            <div class="modal__field">
+              <label class="modal__label">
+                <span>Tên kệ <span class="modal__required">*</span></span>
+                <span class="modal__hint">Bắt buộc</span>
+              </label>
+              <input
+                type="text"
+                class="modal__input"
+                [(ngModel)]="shelfName"
+                name="shelfName"
+                placeholder="Ví dụ: Kệ A - Kho Văn học"
+                required>
+            </div>
+            <div class="modal__field">
+              <label class="modal__label">Vị trí kệ</label>
+              <input
+                type="text"
+                class="modal__input"
+                [(ngModel)]="shelfLocation"
+                name="shelfLocation"
+                placeholder="Ví dụ: Tầng 1, Dãy B, Khu A...">
             </div>
           </div>
         }

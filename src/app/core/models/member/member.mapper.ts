@@ -68,8 +68,8 @@ export class MemberMapper {
   /**
    * Build a MemberRenewRequest payload
    */
-  static toRenewRequest(amount?: number): MemberRenewRequest {
-    return { amount };
+  static toRenewRequest(monthRequest: number, amount?: number): MemberRenewRequest {
+    return { monthRequest, amount };
   }
 
   /**

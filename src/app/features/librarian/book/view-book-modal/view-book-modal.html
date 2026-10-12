@@ -1,0 +1,163 @@
+@if (isOpen()) {
+  <div class="view-modal__backdrop" (click)="close()">
+    <div class="view-modal" (click)="$event.stopPropagation()">
+      <!-- Header -->
+      <div class="view-modal__header">
+        <div class="view-modal__title-group">
+          <div class="view-modal__icon-wrap">
+            <span class="material-symbols-outlined">visibility</span>
+          </div>
+          <div class="view-modal__title-block">
+            <h3 class="view-modal__title">Chi tiết ấn phẩm</h3>
+            @if (book()) {
+              <span class="view-modal__sub">{{ book()!.bookCode }}</span>
+            }
+          </div>
+        </div>
+        <button class="view-modal__close" type="button" (click)="close()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="view-modal__body">
+        @if (isLoading()) {
+          <div class="view-modal__loading">
+            <span class="material-symbols-outlined">hourglass_empty</span>
+            <span>Đang tải thông tin...</span>
+          </div>
+        } @else if (errorMessage()) {
+          <div class="view-modal__error">
+            <span class="material-symbols-outlined">error</span>
+            <span>{{ errorMessage() }}</span>
+          </div>
+        } @else if (book()) {
+          <!-- Cover & Main Info -->
+          <div class="view-modal__section view-modal__section--row">
+            <div class="view-modal__cover">
+              <img [src]="bookCover()" [alt]="book()!.title" />
+              @if (isOutOfStock()) {
+                <div class="view-modal__out-of-stock">
+                  <span class="material-symbols-outlined">inventory_2</span>
+                  <span>Hết hàng</span>
+                </div>
+              }
+            </div>
+
+            <div class="view-modal__main-info">
+              <h4 class="view-modal__book-title">{{ book()!.title }}</h4>
+              
+              <div class="view-modal__detail-row">
+                <span class="view-modal__detail-label">Mã ấn phẩm:</span>
+                <span class="view-modal__detail-value view-modal__detail-value--mono">{{ book()!.bookCode }}</span>
+              </div>
+              
+              <div class="view-modal__detail-row">
+                <span class="view-modal__detail-label">ISBN:</span>
+                <span class="view-modal__detail-value view-modal__detail-value--mono">{{ book()!.isbn || 'Không có' }}</span>
+              </div>
+              
+              <div class="view-modal__detail-row">
+                <span class="view-modal__detail-label">Giá bìa:</span>
+                <span class="view-modal__detail-value">{{ formattedPrice() }}</span>
+              </div>
+              
+              <div class="view-modal__detail-row">
+                <span class="view-modal__detail-label">Năm xuất bản:</span>
+                <span class="view-modal__detail-value">{{ book()!.publishYear || 'Không có' }}</span>
+              </div>
+              
+              <div class="view-modal__detail-row">
+                <span class="view-modal__detail-label">Ngôn ngữ:</span>
+                <span class="view-modal__detail-value">{{ languageText() }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="view-modal__stats">
+            <div class="view-modal__stat">
+              <span class="material-symbols-outlined">inventory_2</span>
+              <div class="view-modal__stat-content">
+                <span class="view-modal__stat-value">{{ book()!.quantity }}</span>
+                <span class="view-modal__stat-label">Tổng số</span>
+              </div>
+            </div>
+            <div class="view-modal__stat" [class.view-modal__stat--available]="book()!.available > 0" [class.view-modal__stat--out]="book()!.available === 0">
+              <span class="material-symbols-outlined">check_circle</span>
+              <div class="view-modal__stat-content">
+                <span class="view-modal__stat-value">{{ book()!.available }}</span>
+                <span class="view-modal__stat-label">Khả dụng</span>
+              </div>
+            </div>
+            <div class="view-modal__stat">
+              <span class="material-symbols-outlined">menu_book</span>
+              <div class="view-modal__stat-content">
+                <span class="view-modal__stat-value">{{ book()!.pages || '-' }}</span>
+                <span class="view-modal__stat-label">Trang</span>
+              </div>
+            </div>
+            <div class="view-modal__stat">
+              <span class="material-symbols-outlined">straighten</span>
+              <div class="view-modal__stat-content">
+                <span class="view-modal__stat-value">{{ (book()!.width || '-') + ' × ' + (book()!.height || '-') }}</span>
+                <span class="view-modal__stat-label">Kích thước (cm)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category, Author, Publisher -->
+          <div class="view-modal__section">
+            <h5 class="view-modal__section-title">
+              <span class="material-symbols-outlined">category</span>
+              Phân loại
+            </h5>
+            <div class="view-modal__detail-row">
+              <span class="view-modal__detail-label">Thể loại:</span>
+              <span class="view-modal__detail-value">{{ categoriesText() }}</span>
+            </div>
+            <div class="view-modal__detail-row">
+              <span class="view-modal__detail-label">Tác giả:</span>
+              <span class="view-modal__detail-value">{{ authorsText() }}</span>
+            </div>
+            <div class="view-modal__detail-row">
+              <span class="view-modal__detail-label">Nhà xuất bản:</span>
+              <span class="view-modal__detail-value">{{ publishersText() }}</span>
+            </div>
+          </div>
+
+          <!-- Location -->
+          <div class="view-modal__section">
+            <h5 class="view-modal__section-title">
+              <span class="material-symbols-outlined">location_on</span>
+              Vị trí lưu trữ
+            </h5>
+            <div class="view-modal__detail-row">
+              <span class="view-modal__detail-label">Kệ sách:</span>
+              <span class="view-modal__detail-value">{{ shelfText() }}</span>
+            </div>
+          </div>
+
+          <!-- Synopsis -->
+          @if (book()!.synopsis) {
+            <div class="view-modal__section">
+              <h5 class="view-modal__section-title">
+                <span class="material-symbols-outlined">description</span>
+                Mô tả
+              </h5>
+              <p class="view-modal__synopsis">{{ book()!.synopsis }}</p>
+            </div>
+          }
+        }
+      </div>
+
+      <!-- Footer -->
+      <div class="view-modal__footer">
+        <button class="view-modal__btn view-modal__btn--ghost" type="button" (click)="close()">
+          <span class="material-symbols-outlined">close</span>
+          <span>Đóng</span>
+        </button>
+      </div>
+    </div>
+  </div>
+}

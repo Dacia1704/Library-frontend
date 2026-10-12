@@ -1,0 +1,51 @@
+<div class="shelf-grid">
+  @if (loading) {
+    <div class="shelf-grid__loading">
+      <span class="material-symbols-outlined">hourglass_empty</span>
+      <span>Đang tải dữ liệu...</span>
+    </div>
+  } @else if (shelves.length === 0) {
+    <div class="shelf-grid__empty">
+      <span class="material-symbols-outlined">inventory_2</span>
+      <span>Không có kệ sách nào</span>
+    </div>
+  } @else {
+    <div class="shelf-grid__cards">
+      @for (shelf of shelves; track shelf.id) {
+        <div class="shelf-card">
+          <div class="shelf-card__header">
+            <div class="shelf-card__icon">
+              <span class="material-symbols-outlined">shelves</span>
+            </div>
+            <div class="shelf-card__info">
+              <h4 class="shelf-card__name">{{ shelf.name }}</h4>
+              <span class="shelf-card__code">{{ getShelfCode(shelf.code) }}</span>
+            </div>
+            <div class="shelf-card__actions">
+              <button class="shelf-card__action-btn" title="Chỉnh sửa" (click)="onEdit(shelf)">
+                <span class="material-symbols-outlined">edit</span>
+              </button>
+              <button class="shelf-card__action-btn shelf-card__action-btn--danger" title="Xóa" (click)="onDelete(shelf)">
+                <span class="material-symbols-outlined">delete</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="shelf-card__details">
+            @if (shelf.location) {
+              <div class="shelf-card__detail">
+                <span class="material-symbols-outlined">location_on</span>
+                <span>{{ shelf.location }}</span>
+              </div>
+            } @else {
+              <div class="shelf-card__detail shelf-card__detail--muted">
+                <span class="material-symbols-outlined">location_on</span>
+                <span>Chưa cập nhật vị trí</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

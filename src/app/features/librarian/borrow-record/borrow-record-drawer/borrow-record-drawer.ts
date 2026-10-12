@@ -2,6 +2,9 @@ import { Component, input, output, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { BorrowRecord as BorrowRecordModel } from '@model/borrow-record/borrow-record';
 import { BorrowStatus } from '@model/enum/borrow-status.enum';
+import { User } from '@model/user/user.model';
+import { SettingService } from '@services/setting.service';
+import { ImageUtils } from '@shared/utils/image-utils';
 
 @Component({
   selector: 'app-borrow-record-drawer',
@@ -75,12 +78,15 @@ export class BorrowRecordDrawerComponent {
   }
 
   getFineRatePerDay(): number {
-    // Default 5000 VND/day - this could come from settings service
-    return 5000;
+    return SettingService.getFineOverduePerDay();
   }
 
   getAvatarLetter(fullName: string): string {
     return fullName?.charAt(0)?.toUpperCase() ?? '?';
+  }
+
+  getUserAvatar(user: User):  string {
+    return ImageUtils.toImageSrc(user?.avatar, 'avatar-default.jpg');
   }
 
   close(): void {
