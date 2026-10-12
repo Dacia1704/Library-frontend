@@ -9,7 +9,7 @@ import { ImageUtils } from '@shared/utils/image-utils';
 import { NotificationService } from '@services/notification.service';
 import { Notification } from '@model/notification/notification.model';
 import { Subscription } from 'rxjs';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-topbar',
@@ -19,7 +19,8 @@ import { DatePipe } from '@angular/common';
     MatDividerModule,
     MatBadgeModule,
     MatIconModule,
-    DatePipe
+    DatePipe,
+    CommonModule
   ],
   templateUrl: './topbar.html',
   styleUrl: './topbar.scss',
@@ -59,6 +60,14 @@ export class Topbar implements OnInit, OnDestroy {
     // Nếu avatar là URL (http/https) → dùng luôn để tránh re-encode.
     // Nếu là base64 thuần → ImageUtils sẽ tự ghép data URI.
     return ImageUtils.toImageSrc(avatar, this.defaultAvatar);
+  }
+
+  get userBaseRole(): string {
+    const authorities = this.getAuth()?.authorities ?? [];
+    if (authorities.includes('ROLE_ADMIN')) return "ADMIN";
+    if (authorities.includes('ROLE_LIBRARIAN')) return "LIBRARIAN";
+    if (authorities.includes('ROLE_MEMBER')) return "MEMBER";
+    return "READER+";
   }
 
   get userRole(): string {

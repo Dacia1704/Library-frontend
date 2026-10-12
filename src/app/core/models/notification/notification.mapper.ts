@@ -8,7 +8,7 @@ export class NotificationMapper {
   static fromResponse(res: NotificationResponse): Notification {
     return new Notification({
       id: res.id,
-      memberId: res.memberId,
+      userId: res.userId,
       content: res.content,
       read: res.read,
       createdAt: new Date(res.createdAt)

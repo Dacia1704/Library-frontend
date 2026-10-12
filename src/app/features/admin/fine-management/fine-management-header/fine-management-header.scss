@@ -1,14 +1,15 @@
 .fine-header {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .breadcrumb {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   font-size: 12px;
+  line-height: 16px;
   color: var(--on-surface-variant);
 }
 
@@ -17,18 +18,20 @@
   align-items: center;
   gap: 4px;
   color: var(--primary);
+  text-decoration: none;
   cursor: pointer;
-
-  .material-symbols-outlined {
-    font-size: 16px;
-  }
+  transition: color 0.2s;
 
   &:hover {
     color: var(--primary-container);
   }
+
+  .material-symbols-outlined {
+    font-size: 16px;
+  }
 }
 
-.sep {
+.breadcrumb-sep {
   font-size: 14px;
 }
 
@@ -42,7 +45,7 @@
   flex-direction: column;
   gap: 16px;
 
-  @media (min-width: 1024px) {
+  @media (min-width: 768px) {
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
@@ -52,18 +55,19 @@
 .header-left {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 }
 
 .title-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .page-title {
   font-size: 24px;
+  line-height: 32px;
   font-weight: 600;
   color: var(--on-surface);
   margin: 0;
@@ -88,6 +92,7 @@
 
 .page-desc {
   font-size: 14px;
+  line-height: 20px;
   color: var(--on-surface-variant);
   margin: 0;
   max-width: 640px;
