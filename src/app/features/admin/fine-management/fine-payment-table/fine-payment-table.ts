@@ -52,7 +52,7 @@ export class FinePaymentTableComponent {
   }
 
   getReceiptId(id: number): string {
-    return `BL-${id.toString().padStart(4, '0')}`;
+    return `#${id.toString().padStart(4, '0')}`;
   }
 
   getInitials(name: string): string {

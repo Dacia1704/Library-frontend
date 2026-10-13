@@ -28,12 +28,6 @@ export class UserManagementToolbarComponent implements OnInit {
     { value: 4, label: 'Độc giả' },
   ];
 
-  readonly memberStatuses = [
-    { value: null, label: 'Tất cả' },
-    { value: true, label: 'Có thẻ thành viên' },
-    { value: false, label: 'Không có thẻ' },
-  ];
-
   ngOnInit(): void {
     this.emitFilter();
   }
