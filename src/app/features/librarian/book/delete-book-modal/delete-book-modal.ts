@@ -1,6 +1,7 @@
 import { Component, inject, input, output, signal } from '@angular/core';
 import { BookService } from '@services/book.service';
 import { Book } from '@model/book/book.model';
+import { ImageUtils } from '@shared/utils/image-utils';
 
 @Component({
   selector: 'app-delete-book-modal',
@@ -48,5 +49,9 @@ export class DeleteBookModalComponent {
         this.isSubmitting.set(false);
       }
     });
+  }
+
+  getCoverImage(book: Book): string {
+    return ImageUtils.toImageSrc(book.cover, 'assets/images/book-placeholder.png');
   }
 }

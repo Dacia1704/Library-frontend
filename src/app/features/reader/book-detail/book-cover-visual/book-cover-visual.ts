@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { Book } from '@model/book/book.model';
+import { ImageUtils } from '@shared/utils/image-utils';
 
 @Component({
   selector: 'app-book-cover-visual',
@@ -12,7 +13,7 @@ import { Book } from '@model/book/book.model';
     <div class="visual-container">
       <div class="cover-showcase">
         <div class="ribbon"><mat-icon>local_fire_department</mat-icon> Sách nổi bật</div>
-        <img [src]="book.cover" [alt]="book.title" class="cover-img"/>
+        <img [src]="getCoverImage(book)" [alt]="book.title" class="cover-img"/>
       </div>
       
       <mat-card class="specs-card" appearance="outlined">
@@ -50,4 +51,8 @@ import { Book } from '@model/book/book.model';
 })
 export class BookCoverVisual {
   @Input({ required: true }) book!: Book;
+
+  getCoverImage(book: Book): string {
+    return ImageUtils.toImageSrc(book.cover, "assets/images/default-book-cover.png");
+  }
 }

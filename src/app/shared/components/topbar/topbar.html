@@ -88,11 +88,11 @@
 
     <!-- User dropdown -->
     <mat-menu #userMenu="matMenu" class="user-menu">
-      <button mat-menu-item (click)="goToProfile.emit()" *ngIf="userBaseRole === 'MEMBER'">
+      <button mat-menu-item (click)="goToProfile.emit()" *ngIf="userBaseRole === 'MEMBER' || userBaseRole === 'READER'">
         <span class="material-symbols-outlined mi">person</span>
         Hồ sơ cá nhân
       </button>
-      <button mat-menu-item (click)="goToMemberCard.emit()" *ngIf="userBaseRole === 'MEMBER'">
+      <button mat-menu-item (click)="goToMemberCard.emit()" *ngIf="userBaseRole === 'MEMBER' || userBaseRole === 'READER'">
         <span class="material-symbols-outlined mi">person</span>
         Thẻ thành viên
       </button>

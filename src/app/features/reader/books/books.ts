@@ -83,15 +83,15 @@ export class Books implements OnInit {
     return {
       keyword: filterValue.search ?? '',
       isbn: '',
-      minPublishYear: filterValue.yearFrom ?? 0,
-      maxPublishYear: filterValue.yearTo ?? 9999,
-      minQuantity: 0,
-      maxQuantity: 9999,
-      minAvailable: filterValue.onlyAvailable ? 1 : 0,
-      maxAvailable: 9999,
-      categoryIds: [],
-      authorIds: [],
-      publisherIds: [],
+      minPublishYear: filterValue.yearFrom,
+      maxPublishYear: filterValue.yearTo,
+      minQuantity: filterValue.minQuantity,
+      maxQuantity: filterValue.maxQuantity,
+      minAvailable: filterValue.minAvailable,
+      maxAvailable: filterValue.maxAvailable,
+      categoryIds: filterValue.categoryIds,
+      authorIds: filterValue.authorIds,
+      publisherIds: filterValue.publisherIds,
     };
   }
 

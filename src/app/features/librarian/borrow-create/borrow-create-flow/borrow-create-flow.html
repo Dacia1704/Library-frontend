@@ -22,10 +22,6 @@
         (blur)="onPatronBlur()"
         autocomplete="off"
       />
-      <button class="patron-search__btn" type="button">
-        <span class="material-symbols-outlined">qr_code_scanner</span>
-        <span>Quét thẻ [F2]</span>
-      </button>
 
       <!-- Dropdown -->
       @if (patronOpen()) {
@@ -140,7 +136,7 @@
   </section>
 
   <!-- STEP 2: CHỌN SÁCH MƯỢN -->
-  <section class="flow__step" [class.flow__step--disabled]="selectedPatron && patronCardStatus(selectedPatron) === 'violation'">
+  <section class="flow__step" [class.flow__step--disabled]="selectedPatron && (patronCardStatus(selectedPatron) === 'violation' || patronCardStatus(selectedPatron) === 'expired')">
     <div class="step__header">
       <div class="step__title-group">
         <span class="step__number">2</span>

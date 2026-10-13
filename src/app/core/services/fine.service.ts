@@ -67,7 +67,7 @@ export class FineService {
   }
 
   /**
-   * Lấy tổng tiền phạt còn phải nộp của bạn đọc hiện tại
+   * Lấy tổng tiền phạt (cả đã nộp và chưa nộp) của bạn đọc hiện tại
    * GET /api/fines/total/me
    */
   getMyTotal(): Observable<number> {

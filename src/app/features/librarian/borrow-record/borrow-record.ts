@@ -45,7 +45,7 @@ export class BorrowRecordPage implements OnInit {
       .getPagination(this.filter(), this.currentPage(), this.pageSize())
       .subscribe({
         next: (res) => {
-          console.log(res);
+          // console.log(res);
           if (res.code === 200) {
             this.records.set(res.data.data);
             this.totalElements.set(res.data.totalElements);

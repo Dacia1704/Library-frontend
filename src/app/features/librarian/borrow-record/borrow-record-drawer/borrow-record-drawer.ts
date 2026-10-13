@@ -69,12 +69,12 @@ export class BorrowRecordDrawerComponent {
     if (!record) return 0;
     if (detail.returnDate) {
       const diff = new Date(detail.returnDate).getTime() - record.dueDate.getTime();
-      return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+      return Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
     }
     // Not returned yet
     const today = new Date();
     const diff = today.getTime() - record.dueDate.getTime();
-    return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+    return Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
   }
 
   getFineRatePerDay(): number {

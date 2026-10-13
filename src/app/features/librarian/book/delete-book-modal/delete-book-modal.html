@@ -18,7 +18,7 @@
         <div class="delete-modal__book-info">
           <div class="delete-modal__book-cover">
             @if (book()!.cover) {
-              <img [src]="book()!.cover" [alt]="book()!.title" />
+              <img [src]="getCoverImage(book()!)" [alt]="book()!.title" />
             } @else {
               <span class="material-symbols-outlined">menu_book</span>
             }

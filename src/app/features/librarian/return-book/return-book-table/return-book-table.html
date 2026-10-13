@@ -17,7 +17,6 @@
           <th class="table__th">Ấn phẩm & Tác giả</th>
           <th class="table__th">Mã Barcode</th>
           <th class="table__th table__th--right">Giá bìa</th>
-          <th class="table__th table__th--center">Hiện trạng</th>
           <th class="table__th table__th--center">Trạng thái</th>
           <th class="table__th table__th--center">Thao tác</th>
         </tr>
@@ -58,26 +57,9 @@
             </td>
             <td class="table__td table__td--center">
               @if (book.status === 'returned') {
-                <span class="table__condition-badge table__condition-badge--ok">
-                  <span class="material-symbols-outlined">check</span>
-                  Nguyên vẹn
-                </span>
-              } @else if (book.overdueDays && book.overdueDays > 0) {
-                <span class="table__condition-badge table__condition-badge--overdue">
-                  <span class="material-symbols-outlined">schedule</span>
-                  Quá hạn {{ book.overdueDays }} ngày
-                </span>
-              } @else {
-                <span class="table__condition-badge table__condition-badge--pending">
-                  Đúng hạn
-                </span>
-              }
-            </td>
-            <td class="table__td table__td--center">
-              @if (book.status === 'returned') {
                 <span class="table__status-badge table__status-badge--returned">
                   <span class="material-symbols-outlined">check_circle</span>
-                  Đã trả
+                  Đã trả 
                 </span>
               } @else {
                 <span class="table__status-badge table__status-badge--pending">
@@ -88,7 +70,9 @@
             <td class="table__td table__td--center">
               @if (book.status === 'returned') {
                 <button class="table__action-btn table__action-btn--disabled" disabled type="button">
-                  <span>Đã hoàn tất</span>
+                  <span>Đã hoàn tất</span> @if (book.overdueDays && book.overdueDays > 0) {
+                    <span> (Quá hạn {{ book.overdueDays }} ngày)</span>
+                  }
                 </button>
               } @else {
                 <button class="table__action-btn table__action-btn--process" type="button" (click)="onProcessReturn(book)">
