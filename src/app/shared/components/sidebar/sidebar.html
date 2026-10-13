@@ -29,6 +29,15 @@
 
   </div>
 
+  @if (isAdmin) {
+    <div class="sidebar-export">
+      <button class="export-btn" (click)="exportStatisticsPdf()">
+        <span class="material-symbols-outlined">picture_as_pdf</span>
+        <span>Xuất thống kê PDF</span>
+      </button>
+    </div>
+  }
+
   <!-- Footer -->
   <div class="sidebar-footer">
     <div class="footer-info">
