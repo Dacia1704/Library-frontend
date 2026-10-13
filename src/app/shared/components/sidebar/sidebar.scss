@@ -114,6 +114,41 @@
   }
 }
 
+// Export button
+.sidebar-export {
+  padding: 0 12px 12px;
+
+  .export-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 16px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: var(--error-container);
+    color: var(--on-error-container);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+
+    .material-symbols-outlined {
+      font-size: 18px;
+    }
+
+    &:hover {
+      background: var(--error);
+      color: var(--on-error);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
 // ─── Footer ─────────────────────────────────────────────────────────
 .sidebar-footer {
   display: flex;

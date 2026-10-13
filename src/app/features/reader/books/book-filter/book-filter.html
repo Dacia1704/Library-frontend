@@ -148,7 +148,7 @@
           (input)="onYearMaxChange()"
         />
         <div class="range-track">
-          <div class="range-fill" [style.left.%]="yearMinPercent" [style.right.%]="100 - yearMaxPercent"></div>
+          <div class="range-fill" [style.left.%]="yearMinPercent()" [style.right.%]="100 - yearMaxPercent()"></div>
         </div>
       </div>
     </div>
@@ -177,7 +177,7 @@
           (input)="onQuantityMaxChange()"
         />
         <div class="range-track">
-          <div class="range-fill" [style.left.%]="quantityMinPercent" [style.right.%]="100 - quantityMaxPercent"></div>
+          <div class="range-fill" [style.left.%]="quantityMinPercent()" [style.right.%]="100 - quantityMaxPercent()"></div>
         </div>
       </div>
     </div>
@@ -206,7 +206,7 @@
           (input)="onAvailableMaxChange()"
         />
         <div class="range-track">
-          <div class="range-fill" [style.left.%]="availableMinPercent" [style.right.%]="100 - availableMaxPercent"></div>
+          <div class="range-fill" [style.left.%]="availableMinPercent()" [style.right.%]="100 - availableMaxPercent()"></div>
         </div>
       </div>
     </div>
