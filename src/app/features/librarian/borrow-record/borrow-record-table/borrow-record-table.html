@@ -12,7 +12,6 @@
           <th>Hạn trả</th>
           <th class="table-section__th-center">Trạng thái</th>
           <th class="table-section__th-center">Số sách</th>
-          <th class="table-section__th-right">Thao tác</th>
         </tr>
       </thead>
       <tbody>
@@ -41,9 +40,7 @@
             </td>
             <td class="table-section__td-reader">
               <div class="table-section__reader">
-                <div class="table-section__avatar" [attr.data-tone]="record.status">
-                  {{ record.member.user.fullName.charAt(0) }}
-                </div>
+                <img class="table-section__avatar" [src]="getUserAvatar(record.member.user)" alt="Avatar" />
                 <div class="table-section__reader-info">
                   <span class="table-section__reader-name">{{ record.member.user.fullName }}</span>
                   <span class="table-section__reader-meta">{{ record.member.memberCode }}</span>
@@ -84,28 +81,6 @@
             </td>
             <td class="table-section__td-books">
               <span class="table-section__book-count">{{ record.bookCount }} cuốn</span>
-            </td>
-            <td class="table-section__td-actions" (click)="$event.stopPropagation()">
-              <div class="table-section__actions">
-                @if (record.status === 'overdue') {
-                  <button class="table-section__action-btn table-section__action-btn--error" type="button">
-                    Thu hồi
-                  </button>
-                }
-                @if (record.status === 'borrowing') {
-                  <button class="table-section__action-btn table-section__action-btn--primary" type="button">
-                    Trả sách
-                  </button>
-                }
-                @if (record.status === 'returned') {
-                  <button class="table-section__action-btn table-section__action-btn--disabled" type="button" disabled>
-                    Hoàn tất
-                  </button>
-                }
-                <button class="table-section__icon-btn" title="Xem chi tiết" type="button">
-                  <span class="material-symbols-outlined">visibility</span>
-                </button>
-              </div>
             </td>
           </tr>
         }

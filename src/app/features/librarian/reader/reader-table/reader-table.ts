@@ -60,6 +60,9 @@ export class ReaderTableComponent {
   isCardExpired(member: Member): boolean {
     return member.cardExpiry && new Date(member.cardExpiry) < new Date();
   }
+  getCardExpiredDate(member: Member): string {
+    return TextUtils.formatDate(member.cardExpiry, 'dd/MM/yyyy');
+  }
 
 
   avatarSrc(member: Member): string {

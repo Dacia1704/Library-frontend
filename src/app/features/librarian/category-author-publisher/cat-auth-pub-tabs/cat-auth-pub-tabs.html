@@ -29,10 +29,20 @@
       <span>Nhà xuất bản</span>
       <span class="tabs__count tabs__count--secondary">{{ tabCounts.publishers }}</span>
     </button>
+
+    <!-- Shelves Tab -->
+    <button
+      class="tabs__btn"
+      [class.tabs__btn--active]="activeTab === 'shelves'"
+      (click)="onTabChange('shelves')">
+      <span class="material-symbols-outlined">shelves</span>
+      <span>Kệ sách</span>
+      <span class="tabs__count tabs__count--secondary">{{ tabCounts.shelves }}</span>
+    </button>
   </div>
 
   <div class="tabs__info">
     <span class="material-symbols-outlined">verified</span>
-    <span>Dữ liệu đã kiểm định kỳ tự động lúc 08:30 hôm nay</span>
+    <span>Dữ liệu cập nhập tự động hàng ngày</span>
   </div>
 </div>

@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-type TabKey = 'categories' | 'authors' | 'publishers';
+import { TabKey } from '../category-author-publisher';
 
 @Component({
   selector: 'app-cat-auth-pub-tabs',
@@ -16,6 +15,7 @@ export class CatAuthPubTabsComponent {
     categories: 0,
     authors: 0,
     publishers: 0,
+    shelves: 0,
   };
 
   @Output() tabChange = new EventEmitter<TabKey>();

@@ -77,7 +77,10 @@ export class ReceiveFinePaymentFormComponent {
     // TODO: emit if needed
   }
 
-  handleSubmit(): void {
+  handleSubmit(event?: Event): void {
+    if (event) {
+      event.preventDefault();
+    }
     if (this.isValidAmount) {
       this.submit.emit();
     }

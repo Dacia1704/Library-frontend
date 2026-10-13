@@ -11,14 +11,26 @@
         </div>
       </div>
       <div class="quick-action-card__cta-wrap">
-        <button
-          class="quick-action-card__cta"
-          [attr.data-tone]="card.ctaTone"
-          type="button"
-        >
-          <span>{{ card.ctaLabel }}</span>
-          <span class="material-symbols-outlined quick-action-card__cta-icon">arrow_forward</span>
-        </button>
+        @if (card.queryParams) {
+          <a
+            class="quick-action-card__cta"
+            [attr.data-tone]="card.ctaTone"
+            [routerLink]="[card.route]"
+            [queryParams]="card.queryParams"
+          >
+            <span>{{ card.ctaLabel }}</span>
+            <span class="material-symbols-outlined quick-action-card__cta-icon">arrow_forward</span>
+          </a>
+        } @else {
+          <a
+            class="quick-action-card__cta"
+            [attr.data-tone]="card.ctaTone"
+            [routerLink]="[card.route]"
+          >
+            <span>{{ card.ctaLabel }}</span>
+            <span class="material-symbols-outlined quick-action-card__cta-icon">arrow_forward</span>
+          </a>
+        }
       </div>
     </article>
   }

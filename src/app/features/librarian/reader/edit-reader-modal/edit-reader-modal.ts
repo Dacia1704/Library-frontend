@@ -1,7 +1,7 @@
 import { Component, inject, input, output, signal, effect } from '@angular/core';
 import { Member } from '@model/member/member.model';
 import { MemberService } from '@services/member.service';
-import { MemberRequest } from '@model/member/request/member-request';
+import { MemberUpdateRequest } from '@model/member/request/member-update-request';
 import { CardStatus } from '@model/enum/card-status.enum';
 
 @Component({
@@ -21,11 +21,14 @@ export class EditReaderModalComponent {
 
   readonly fullName = signal('');
   readonly email = signal('');
+  readonly username = signal('');
+  readonly password = signal('');
   readonly identityNumber = signal('');
   readonly phone = signal('');
   readonly address = signal('');
   readonly cardStatus = signal<CardStatus>(CardStatus.PENDING);
   readonly cardExpiry = signal('');
+  readonly isActive = signal(true);
   readonly isSubmitting = signal(false);
 
   // Watch member input to populate form
@@ -34,11 +37,13 @@ export class EditReaderModalComponent {
     if (m && this.isOpen()) {
       this.fullName.set(m.user.fullName);
       this.email.set(m.user.email);
+      this.username.set(m.user.username);
       this.identityNumber.set(m.identityNumber);
       this.phone.set(m.phone || '');
       this.address.set(m.address || '');
       this.cardStatus.set(m.cardStatus);
       this.cardExpiry.set(this.formatDateForInput(m.cardExpiry));
+      this.isActive.set(m.user.isActive);
     }
   });
 
@@ -48,6 +53,14 @@ export class EditReaderModalComponent {
 
   setEmail(value: string): void {
     this.email.set(value);
+  }
+
+  setUsername(value: string): void {
+    this.username.set(value);
+  }
+
+  setPassword(value: string): void {
+    this.password.set(value);
   }
 
   setIdentityNumber(value: string): void {
@@ -70,6 +83,10 @@ export class EditReaderModalComponent {
     this.cardExpiry.set(value);
   }
 
+  setIsActive(value: string): void {
+    this.isActive.set(value === 'true');
+  }
+
   close(): void {
     if (this.isSubmitting()) return;
     this.closed.emit();
@@ -82,14 +99,16 @@ export class EditReaderModalComponent {
 
     this.isSubmitting.set(true);
 
-    const request: MemberRequest = {
-      userId: m.user.id,
-      memberCode: m.memberCode,
+    const request: MemberUpdateRequest = {
       identityNumber: this.identityNumber(),
       phone: this.phone() || undefined,
-      address: this.address() || undefined,
-      cardExpiry: this.cardExpiry() || new Date().toISOString().split('T')[0],
       cardStatus: this.cardStatus(),
+      address: this.address() || undefined,
+      username: this.username() || undefined,
+      fullName: this.fullName(),
+      email: this.email(),
+      password: this.password() || undefined,
+      isActive: this.isActive(),
     };
 
     this.memberService.updateMember(m.id, request).subscribe({

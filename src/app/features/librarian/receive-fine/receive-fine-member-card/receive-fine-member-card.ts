@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Member } from '@model/member/member.model';
 import { CardStatus } from '@model/enum/card-status.enum';
 import { SettingService } from '@core/services/setting.service';
+import { User } from '@model/user/user.model';
+import { ImageUtils } from '@shared/utils/image-utils';
 
 @Component({
   selector: 'app-receive-fine-member-card',
@@ -17,11 +19,12 @@ export class ReceiveFineMemberCardComponent {
   @Input() paidAmount = 0;
   @Input() unpaidAmount = 0;
   @Input() unpaidCount = 0;
+  @Input() unrecordedOverdueFine = 0;
 
   private readonly maxFineBeforeBlock = SettingService.getMaxFineBeforeBlock();
 
   get isLocked(): boolean {
-    return this.unpaidAmount > this.maxFineBeforeBlock;
+    return this.member.user.isActive === false;
   }
 
   get cardStatusLabel(): string {
@@ -37,5 +40,9 @@ export class ReceiveFineMemberCardComponent {
 
   formatCurrency(amount: number): string {
     return new Intl.NumberFormat('vi-VN').format(amount);
+  }
+
+  getAvatarUser(user: User): string {
+    return ImageUtils.toImageSrc(user?.avatar, 'avatar-default.jpg');
   }
 }

@@ -45,7 +45,7 @@ export const LIBRARIAN_ROUTES: Routes = [
   },
   {
     path: 'catalog',
-    data: { title: 'Danh mục sách & Siêu dữ liệu' },
+    data: { title: 'Danh mục sách' },
     loadComponent: () =>
       import('./category-author-publisher/category-author-publisher').then(m => m.CategoryAuthorPublisherPage),
   },

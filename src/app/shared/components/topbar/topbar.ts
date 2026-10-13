@@ -1,4 +1,5 @@
-import { Component, inject, output, signal, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, output, signal, OnInit, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
@@ -8,8 +9,7 @@ import { LoginResponse } from '@model/auth/response/login-response';
 import { ImageUtils } from '@shared/utils/image-utils';
 import { NotificationService } from '@services/notification.service';
 import { Notification } from '@model/notification/notification.model';
-import { Subscription } from 'rxjs';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-topbar',
@@ -19,12 +19,13 @@ import { DatePipe } from '@angular/common';
     MatDividerModule,
     MatBadgeModule,
     MatIconModule,
-    DatePipe
+    DatePipe,
+    CommonModule
   ],
   templateUrl: './topbar.html',
   styleUrl: './topbar.scss',
 })
-export class Topbar implements OnInit, OnDestroy {
+export class Topbar implements OnInit {
 
   goToProfile = output<void>();
   goToMemberCard = output<void>();
@@ -32,7 +33,7 @@ export class Topbar implements OnInit, OnDestroy {
 
   private readonly authKey = 'library_auth';
   private readonly notificationService = inject(NotificationService);
-  private notificationSubscription?: Subscription;
+  private readonly destroyRef = inject(DestroyRef);
 
   private readonly defaultAvatar =
     'https://ui-avatars.com/api/?name=U&background=1e40af&color=fff&size=64';
@@ -61,6 +62,14 @@ export class Topbar implements OnInit, OnDestroy {
     return ImageUtils.toImageSrc(avatar, this.defaultAvatar);
   }
 
+  get userBaseRole(): string {
+    const authorities = this.getAuth()?.authorities ?? [];
+    if (authorities.includes('ROLE_ADMIN')) return "ADMIN";
+    if (authorities.includes('ROLE_LIBRARIAN')) return "LIBRARIAN";
+    if (authorities.includes('ROLE_MEMBER')) return "MEMBER";
+    return "READER";
+  }
+
   get userRole(): string {
     const authorities = this.getAuth()?.authorities ?? [];
 
@@ -72,7 +81,7 @@ export class Topbar implements OnInit, OnDestroy {
       return 'Thủ thư';
     }
 
-    if (authorities.includes('ROLE_MEMBER')) {
+    if (authorities.includes('ROLE_READER')) {
       return 'Độc giả';
     }
 
@@ -96,18 +105,14 @@ export class Topbar implements OnInit, OnDestroy {
   // ===== Notification Methods =====
 
   ngOnInit(): void {
-    this.notificationSubscription = this.notificationService.notifications$.subscribe(
-      notifications => {
+    this.notificationService.notifications$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(notifications => {
         this.notifications = notifications;
         this.updateUnreadCount();
-      }
-    );
+      });
 
     this.loadNotifications();
-  }
-
-  ngOnDestroy(): void {
-    this.notificationSubscription?.unsubscribe();
   }
 
   loadNotifications(): void {

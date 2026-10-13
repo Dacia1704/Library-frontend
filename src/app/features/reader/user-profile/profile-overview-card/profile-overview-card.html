@@ -9,7 +9,10 @@
 
     <div class="info">
       <div class="badges">
-        <span class="badge active"><span class="pulse"></span> Đang hoạt động</span>
+        <span class="badge" [class.active]="member.user?.isActive" [class.locked]="!member.user?.isActive">
+          <span class="pulse" *ngIf="member.user?.isActive"></span>
+          {{member.user?.isActive ? 'Đang hoạt động' : 'Đã khóa'}}
+        </span>
         <span class="badge role">{{ member.user?.roleName }}</span>
       </div>
       <h2>{{ member.user?.fullName }}</h2>
@@ -35,7 +38,7 @@
         <span class="lbl">Hạn dùng thẻ</span>
         <div class="val-group">
           <span class="val">{{ member.cardExpiry | date:'dd/MM/yyyy' }}</span>
-          <span class="tag">Còn {{ daysRemaining }} ngày</span>
+          <span class="tag">{{daysRemaining > 0 ? 'Còn ' + daysRemaining + ' ngày' : 'Đã hết hạn'}}</span>
         </div>
       </div>
     </div>

@@ -241,10 +241,10 @@ export class BorrowCreateFlowComponent implements OnInit {
     return ImageUtils.toImageSrc(member?.user?.avatar, 'avatar-default.jpg');
   }
 
-  patronCardStatus(member: Member): 'valid' | 'violation' {
+  patronCardStatus(member: Member): 'valid' | 'violation' | 'expired' {
     if (!member) return 'valid';
-    // Consider violation if card expired OR fine amount exceeds threshold
-    if (member.isExpired || this.fineAmount() >= 50000) return 'violation';
+    if (this.fineAmount() >= SettingService.getMaxFineBeforeBlock()) return 'violation';
+    if (member.isExpired) return 'expired';
     return 'valid';
   }
 
@@ -262,6 +262,9 @@ export class BorrowCreateFlowComponent implements OnInit {
     if (!member) return '';
     if (this.patronCardStatus(member) === 'violation') {
       return `Thẻ khóa: Quá hạn nợ phạt (${this.formatCurrency(this.fineAmount())})`;
+    }
+    if (this.patronCardStatus(member) === 'expired') {
+      return `Thẻ hết hạn: ${this.formatCardExpiry(member)}`;
     }
     return `Thẻ hợp lệ - Còn hạn đến ${this.formatCardExpiry(member)}`;
   }

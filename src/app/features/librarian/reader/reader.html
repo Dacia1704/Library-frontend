@@ -37,6 +37,14 @@
     (updated)="onMemberUpdated($event)"
   />
 
+  <!-- Renew Modal -->
+  <app-renew-reader-modal
+    [isOpen]="isRenewModalOpen()"
+    [member]="selectedMember()"
+    (closed)="closeRenewModal()"
+    (renewed)="onMemberRenewed($event)"
+  />
+
   <!-- Success Toast -->
   <app-success-toast
     [visible]="isToastVisible()"

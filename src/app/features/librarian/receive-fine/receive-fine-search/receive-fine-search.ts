@@ -31,8 +31,10 @@ export class ReceiveFineSearchComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setupSearch();
-    // Initial load
-    this.searchSubject$.next('');
+    // Initial load — only when first mounted (searchQuery is empty at that point)
+    if (!this.searchQuery) {
+      this.searchSubject$.next('');
+    }
   }
 
   ngOnDestroy(): void {

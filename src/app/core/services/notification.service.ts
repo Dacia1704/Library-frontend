@@ -132,11 +132,11 @@ export class NotificationService implements OnDestroy {
         Authorization: `Bearer ${token}`
       },
       onConnect: (frame: Frame) => {
-        console.log('✅ WebSocket Connected successfully!', frame);
+        console.log('WebSocket Connected successfully!', frame);
         this.connected = true;
 
         this.stompClient?.subscribe(NOTIFICATION_TOPIC, (message) => {
-          console.log('📬 Received notification:', message.body);
+          console.log('Received notification:', message.body);
           try {
             const notification: Notification = NotificationMapper.fromResponse(
               JSON.parse(message.body)
@@ -149,11 +149,11 @@ export class NotificationService implements OnDestroy {
         console.log('🔔 Subscribed to', NOTIFICATION_TOPIC);
       },
       onStompError: (frame) => {
-        console.error('❌ STOMP Error:', frame);
+        console.error('STOMP Error:', frame);
         this.toastService.error('Kết nối thông báo thất bại');
       },
       onWebSocketError: (error) => {
-        console.error('❌ WebSocket Error:', error);
+        console.error('WebSocket Error:', error);
       },
       onDisconnect: (frame) => {
         console.log('🔌 WebSocket Disconnected:', frame);

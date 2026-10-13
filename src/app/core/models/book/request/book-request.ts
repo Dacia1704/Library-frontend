@@ -9,4 +9,10 @@ export interface BookRequest {
   categoryIds?: number[];
   authorIds?: number[];
   publisherIds?: number[];
+  pages?: number;
+  synopsis?: string;
+  language?: string;
+  shelfId?: number;
+  width?: number;
+  height?: number;
 }

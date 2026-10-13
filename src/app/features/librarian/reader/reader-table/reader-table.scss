@@ -253,8 +253,10 @@
 
   &__actions {
     display: inline-flex;
+    flex: 1;
+    width: 100%;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     gap: 4px;
   }
 

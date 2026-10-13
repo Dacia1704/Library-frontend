@@ -95,7 +95,6 @@ export class BorrowDetailService {
       )
       .pipe(
         map(response => {
-          console.log(response);
           return {
           ...response,
           data: {
@@ -122,6 +121,24 @@ export class BorrowDetailService {
           ...response,
           data: BorrowDetailMapper.fromResponse(response.data)
         }))
+      );
+  }
+
+  /** Get unrecorded overdue fine amount for a member. */
+  getOverdueFine(memberId: number): Observable<number> {
+    return this.http
+      .get<ApiResponse<number>>(`${this.api}/overdue-fine/${memberId}`)
+      .pipe(
+        map(response => response.data ?? 0)
+      );
+  }
+
+  /** Get unrecorded overdue fine amount for current user. */
+  getMyOverdueFine(): Observable<number> {
+    return this.http
+      .get<ApiResponse<number>>(`${this.api}/overdue-fine/me`)
+      .pipe(
+        map(response => response.data ?? 0)
       );
   }
 }

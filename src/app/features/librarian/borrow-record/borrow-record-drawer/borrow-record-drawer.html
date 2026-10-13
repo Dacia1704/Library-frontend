@@ -34,7 +34,7 @@
               SĐT: <span class="drawer__member-phone">{{ member()!.phone }}</span>
             </p>
           </div>
-          <div class="drawer__member-avatar">{{ getAvatarLetter(member()!.user.fullName) }}</div>
+          <img class="drawer__member-avatar" [src]="getUserAvatar(member()!.user)" alt="Avatar" />
         </div>
         <div class="drawer__meta-grid">
           <div class="drawer__meta-item">
@@ -90,7 +90,7 @@
             <div class="drawer__fine-row" [class.drawer__fine-row--returned]="isBookReturned(detail)">
               <span class="drawer__fine-label">
                 @if (isBookReturned(detail)) {
-                  Phí trễ hạn:
+                  Phí trễ hạn:  
                 } @else {
                   Phạt trễ ({{ formatCurrency(getFineRatePerDay()) }}đ x {{ getBookOverdueDays(detail) }} ngày):
                 }
@@ -99,7 +99,7 @@
                 @if (isBookReturned(detail)) {
                   0 VNĐ
                 } @else {
-                  {{ formatCurrency(detail.fineAmount) }} VNĐ
+                  {{ formatCurrency(getBookOverdueDays(detail) * getFineRatePerDay()) }} VNĐ
                 }
               </span>
             </div>
@@ -137,7 +137,7 @@
       @if (status() === 'overdue' || status() === 'borrowing') {
         <button class="drawer__action-btn drawer__action-btn--primary" type="button" (click)="navigateToReturnBook()">
           <span class="material-symbols-outlined">assignment_turned_in</span>
-          <span>Nhận trả sách & Thu tiền phạt ({{ formatCurrency(totalFine()) }}đ)</span>
+          <span>Nhận trả sách & Thu tiền phạt</span>
         </button>
       }
       @if (status() === 'returned') {

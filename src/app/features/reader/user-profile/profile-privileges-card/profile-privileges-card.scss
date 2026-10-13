@@ -23,10 +23,10 @@
   gap: 6px;
   font-size: 16px;
   font-weight: 700;
-  color: #0b1c30;
+  color: #202124;
 
   mat-icon {
-    color: #00288e;
+    color: #1a73e8;
     font-size: 20px;
     width: 20px;
     height: 20px;
@@ -47,16 +47,17 @@
 }
 
 .metric-box {
-  background: #eff4ff;
+  background: #f8f9fa;
   padding: 16px;
-  border-radius: 8px;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
+  border: 1px solid #e8eaed;
 }
 
 .lbl {
   font-size: 12px;
-  color: #444653;
+  color: #5f6368;
   margin-bottom: 4px;
 }
 
@@ -72,23 +73,23 @@
   line-height: 1;
 }
 
-.num.primary { color: #00288e; }
-.num.secondary { color: #006a61; }
+.num.primary { color: #1a73e8; }
+.num.secondary { color: #ea4335; }
 
 .unit {
   font-size: 12px;
-  color: #444653;
+  color: #5f6368;
 }
 
 .unit.secondary-bold {
-  color: #006a61;
+  color: #ea4335;
   font-weight: 600;
 }
 
 .progress-bar {
   width: 100%;
   height: 6px;
-  background: #dce9ff;
+  background: #e8eaed;
   border-radius: 99px;
   margin: 8px 0 6px;
   overflow: hidden;
@@ -96,7 +97,7 @@
 
 .fill {
   height: 100%;
-  background: #00288e;
+  background: #1a73e8;
   border-radius: 99px;
 }
 
@@ -109,7 +110,23 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  color: #006a61;
+  color: #34a853;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: auto;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.status-warn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #ea4335;
   font-size: 12px;
   font-weight: 500;
   margin-top: auto;

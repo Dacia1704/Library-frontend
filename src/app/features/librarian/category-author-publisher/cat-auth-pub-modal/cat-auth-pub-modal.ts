@@ -4,16 +4,17 @@ import { FormsModule } from '@angular/forms';
 import { Category } from '@model/category/category.model';
 import { Author } from '@model/author/author.model';
 import { Publisher } from '@model/publisher/publisher.model';
+import { Shelf } from '@model/shelf/shelf.model';
 import { CategoryService } from '@services/category.service';
 import { AuthorService } from '@services/author.service';
 import { PublisherService } from '@services/publisher.service';
+import { ShelfService } from '@services/shelf.service';
 import { CategoryRequest } from '@model/category/request/category-request';
 import { AuthorRequest } from '@model/author/request/author-request';
 import { PublisherRequest } from '@model/publisher/request/publisher-request';
+import { ShelfRequest } from '@model/shelf/request/shelf-request';
 import { ToastService } from '@services/toast.service';
-
-type ModalMode = 'create' | 'edit';
-type ModalScope = 'category' | 'author' | 'publisher';
+import { ModalMode, ModalScope } from '../category-author-publisher';
 
 @Component({
   selector: 'app-cat-auth-pub-modal',
@@ -26,11 +27,13 @@ export class CatAuthPubModalComponent implements OnChanges, AfterViewInit {
   private categoryService = inject(CategoryService);
   private authorService = inject(AuthorService);
   private publisherService = inject(PublisherService);
+  private shelfService = inject(ShelfService);
   private toastService = inject(ToastService);
 
   @ViewChild('categoryNameInput') categoryNameInput!: ElementRef<HTMLInputElement>;
   @ViewChild('authorNameInput') authorNameInput!: ElementRef<HTMLInputElement>;
   @ViewChild('publisherNameInput') publisherNameInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('shelfCodeInput') shelfCodeInput!: ElementRef<HTMLInputElement>;
 
   @Input() isOpen = false;
   @Input() mode: ModalMode = 'create';
@@ -38,6 +41,7 @@ export class CatAuthPubModalComponent implements OnChanges, AfterViewInit {
   @Input() category: Category | null = null;
   @Input() author: Author | null = null;
   @Input() publisher: Publisher | null = null;
+  @Input() shelf: Shelf | null = null;
 
   @Output() close = new EventEmitter<void>();
   @Output() saved = new EventEmitter<void>();
@@ -48,6 +52,9 @@ export class CatAuthPubModalComponent implements OnChanges, AfterViewInit {
   authorBio = '';
   publisherName = '';
   publisherAddress = '';
+  shelfCode = '';
+  shelfName = '';
+  shelfLocation = '';
 
   isLoading = false;
   private shouldFocus = false;
@@ -61,11 +68,13 @@ export class CatAuthPubModalComponent implements OnChanges, AfterViewInit {
         return this.mode === 'create' ? 'Thêm hồ sơ tác giả' : `Chỉnh sửa tác giả`;
       case 'publisher':
         return this.mode === 'create' ? 'Thêm nhà xuất bản mới' : `Chỉnh sửa nhà xuất bản`;
+      case 'shelf':
+        return this.mode === 'create' ? 'Thêm kệ sách mới' : `Chỉnh sửa kệ sách`;
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['category'] || changes['author'] || changes['publisher']) {
+    if (changes['category'] || changes['author'] || changes['publisher'] || changes['shelf']) {
       this.populateForm();
     }
     if (changes['isOpen']) {
@@ -95,6 +104,9 @@ export class CatAuthPubModalComponent implements OnChanges, AfterViewInit {
         case 'publisher':
           this.publisherNameInput?.nativeElement.focus();
           break;
+        case 'shelf':
+          this.shelfCodeInput?.nativeElement.focus();
+          break;
       }
     }, 100);
   }
@@ -110,6 +122,11 @@ export class CatAuthPubModalComponent implements OnChanges, AfterViewInit {
     if (this.scope === 'publisher' && this.publisher) {
       this.publisherName = this.publisher.name;
       this.publisherAddress = this.publisher.address || '';
+    }
+    if (this.scope === 'shelf' && this.shelf) {
+      this.shelfCode = this.shelf.code;
+      this.shelfName = this.shelf.name;
+      this.shelfLocation = this.shelf.location || '';
     }
   }
 
@@ -127,6 +144,8 @@ export class CatAuthPubModalComponent implements OnChanges, AfterViewInit {
         return !!this.authorName.trim() && !!this.authorBio.trim();
       case 'publisher':
         return !!this.publisherName.trim() && !!this.publisherAddress.trim();
+      case 'shelf':
+        return !!this.shelfCode.trim() && !!this.shelfName.trim();
     }
   }
 
@@ -144,6 +163,9 @@ export class CatAuthPubModalComponent implements OnChanges, AfterViewInit {
         break;
       case 'publisher':
         this.submitPublisher();
+        break;
+      case 'shelf':
+        this.submitShelf();
         break;
     }
   }
@@ -217,6 +239,33 @@ export class CatAuthPubModalComponent implements OnChanges, AfterViewInit {
     });
   }
 
+  private submitShelf(): void {
+    const data: ShelfRequest = { 
+      code: this.shelfCode.trim(), 
+      name: this.shelfName.trim(),
+      location: this.shelfLocation.trim()
+    };
+    const request$ = this.mode === 'create'
+      ? this.shelfService.create(data)
+      : this.shelfService.update(this.shelf!.id, data);
+
+    request$.subscribe({
+      next: () => {
+        this.toastService.success(
+          this.mode === 'create' ? 'Đã thêm kệ sách mới' : 'Đã cập nhật kệ sách'
+        );
+        this.isLoading = false;
+        this.resetForm();
+        this.saved.emit();
+        this.close.emit();
+      },
+      error: (error) => {
+        this.toastService.error(error?.error?.message || 'Đã xảy ra lỗi');
+        this.isLoading = false;
+      }
+    });
+  }
+
   onClose(): void {
     this.resetForm();
     this.close.emit();
@@ -234,5 +283,8 @@ export class CatAuthPubModalComponent implements OnChanges, AfterViewInit {
     this.authorBio = '';
     this.publisherName = '';
     this.publisherAddress = '';
+    this.shelfCode = '';
+    this.shelfName = '';
+    this.shelfLocation = '';
   }
 }

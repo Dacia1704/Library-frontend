@@ -1,0 +1,107 @@
+@if (isOpen() && setting()) {
+  <div class="edit-modal__backdrop" (click)="close()">
+    <div class="edit-modal" (click)="$event.stopPropagation()">
+      <!-- Header -->
+      <div class="edit-modal__header">
+        <div class="edit-modal__title-group">
+          <div class="edit-modal__icon-wrap">
+            <span class="material-symbols-outlined">settings</span>
+          </div>
+          <div class="edit-modal__title-block">
+            <h3 class="edit-modal__title">Chỉnh sửa tham số</h3>
+            <span class="edit-modal__sub">{{ setting()!.settingKey }}</span>
+          </div>
+        </div>
+        <button class="edit-modal__close" type="button" (click)="close()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <form class="edit-modal__form" (submit)="submit($event)">
+        <div class="edit-modal__body">
+          @if (errorMessage()) {
+            <div class="edit-modal__error">
+              <span class="material-symbols-outlined">error</span>
+              <span>{{ errorMessage() }}</span>
+            </div>
+          }
+
+          <!-- Key Info Section -->
+          <div class="edit-modal__section">
+            <h5 class="edit-modal__section-title">
+              <span class="material-symbols-outlined">key</span>
+              Thông tin tham số
+            </h5>
+            <div class="edit-modal__grid">
+              <div class="edit-modal__field edit-modal__field--full">
+                <label class="edit-modal__label">
+                  <span>Khóa định danh (Key)</span>
+                </label>
+                <input
+                  type="text"
+                  [value]="settingKey()"
+                  disabled
+                  class="edit-modal__input-disabled"
+                />
+              </div>
+              <div class="edit-modal__field edit-modal__field--full">
+                <label class="edit-modal__label">
+                  <span>Giá trị (Value)</span>
+                  <span class="edit-modal__required">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  maxlength="500"
+                  [value]="settingValue()"
+                  (input)="setSettingValue($any($event.target).value)"
+                  placeholder="Nhập giá trị mới..."
+                />
+              </div>
+              <div class="edit-modal__field edit-modal__field--full">
+                <label class="edit-modal__label">
+                  <span>Mô tả</span>
+                </label>
+                <textarea
+                  rows="3"
+                  maxlength="500"
+                  [value]="description()"
+                  (input)="setDescription($any($event.target).value)"
+                  placeholder="Nhập mô tả nghiệp vụ..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Current Info Section -->
+          <div class="edit-modal__info">
+            <div class="info-item">
+              <span class="material-symbols-outlined">schedule</span>
+              <span>Cập nhật lần cuối: {{ setting()!.updatedAt }}</span>
+            </div>
+            <div class="info-item">
+              <span class="material-symbols-outlined">person</span>
+              <span>Người cập nhật: {{ setting()!.updatedBy }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="edit-modal__footer">
+          <button class="edit-modal__btn edit-modal__btn--ghost" type="button" (click)="close()" [disabled]="isSubmitting()">
+            Hủy bỏ
+          </button>
+          <button class="edit-modal__btn edit-modal__btn--primary" type="submit" [disabled]="isSubmitting()">
+            @if (isSubmitting()) {
+              <span class="material-symbols-outlined">hourglass_empty</span>
+            } @else {
+              <span class="material-symbols-outlined">check</span>
+            }
+            <span>{{ isSubmitting() ? 'Đang lưu...' : 'Lưu thay đổi' }}</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

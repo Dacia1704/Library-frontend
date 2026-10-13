@@ -2,10 +2,10 @@
 
   <!-- Left: Search hint -->
   <div class="topbar-left">
-    <div class="search-hint">
+    <!-- <div class="search-hint">
       <span class="material-symbols-outlined search-hint-icon">manage_search</span>
       <span class="search-hint-text">Nhấn Ctrl + K để tìm kiếm nhanh...</span>
-    </div>
+    </div> -->
   </div>
 
   <!-- Right: Actions + User -->
@@ -66,9 +66,9 @@
     }
 
     <!-- Help -->
-    <button class="icon-btn" title="Trợ giúp" type="button">
+    <!-- <button class="icon-btn" title="Trợ giúp" type="button">
       <span class="material-symbols-outlined">help_outline</span>
-    </button>
+    </button> -->
 
     <div class="vr"></div>
 
@@ -88,11 +88,11 @@
 
     <!-- User dropdown -->
     <mat-menu #userMenu="matMenu" class="user-menu">
-      <button mat-menu-item (click)="goToProfile.emit()">
+      <button mat-menu-item (click)="goToProfile.emit()" *ngIf="userBaseRole === 'MEMBER' || userBaseRole === 'READER'">
         <span class="material-symbols-outlined mi">person</span>
         Hồ sơ cá nhân
       </button>
-      <button mat-menu-item (click)="goToMemberCard.emit()">
+      <button mat-menu-item (click)="goToMemberCard.emit()" *ngIf="userBaseRole === 'MEMBER' || userBaseRole === 'READER'">
         <span class="material-symbols-outlined mi">person</span>
         Thẻ thành viên
       </button>

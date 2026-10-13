@@ -1,0 +1,73 @@
+@if (isOpen() && member()) {
+  <div class="renew-modal__backdrop" (click)="close()">
+    <div class="renew-modal" (click)="$event.stopPropagation()">
+      <!-- Header -->
+      <div class="renew-modal__header">
+        <div class="renew-modal__title-group">
+          <div class="renew-modal__icon-wrap">
+            <span class="material-symbols-outlined">autorenew</span>
+          </div>
+          <div class="renew-modal__title-block">
+            <h3 class="renew-modal__title">Gia hạn thẻ thư viện</h3>
+            <span class="renew-modal__sub">{{ member()!.memberCode }} · {{ member()!.user.fullName }}</span>
+          </div>
+        </div>
+        <button class="renew-modal__close" type="button" (click)="close()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <form class="renew-modal__form" (submit)="submit($event)">
+        <div class="renew-modal__body">
+          <div class="renew-modal__info">
+            <div class="renew-modal__info-row">
+              <span class="renew-modal__info-label">Ngày hết hạn hiện tại</span>
+              <span class="renew-modal__info-value">{{ cardExpiryText }}</span>
+            </div>
+          </div>
+
+          <div class="renew-modal__field">
+            <label class="renew-modal__label">
+              <span>Số tháng gia hạn</span>
+              <span class="renew-modal__required">*</span>
+            </label>
+            <input
+              type="number"
+              min="1"
+              required
+              [value]="monthRequest()"
+              (input)="setMonthRequest($any($event.target).value)"
+            />
+            <span class="renew-modal__hint">Phí 1 tháng: {{ memberPaymentMonth }}</span>
+          </div>
+
+          <div class="renew-modal__summary">
+            <div class="renew-modal__summary-row">
+              <span class="renew-modal__summary-label">
+                Tổng tiền cần thu ({{ monthRequest() }} tháng × {{ memberPaymentMonth }}):
+              </span>
+              <span class="renew-modal__summary-value">{{ calculatedAmountText }}</span>
+            </div>
+            <p class="renew-modal__note">Vui lòng thu đủ tiền trước khi xác nhận gia hạn.</p>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="renew-modal__footer">
+          <button class="renew-modal__btn renew-modal__btn--ghost" type="button" (click)="close()" [disabled]="isSubmitting()">
+            Hủy bỏ
+          </button>
+          <button class="renew-modal__btn renew-modal__btn--primary" type="submit" [disabled]="isSubmitting()">
+            @if (isSubmitting()) {
+              <span class="material-symbols-outlined">hourglass_empty</span>
+            } @else {
+              <span class="material-symbols-outlined">refresh</span>
+            }
+            <span>{{ isSubmitting() ? 'Đang xử lý...' : 'Xác nhận gia hạn' }}</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

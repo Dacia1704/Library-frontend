@@ -13,7 +13,7 @@ export const routes: Routes = [
   },
   {
     path: 'reader',
-    canActivate: [roleGuard(['MEMBER'])],
+    canActivate: [roleGuard(['MEMBER', 'READER'])],
     loadComponent: () => import('./layouts/reader-layout/reader-layout').then(m => m.ReaderLayout),
     children: [
       { path: '', loadChildren: () => import('./features/reader/reader.routes').then(m => m.READER_ROUTES) },

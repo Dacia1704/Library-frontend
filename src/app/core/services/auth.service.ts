@@ -43,10 +43,15 @@ export class AuthService {
 
   homeUrl(): string {
     switch (this.role()) {
-      case 'ADMIN': return '/admin';
-      case 'LIBRARIAN': return '/librarian';
-      default: return '/reader';
+      case 'ADMIN': console.log('/admin'); return '/admin';
+      case 'LIBRARIAN': console.log('/librarian'); return '/librarian';
+      default: console.log('/reader'); return '/reader';
     }
+    // switch (this.role()) {
+    //   case 'ADMIN': return '/admin';
+    //   case 'LIBRARIAN': return '/librarian';
+    //   default: return '/reader';
+    // }
   }
 
   login(request: LoginRequest): Observable<LoginResponse> {

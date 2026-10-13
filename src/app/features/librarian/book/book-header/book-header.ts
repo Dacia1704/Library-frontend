@@ -8,7 +8,6 @@ import { Component, input, output } from '@angular/core';
   styleUrls: ['./book-header.scss'],
 })
 export class BookHeaderComponent {
-  readonly shelfName = input<string>('Kho lưu trữ số 1');
   readonly totalBooks = input<number>(0);
   readonly totalCopies = input<number>(0);
   readonly borrowedCopies = input<number>(0);

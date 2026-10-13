@@ -56,7 +56,7 @@ export class BorrowRecord {
       // Not returned yet and past due
       if (this.status === 'overdue') {
         const diff = today.getTime() - this.dueDate.getTime();
-        return Math.max(1, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+        return Math.max(1, Math.floor(diff / (1000 * 60 * 60 * 24)));
       }
       return 0;
     }

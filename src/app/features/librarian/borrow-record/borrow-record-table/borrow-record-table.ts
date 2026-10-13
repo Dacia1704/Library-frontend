@@ -1,5 +1,7 @@
 import { Component, input, output, computed, signal } from '@angular/core';
 import { BorrowRecord } from '@model/borrow-record/borrow-record';
+import { User } from '@model/user/user.model';
+import { ImageUtils } from '@shared/utils/image-utils';
 import { TextUtils } from '@shared/utils/text-utils';
 
 @Component({
@@ -79,5 +81,9 @@ export class BorrowRecordTableComponent {
     }
 
     return pages;
+  }
+
+  getUserAvatar(user: User):  string {
+    return ImageUtils.toImageSrc(user?.avatar, 'avatar-default.jpg');
   }
 }

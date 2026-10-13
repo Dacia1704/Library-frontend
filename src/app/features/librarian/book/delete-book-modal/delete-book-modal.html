@@ -1,0 +1,64 @@
+@if (isOpen() && book()) {
+  <div class="delete-modal__backdrop" (click)="close()">
+    <div class="delete-modal" (click)="$event.stopPropagation()">
+      <!-- Header -->
+      <div class="delete-modal__header">
+        <div class="delete-modal__icon-wrap">
+          <span class="material-symbols-outlined">warning</span>
+        </div>
+        <h3 class="delete-modal__title">Xác nhận xóa ấn phẩm</h3>
+      </div>
+
+      <!-- Body -->
+      <div class="delete-modal__body">
+        <p class="delete-modal__message">
+          Bạn có chắc chắn muốn xóa ấn phẩm này? Hành động này không thể hoàn tác.
+        </p>
+        
+        <div class="delete-modal__book-info">
+          <div class="delete-modal__book-cover">
+            @if (book()!.cover) {
+              <img [src]="getCoverImage(book()!)" [alt]="book()!.title" />
+            } @else {
+              <span class="material-symbols-outlined">menu_book</span>
+            }
+          </div>
+          <div class="delete-modal__book-details">
+            <span class="delete-modal__book-title">{{ book()!.title }}</span>
+            <span class="delete-modal__book-code">{{ book()!.bookCode }}</span>
+            <span class="delete-modal__book-isbn">{{ book()!.isbn || 'Không có ISBN' }}</span>
+          </div>
+        </div>
+
+        @if (book()!.available < book()!.quantity) {
+          <div class="delete-modal__warning">
+            <span class="material-symbols-outlined">info</span>
+            <span>Ấn phẩm này đang được mượn ({{ book()!.quantity - book()!.available }} cuốn). Vẫn có thể xóa.</span>
+          </div>
+        }
+
+        @if (errorMessage()) {
+          <div class="delete-modal__error">
+            <span class="material-symbols-outlined">error</span>
+            <span>{{ errorMessage() }}</span>
+          </div>
+        }
+      </div>
+
+      <!-- Footer -->
+      <div class="delete-modal__footer">
+        <button class="delete-modal__btn delete-modal__btn--ghost" type="button" (click)="close()" [disabled]="isSubmitting()">
+          Hủy bỏ
+        </button>
+        <button class="delete-modal__btn delete-modal__btn--danger" type="button" (click)="confirmDelete()" [disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            <span class="material-symbols-outlined">hourglass_empty</span>
+          } @else {
+            <span class="material-symbols-outlined">delete</span>
+          }
+          <span>{{ isSubmitting() ? 'Đang xóa...' : 'Xóa ấn phẩm' }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+}

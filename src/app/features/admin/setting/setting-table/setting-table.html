@@ -49,33 +49,30 @@
           </tr>
         </thead>
         <tbody>
-          @for (config of filteredConfigs(); track config.key) {
+          @for (setting of filteredConfigs(); track setting.id) {
             <tr>
               <td>
                 <div class="key-cell">
-                  <span class="material-symbols-outlined key-icon" [ngClass]="'icon-' + config.iconColor">{{ config.icon }}</span>
-                  <span class="key-text">{{ config.key }}</span>
+                  <span class="material-symbols-outlined key-icon" [ngClass]="'icon-' + getIconConfig(setting.settingKey).iconColor">{{ getIconConfig(setting.settingKey).icon }}</span>
+                  <span class="key-text">{{ setting.settingKey }}</span>
                 </div>
               </td>
               <td>
-                <span class="value-badge">{{ config.value }}</span>
+                <span class="value-badge">{{ setting.settingValue }}</span>
               </td>
               <td>
-                <span class="desc-text">{{ config.description }}</span>
+                <span class="desc-text">{{ setting.description }}</span>
               </td>
               <td>
                 <div class="update-info">
-                  <span>{{ config.updatedAt }}</span>
-                  <span class="update-by">{{ config.updatedBy }}</span>
+                  <span>{{ formatDate(setting.updatedAt) }}</span>
+                  <span class="update-by">{{ setting.updatedBy }}</span>
                 </div>
               </td>
               <td class="text-center">
                 <div class="action-buttons">
-                  <button class="action-btn" title="Sửa tham số">
+                  <button class="action-btn" title="Sửa tham số" (click)="editSetting(setting)">
                     <span class="material-symbols-outlined">edit</span>
-                  </button>
-                  <button class="action-btn action-btn-danger" title="Xóa tham số">
-                    <span class="material-symbols-outlined">delete</span>
                   </button>
                 </div>
               </td>
@@ -87,7 +84,15 @@
 
     <!-- Footer -->
     <div class="table-footer">
-          <span>Hiển thị {{ filteredConfigs().length }} tham số</span>
+          <span>Hiển thị {{ settings().length }} tham số</span>
     </div>
   }
 </div>
+
+<!-- Edit Setting Modal -->
+<app-edit-setting-modal
+  [isOpen]="isEditModalOpen()"
+  [setting]="selectedSetting()"
+  (closed)="onEditModalClosed()"
+  (updated)="onSettingUpdated($event)"
+/>

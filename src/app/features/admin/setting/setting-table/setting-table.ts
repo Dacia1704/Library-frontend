@@ -1,43 +1,36 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SettingService } from '@core/services/setting.service';
 import { Setting } from '@core/models/setting/setting.model';
-
-interface ConfigRow {
-  key: string;
-  value: string;
-  description: string;
-  updatedAt: string;
-  updatedBy: string;
-  icon: string;
-  iconColor: string;
-}
+import { EditSettingModalComponent } from '../edit-setting-modal/edit-setting-modal';
 
 @Component({
   selector: 'app-setting-table',
   standalone: true,
-  imports: [NgClass, FormsModule],
+  imports: [NgClass, FormsModule, EditSettingModalComponent],
   templateUrl: './setting-table.html',
   styleUrl: './setting-table.scss',
 })
 export class SettingTableComponent implements OnInit {
+  private settingService = inject(SettingService);
 
   settings = signal<Setting[]>([]);
   isLoading = signal(false);
   searchTerm = signal('');
 
+  // Edit modal state
+  isEditModalOpen = signal(false);
+  selectedSetting = signal<Setting | null>(null);
+
   filteredConfigs = computed(() => {
-    const configs = this.settings().map(s => this.mapToConfigRow(s));
     const term = this.searchTerm().toLowerCase();
-    if (!term) return configs;
-    return configs.filter(c => 
-      c.key.toLowerCase().includes(term) || 
-      c.description.toLowerCase().includes(term)
+    if (!term) return this.settings();
+    return this.settings().filter(s => 
+      s.settingKey.toLowerCase().includes(term) || 
+      s.description.toLowerCase().includes(term)
     );
   });
-
-  constructor(private settingService: SettingService) {}
 
   ngOnInit(): void {
     this.loadSettings();
@@ -57,7 +50,33 @@ export class SettingTableComponent implements OnInit {
     });
   }
 
-  private getIconConfig(key: string): { icon: string; iconColor: string } {
+  editSetting(setting: Setting): void {
+    this.selectedSetting.set(setting);
+    this.isEditModalOpen.set(true);
+  }
+
+  onEditModalClosed(): void {
+    this.isEditModalOpen.set(false);
+    this.selectedSetting.set(null);
+  }
+
+  onSettingUpdated(updatedSetting: Setting): void {
+    // Update the setting in the list
+    const currentSettings = this.settings();
+    const index = currentSettings.findIndex(s => s.id === updatedSetting.id);
+    if (index !== -1) {
+      const newSettings = [...currentSettings];
+      newSettings[index] = updatedSetting;
+      this.settings.set(newSettings);
+    }
+    this.onEditModalClosed();
+  }
+
+  getSettingByKey(key: string): Setting | undefined {
+    return this.settings().find(s => s.settingKey === key);
+  }
+
+  getIconConfig(key: string): { icon: string; iconColor: string } {
     const keyUpper = key.toUpperCase();
     if (keyUpper.includes('FINE') || keyUpper.includes('PENALTY')) {
       return { icon: 'gavel', iconColor: 'error' };
@@ -80,20 +99,7 @@ export class SettingTableComponent implements OnInit {
     return { icon: 'settings', iconColor: 'primary' };
   }
 
-  private mapToConfigRow(setting: Setting): ConfigRow {
-    const iconConfig = this.getIconConfig(setting.settingKey);
-    return {
-      key: setting.settingKey,
-      value: setting.settingValue,
-      description: setting.description,
-      updatedAt: this.formatDate(setting.updatedAt),
-      updatedBy: setting.updatedBy,
-      icon: iconConfig.icon,
-      iconColor: iconConfig.iconColor
-    };
-  }
-
-  private formatDate(dateString: string): string {
+  formatDate(dateString: string): string {
     if (!dateString) return '';
     const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, '0');
