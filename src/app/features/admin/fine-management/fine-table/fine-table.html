@@ -65,8 +65,7 @@
           @for (fine of filteredFines; track fine.id) {
             <tr>
               <td class="col-code">
-                <span class="fine-code">#FP-{{ fine.id.toString().padStart(4, '0') }}</span>
-                <span class="fine-source">FP-{{ fine.id }}</span>
+                <span class="fine-code">#{{ fine.id.toString().padStart(4, '0') }}</span>
               </td>
               <td class="col-patron">
                 <div class="patron-info">

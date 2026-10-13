@@ -43,19 +43,6 @@
       </div>
     </div>
 
-    <!-- Member Status -->
-    <div class="filter-item">
-      <label class="filter-label">Trạng thái thẻ</label>
-      <div class="select-wrapper">
-        <select class="filter-select" [(ngModel)]="isMember" (ngModelChange)="onFilterChange()">
-          @for (status of memberStatuses; track status.value) {
-            <option [ngValue]="status.value">{{ status.label }}</option>
-          }
-        </select>
-        <span class="material-symbols-outlined select-icon">expand_more</span>
-      </div>
-    </div>
-
     <!-- Phone Search -->
     <div class="filter-item">
       <label class="filter-label">Số điện thoại</label>
