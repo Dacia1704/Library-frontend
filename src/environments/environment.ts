@@ -1,11 +1,10 @@
-# ===========================================
-# Production Environment Configuration
-# ===========================================
-# COPY THIS FILE TO environment.ts AND FILL IN YOUR VALUES
-# DO NOT COMMIT environment.ts TO GIT!
+// ===========================================
+// Development Environment Configuration
+// ===========================================
+// API proxied through Nginx - no CORS issues
 
 export const environment = {
-  production: true,
+  production: false,
   apiUrl: '/api',
   wsUrl: '/ws'
 };
