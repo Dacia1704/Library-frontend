@@ -53,6 +53,6 @@ export class BookCoverVisual {
   @Input({ required: true }) book!: Book;
 
   getCoverImage(book: Book): string {
-    return ImageUtils.toImageSrc(book.cover, "assets/images/default-book-cover.png");
+    return ImageUtils.toImageSrc(book.cover, "book-default.jpg");
   }
 }

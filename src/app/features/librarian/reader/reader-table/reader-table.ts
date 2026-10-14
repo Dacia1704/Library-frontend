@@ -67,9 +67,6 @@ export class ReaderTableComponent {
 
   avatarSrc(member: Member): string {
     const avatar = member.user.avatar;
-    if (!avatar) {
-      return 'avatar-default.jpg';
-    }
-    return ImageUtils.toImageSrc(avatar);
+    return ImageUtils.toImageSrc(avatar, 'avatar-default.jpg');
   }
 }

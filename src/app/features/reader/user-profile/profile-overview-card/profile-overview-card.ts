@@ -20,6 +20,6 @@ export class ProfileOverviewCard {
   }
 
   get coverSrc(): string {
-    return ImageUtils.toImageSrc(this.member?.user?.avatar, 'assets/default-avatar.png');
+    return ImageUtils.toImageSrc(this.member?.user?.avatar, 'avatar-default.jpg');
   }
 }

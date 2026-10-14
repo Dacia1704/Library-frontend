@@ -115,6 +115,6 @@ export class ReturnBookTableComponent {
   }
 
   coverSrc(book: BorrowedBook): string {
-    return ImageUtils.toImageSrc(book?.cover);
+    return ImageUtils.toImageSrc(book?.cover, 'book-default.jpg');
   }
 }

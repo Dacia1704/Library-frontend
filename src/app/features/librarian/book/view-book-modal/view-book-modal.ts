@@ -22,9 +22,7 @@ export class ViewBookModalComponent {
   readonly errorMessage = signal('');
 
   readonly bookCover = computed(() => {
-    const b = this.book();
-    if (!b) return 'assets/images/book-placeholder.png';
-    return ImageUtils.toImageSrc(b.cover, 'assets/images/book-placeholder.png');
+    return ImageUtils.toImageSrc(this.book()?.cover, 'book-default.jpg');
   });
 
   readonly categoriesText = computed(() => {

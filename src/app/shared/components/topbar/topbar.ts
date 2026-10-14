@@ -53,13 +53,7 @@ export class Topbar implements OnInit {
    */
   get userAvatar(): string {
     const avatar = this.getAuth()?.avatar;
-    if (!avatar) {
-      return `https://ui-avatars.com/api/?name=${encodeURIComponent(this.userName || 'U')}&background=1e40af&color=fff&size=64`;
-    }
-
-    // Nếu avatar là URL (http/https) → dùng luôn để tránh re-encode.
-    // Nếu là base64 thuần → ImageUtils sẽ tự ghép data URI.
-    return ImageUtils.toImageSrc(avatar, this.defaultAvatar);
+    return ImageUtils.toImageSrc(avatar, 'avatar-default.jpg');
   }
 
   get userBaseRole(): string {

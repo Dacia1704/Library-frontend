@@ -291,7 +291,7 @@ export class BorrowCreateFlowComponent implements OnInit {
   }
 
   coverSrc(book: Book): string {
-    return ImageUtils.toImageSrc(book?.cover);
+    return ImageUtils.toImageSrc(book?.cover, 'book-default.jpg');
   }
 
   formatCurrency(amount: number): string {

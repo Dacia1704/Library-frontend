@@ -97,7 +97,7 @@ export class BookTableComponent {
   }
 
   getBookCover(book: Book): string {
-    return ImageUtils.toImageSrc(book.cover, 'assets/images/book-placeholder.png');
+    return ImageUtils.toImageSrc(book.cover, 'book-default.jpg');
   }
 
   getBookIsbn(book: Book): string {
