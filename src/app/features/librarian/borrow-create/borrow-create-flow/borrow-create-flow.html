@@ -104,12 +104,21 @@
           </div>
           <div class="patron-card__divider"></div>
           <div class="patron-card__metric">
-            <span class="patron-card__metric-label">Tiền phạt chưa nộp</span>
+            <span class="patron-card__metric-label">Tiền phạt ghi nhận chưa nộp</span>
             <span
               class="patron-card__metric-value patron-card__metric-value--secondary"
-              [class.patron-card__metric-value--error]="fineAmount() > 0"
+              [class.patron-card__metric-value--error]="unpaidFinesAmount() > 0"
             >
-              {{ formatCurrency(fineAmount()) }}
+              {{ formatCurrency(unpaidFinesAmount()) }}
+            </span>
+          </div>
+          <div class="patron-card__metric">
+            <span class="patron-card__metric-label">Tiền phạt quá hạn chưa ghi </span>
+            <span
+              class="patron-card__metric-value patron-card__metric-value--secondary"
+              [class.patron-card__metric-value--error]="overdueFineValue() > 0"
+            >
+              {{ formatCurrency(overdueFineValue()) }}
             </span>
           </div>
         </div>
