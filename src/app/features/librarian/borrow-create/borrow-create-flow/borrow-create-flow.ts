@@ -9,6 +9,7 @@ import { MemberService } from '@core/services/member.service';
 import { BookService } from '@core/services/book.service';
 import { BorrowDetailService } from '@core/services/borrow-detail.service';
 import { FineService } from '@core/services/fine.service';
+import { FinePaymentService } from '@core/services/fine-payment.service';
 import { SettingService } from '@core/services/setting.service';
 
 import { ImageUtils } from '@shared/utils/image-utils';
@@ -39,6 +40,7 @@ export class BorrowCreateFlowComponent implements OnInit {
   private readonly bookService = inject(BookService);
   private readonly borrowDetailService = inject(BorrowDetailService);
   private readonly fineService = inject(FineService);
+  private readonly finePaymentService = inject(FinePaymentService);
 
   // ===== Patron search =====
   patronKeyword = '';
@@ -189,14 +191,22 @@ export class BorrowCreateFlowComponent implements OnInit {
   // Tách riêng khỏi Member vì Member model không có 2 trường này,
   // tránh việc mutate trực tiếp lên object member khiến các lần map sau bị undefined.
   booksHeld = signal<number>(0);
-  fineAmount = signal<number>(0);
+  /** Tổng tiền phạt đã ghi nhận */
+  totalFines = signal<number>(0);
+  /** Tổng tiền phạt đã thanh toán */
+  totalPayments = signal<number>(0);
+  /** Tiền phạt quá hạn chưa được ghi nhận */
+  overdueFineAmount = signal<number>(0);
 
   private loadPatronMetrics(member: Member): void {
     const userId = member.user.id;
+    const memberId = member.id;
 
     // Reset trước khi load để không hiển thị giá trị cũ của người khác
     this.booksHeld.set(0);
-    this.fineAmount.set(0);
+    this.totalFines.set(0);
+    this.totalPayments.set(0);
+    this.overdueFineAmount.set(0);
 
     this.borrowDetailService.getSummary(String(userId)).subscribe({
       next: (res) => {
@@ -208,12 +218,33 @@ export class BorrowCreateFlowComponent implements OnInit {
       },
     });
 
+    // Load tổng tiền phạt đã ghi nhận
     this.fineService.getTotalByUserId(userId).subscribe({
       next: (total) => {
-        this.fineAmount.set(total ?? 0);
+        this.totalFines.set(total ?? 0);
       },
       error: () => {
-        this.fineAmount.set(0);
+        this.totalFines.set(0);
+      },
+    });
+
+    // Load tổng tiền phạt đã thanh toán
+    this.finePaymentService.getTotalByUserId(userId).subscribe({
+      next: (total) => {
+        this.totalPayments.set(total ?? 0);
+      },
+      error: () => {
+        this.totalPayments.set(0);
+      },
+    });
+
+    // Load tiền phạt quá hạn chưa được ghi nhận
+    this.borrowDetailService.getOverdueFine(memberId).subscribe({
+      next: (amount) => {
+        this.overdueFineAmount.set(amount ?? 0);
+      },
+      error: () => {
+        this.overdueFineAmount.set(0);
       },
     });
   }
@@ -241,9 +272,10 @@ export class BorrowCreateFlowComponent implements OnInit {
     return ImageUtils.toImageSrc(member?.user?.avatar, 'avatar-default.jpg');
   }
 
-  patronCardStatus(member: Member): 'valid' | 'violation' | 'expired' {
+  patronCardStatus(member: Member | null): 'valid' | 'violation' | 'expired' {
     if (!member) return 'valid';
-    if (this.fineAmount() >= SettingService.getMaxFineBeforeBlock()) return 'violation';
+    const unpaidFines = this.unpaidFinesAmount();
+    if (unpaidFines >= SettingService.getMaxFineBeforeBlock()) return 'violation';
     if (member.isExpired) return 'expired';
     return 'valid';
   }
@@ -255,18 +287,29 @@ export class BorrowCreateFlowComponent implements OnInit {
 
   fineValue(member: Member | null): number {
     if (!member) return 0;
-    return this.fineAmount();
+    return this.unpaidFinesAmount();
   }
 
   patronStatusLabel(member: Member): string {
     if (!member) return '';
+    const unpaidFines = this.unpaidFinesAmount();
     if (this.patronCardStatus(member) === 'violation') {
-      return `Thẻ khóa: Quá hạn nợ phạt (${this.formatCurrency(this.fineAmount())})`;
+      return `Thẻ khóa: Quá hạn nợ phạt (${this.formatCurrency(unpaidFines)})`;
     }
     if (this.patronCardStatus(member) === 'expired') {
       return `Thẻ hết hạn: ${this.formatCardExpiry(member)}`;
     }
     return `Thẻ hợp lệ - Còn hạn đến ${this.formatCardExpiry(member)}`;
+  }
+
+  /** Tiền phạt ghi nhận chưa nộp = tổng phạt - đã thanh toán */
+  unpaidFinesAmount(): number {
+    return Math.max(0, this.totalFines() - this.totalPayments());
+  }
+
+  /** Tiền phạt quá hạn chưa ghi */
+  overdueFineValue(): number {
+    return this.overdueFineAmount();
   }
 
   formatCardExpiry(member: Member): string {
