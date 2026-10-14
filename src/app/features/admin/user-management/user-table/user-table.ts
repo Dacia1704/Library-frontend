@@ -130,7 +130,7 @@ export class UserTableComponent implements OnChanges {
   }
 
   getUserAvatarSrc(user: User): string {
-    return ImageUtils.toImageSrc(user.avatar);
+    return ImageUtils.toImageSrc(user.avatar, 'avatar-default.jpg');
   }
 
   getUserAvatarInitials(user: User): string {

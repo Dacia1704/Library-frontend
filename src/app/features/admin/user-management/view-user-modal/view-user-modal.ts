@@ -16,11 +16,7 @@ export class ViewUserModalComponent {
   readonly editUser = output<User>();
 
   readonly avatarSrc = computed(() => {
-    const avatar = this.user()?.avatar;
-    if (!avatar) {
-      return 'avatar-default.jpg';
-    }
-    return ImageUtils.toImageSrc(avatar);
+    return ImageUtils.toImageSrc(this.user()?.avatar, 'avatar-default.jpg');
   });
 
   close(): void {

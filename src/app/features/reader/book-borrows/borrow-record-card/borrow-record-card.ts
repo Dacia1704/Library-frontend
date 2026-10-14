@@ -126,7 +126,7 @@ export class BorrowRecordCard {
   }
 
   get bookCoverSrc(): string {
-    return ImageUtils.toImageSrc(this.record.book?.cover);
+    return ImageUtils.toImageSrc(this.record.book?.cover, 'book-default.jpg');
   }
 
   get bookCode(): string {

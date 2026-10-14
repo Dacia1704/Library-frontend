@@ -192,6 +192,6 @@ export class ReturnBookModalComponent {
   }
 
   coverSrc(book: BookForReturn): string {
-    return ImageUtils.toImageSrc(book?.cover);
+    return ImageUtils.toImageSrc(book?.cover, 'book-default.jpg');
   }
 }

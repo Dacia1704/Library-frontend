@@ -25,7 +25,7 @@ export class BookCard {
    * - Rỗng → chuỗi rỗng
    */
   get coverSrc(): string {
-    return ImageUtils.toImageSrc(this.book?.cover);
+    return ImageUtils.toImageSrc(this.book?.cover, 'book-default.jpg');
   }
 
   onCardClick(): void {
