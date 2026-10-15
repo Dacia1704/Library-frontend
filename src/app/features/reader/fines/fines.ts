@@ -119,10 +119,10 @@ export class FinesComponent implements OnInit, OnDestroy {
   ): FineSummary {
 
     return {
-      totalFines: unpaidTotal + paidTotal,
+      totalFines: unpaidTotal,
       totalFinesCount: fines.length,
       paidAmount: paidTotal,
-      unpaidAmount: unpaidTotal,
+      unpaidAmount: unpaidTotal - paidTotal,
     };
   }
 
